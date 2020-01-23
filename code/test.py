@@ -13,7 +13,7 @@ LED_STRIP      = ws.WS2811_STRIP_GRB   # Strip type and colour ordering
 strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
 strip.begin()
 
-for i in range(strip.numPixels()):
+for i in range(0, strip.numPixels(), 2):
     strip.setPixelColor(i, Color(255,0,0))
 strip.show()
 
