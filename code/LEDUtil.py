@@ -158,9 +158,8 @@ class LEDStrip:
     def rainbowHi(self,wait_ms=20, iterations=1):
         """Draw rainbow that fades across all pixels at once."""
         j = self.updateFrame(256)
-        hi = [121,111,112,104,103,107,97,98,90,89,91,84,82,78,77,71,72]
-        hi *= 2
-        
+        hi = [242,222,224,208,206,214,194,196,180,178,182,168,164,156,154,142,144]
+
         #for j in range(256*iterations):
         for i in range(0, self.strip.numPixels(), 2):
             if i in hi:
