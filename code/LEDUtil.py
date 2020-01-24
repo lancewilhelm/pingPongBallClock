@@ -174,36 +174,10 @@ class LEDStrip:
             self.strip.show()
 
     def flashGrey(self):
-        j = self.updateFrame(30)
+        j = self.updateFrame(100)
         for i in range(self.numBalls):
             if(j == 0):
                 self.strip.setPixelColor(i*2, Color(50,50,50))
-            if(j == 29):
+            if(j == 99):
                 self.clearPixels()
         self.strip.show()
-
-    def theaterChaseRainbow(self,wait_ms=50):
-        """Rainbow movie theater light style chaser animation."""
-        for j in range(256):
-            for q in range(3):
-                for i in range(0, self.numBalls, 3):
-                    self.strip.setPixelColor(i*2+q, self.wheel((i+j) % 255))
-                self.strip.show()
-                time.sleep(wait_ms/1000.0)
-                for i in range(0, self.numBalls, 3):
-                    self.strip.setPixelColor(i*2+q, 0)
-
-    def pacman(self):
-
-      x = self.updateFrame(self.numBalls)
-      endPixel = x + (self.numBalls - 40)
-
-      self.strip.setPixelColor(((x-1) % self.numBalls),Color(0,0,0))
-      for y in range(x,endPixel):
-        if y < (x + 5): #make pacman
-          self.strip.setPixelColor((y % self.numBalls), Color(255,255,0))
-        else:
-          if y % 5 == 0:  #make blues
-            self.strip.setPixelColor((y % self.numBalls), Color(0,0,255))
-
-      self.strip.show()
