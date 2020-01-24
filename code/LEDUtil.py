@@ -182,7 +182,7 @@ class LEDStrip:
 
     def clock(self):
         j = self.updateFrame(10)
-
+        print j #debug
         # t = time.localtime()
 
         self.clearPixels()
