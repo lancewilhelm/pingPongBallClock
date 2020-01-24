@@ -38,6 +38,7 @@ class LEDStrip:
         self.strip.begin()
         self.animationFrame = 0
         self.animationEnd = 1
+        self.minsPrev = 99  #used for clock updating
 
     def updateFrame(self, animationEnd):
         self.animationFrame += 1
@@ -182,8 +183,6 @@ class LEDStrip:
 
     def clock(self):
         j = self.updateFrame(10)
-
-        self.minsPrev = 0
 
         # Get the current local time and parse it out to usable variables
         t = time.localtime()
