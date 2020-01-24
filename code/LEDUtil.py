@@ -24,7 +24,7 @@ LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
 LED_COUNT      = 256
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA        = 10       # DMA channel to use for generating signal (try 5)
-LED_BRIGHTNESS = 255     # Set to 0 for darkest and 255 for brightest
+LED_BRIGHTNESS = 125     # Set to 0 for darkest and 255 for brightest
 LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
 LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 LED_STRIP      = ws.WS2811_STRIP_GRB   # Strip type and colour ordering
@@ -192,14 +192,10 @@ class LEDStrip:
         hours = str(hours)
         mins = str(t.tm_min)
 
-        print int(mins), ' ', self.minsPrev   #debug
-
-        if int(mins) != self.minsPrev:
-            print "UPDATING" #debug
-        
+        if int(mins) != self.minsPrev:    
             # Write the colon in the middle
-            self.strip.setPixelColor(56*2,Color(125,125,125))
-            self.strip.setPixelColor(63*2,Color(125,125,125))
+            self.strip.setPixelColor(47*2,Color(125,125,125))
+            self.strip.setPixelColor(54*2,Color(125,125,125))
 
             # Write the BG and the actual numerals
             self.customColor([255,0,0])
