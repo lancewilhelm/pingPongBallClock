@@ -51,7 +51,7 @@ class LEDStrip:
 
     def clearPixels(self):
         #print ('Clearing')
-        for i in range(self.strip.numPixels()):
+        for i in range(0, self.strip.numPixels(), 2):
             self.strip.setPixelColor(i, Color(0,0,0))
         self.strip.show()
 
@@ -60,12 +60,12 @@ class LEDStrip:
         green = color[1]
         blue = color[2]
         stripColor = Color(red,green,blue)
-        for i in range(self.strip.numPixels()):
+        for i in range(0, self.strip.numPixels(), 2):
             self.strip.setPixelColor(i,stripColor)
         self.strip.show()
 
     def flashYellow(self):
-        for i in range(self.strip.numPixels()):
+        for i in range(0, self.strip.numPixels(), 2):
             self.strip.setPixelColor(i, Color(125,125,0))
         self.strip.show()
         time.sleep(1)
@@ -159,7 +159,7 @@ class LEDStrip:
         """Draw rainbow that uniformly distributes itself across all pixels."""
         j = self.updateFrame(256)
         #for j in range(256*iterations):
-        for i in range(self.strip.numPixels()):
+        for i in range(0, self.strip.numPixels(), 2):
             self.strip.setPixelColor(i, self.wheel((int(i * 256 / self.strip.numPixels()) + j) & 255))
         self.strip.show()
         time.sleep(wait_ms/1000.0)
@@ -170,17 +170,17 @@ class LEDStrip:
         y = int(127.5*math.cos((math.pi/50)*(x-50))+127.5)
 
         if(x < 100):
-            for j in range(self.strip.numPixels()):
+            for j in range(0, self.strip.numPixels(), 2):
                 self.strip.setPixelColor(j, Color(y,0,y))
             self.strip.show()
         else:
-            for j in range(self.strip.numPixels()):
+            for j in range(0, self.strip.numPixels(), 2):
                 self.strip.setPixelColor(j, Color(y/2,y,0))
             self.strip.show()
 
     def flashGrey(self):
         j = self.updateFrame(30)
-        for i in range(self.strip.numPixels()):
+        for i in range(0, self.strip.numPixels(), 2):
             if(j == 0):
                 self.strip.setPixelColor(i, Color(50,50,50))
             if(j == 29):
