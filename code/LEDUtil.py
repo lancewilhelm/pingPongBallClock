@@ -193,7 +193,7 @@ class LEDStrip:
         hours = str(hours)
         mins = str(t.tm_min)
 
-        print int(mins) + ' ' + self.minsPrev   #debug
+        print int(mins), ' ', self.minsPrev   #debug
 
         if int(mins) != self.minsPrev:
             print "UPDATING" #debug
