@@ -167,9 +167,7 @@ class LEDStrip:
         if j == 0:
             self.clearPixels()
 
-        print row[j] #debugging
         for i in row[j]:
-            print i #debugging
             self.strip.setPixelColor(i*2, Color(255,0,0))
 
         self.strip.show()
