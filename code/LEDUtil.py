@@ -173,9 +173,13 @@ class LEDStrip:
         self.strip.show()
         time.sleep(0.5)
 
-    def writeChar(self,x,y,color=Color(125,125,125)):
-
+    def writeChar(self,x,y,char,color=Color(125,125,125)):
+        for j in range(len(slanted[char])):
+            for i in range(len(slanted[char][-j])):
+                if slanted[char][-j][i]:
+                    self.strip.setPixelColor(row[y+j][x+i],color)
 
     def clock(self):
         t = time.localtime()
 
+        writeChar(15,1,1)
