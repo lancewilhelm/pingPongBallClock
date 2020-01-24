@@ -6,13 +6,14 @@
 import time
 
 from neopixel import *
+from Utils import *
 
 import argparse
 import signal
 import sys
 import math
 
-import Utils
+
 
 def signal_handler(signal, frame):
     colorWipe(self.strip, Color(0,0,0))
