@@ -197,7 +197,7 @@ class LEDStrip:
 
         # Write the BG and the actual numerals
         self.customColor([255,0,0])
-        self.writeChar(1,1,hours[0])
-        self.writeChar(5,1,hours[1])
-        self.writeChar(11,1,mins[0])
-        self.writeChar(15,1,mins[1])
+        self.writeChar(1,1,int(hours[0]))
+        self.writeChar(5,1,int(hours[1]))
+        self.writeChar(11,1,int(mins[0]))
+        self.writeChar(15,1,int(mins[1]))
