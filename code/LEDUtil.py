@@ -172,3 +172,10 @@ class LEDStrip:
 
         self.strip.show()
         time.sleep(0.5)
+
+    def writeChar(self,x,y,color=Color(125,125,125)):
+
+
+    def clock(self):
+        t = time.localtime()
+
