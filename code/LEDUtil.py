@@ -12,6 +12,8 @@ import signal
 import sys
 import math
 
+import Utils
+
 def signal_handler(signal, frame):
     colorWipe(self.strip, Color(0,0,0))
     sys.exit(0)
@@ -142,7 +144,7 @@ class LEDStrip:
     def rainbow(self,wait_ms=20, iterations=1):
         """Draw rainbow that fades across all pixels at once."""
         j = self.updateFrame(256)
-        #for j in range(256*iterations):
+
         for i in range(self.numBalls):
             self.strip.setPixelColor(i*2, self.wheel((i+j) & 255))
         self.strip.show()
@@ -151,7 +153,7 @@ class LEDStrip:
     def rainbowCycle(self,wait_ms=20, iterations=1):
         """Draw rainbow that uniformly distributes itself across all pixels."""
         j = self.updateFrame(256)
-        #for j in range(256*iterations):
+
         for i in range(self.numBalls):
             self.strip.setPixelColor(i*2, self.wheel((int(i * 256 / self.numBalls) + j) & 255))
         self.strip.show()
