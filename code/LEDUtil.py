@@ -189,9 +189,14 @@ class LEDStrip:
         hours = t.tm_hour
         if hours > 12:
             hours -= 12
-        hours = str(hours)
-        mins = str(t.tm_min)
+        
+        hoursStr = str(hours)
+        minsStr = str(t.tm_min)
 
+        if hours < 10:
+            hoursStr[1] = hoursStr[0]
+            hoursStr[0] = '0'
+            
         if int(mins) != self.minsPrev:    
             # Write the BG
             self.customColor([255,0,0])
@@ -202,9 +207,9 @@ class LEDStrip:
             self.strip.show()
 
             # Write the actual numerals
-            self.writeChar(1,1,int(hours[0]))
-            self.writeChar(5,1,int(hours[1]))
-            self.writeChar(11,1,int(mins[0]))
-            self.writeChar(15,1,int(mins[1]))
+            self.writeChar(1,1,int(hoursStr[0]))
+            self.writeChar(5,1,int(hoursStr[1]))
+            self.writeChar(11,1,int(minsStr[0]))
+            self.writeChar(15,1,int(minsStr[1]))
 
             self.minsPrev = int(mins)
