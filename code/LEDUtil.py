@@ -182,4 +182,4 @@ class LEDStrip:
     def clock(self):
         t = time.localtime()
 
-        writeChar(15,1,1)
+        self.writeChar(15,1,1)
