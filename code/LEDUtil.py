@@ -177,7 +177,7 @@ class LEDStrip:
         for j in range(len(slanted[char])):
             for i in range(len(slanted[char][-j])):
                 if slanted[char][-j][i]:
-                    self.strip.setPixelColor(row[y+j][x+i],color)
+                    self.strip.setPixelColor((row[y+j][x+i])*2,color)
         self.strip.show()
 
     def clock(self):
