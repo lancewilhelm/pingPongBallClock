@@ -171,4 +171,4 @@ class LEDStrip:
             self.strip.setPixelColor(i*2, Color(255,0,0))
 
         self.strip.show()
-        time.sleep(500)
+        time.sleep(0.5)
