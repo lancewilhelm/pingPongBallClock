@@ -155,7 +155,7 @@ class LEDStrip:
         j = self.updateFrame(256)
 
         for i in range(self.numBalls):
-            self.strip.setPixelColor(i*2, self.wheel((int((i*2) * 256 / self.numBalls) + j) & 255))
+            self.strip.setPixelColor(i*2, self.wheel((((i*2)/(self.numBalls*2))+j) & 255))
         self.strip.show()
         time.sleep(wait_ms/1000.0)
 
