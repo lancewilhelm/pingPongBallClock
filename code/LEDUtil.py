@@ -193,13 +193,15 @@ class LEDStrip:
         mins = str(t.tm_min)
 
         if int(mins) != self.minsPrev:    
+            # Write the BG
+            self.customColor([255,0,0])
+
             # Write the colon in the middle
             self.strip.setPixelColor(56*2,Color(125,125,125))
             self.strip.setPixelColor(63*2,Color(125,125,125))
             self.strip.show()
 
-            # Write the BG and the actual numerals
-            self.customColor([255,0,0])
+            # Write the actual numerals
             self.writeChar(1,1,int(hours[0]))
             self.writeChar(5,1,int(hours[1]))
             self.writeChar(11,1,int(mins[0]))
