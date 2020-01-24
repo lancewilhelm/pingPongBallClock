@@ -175,6 +175,7 @@ class LEDStrip:
 
     def flashGrey(self):
         j = self.updateFrame(100)
+        print j
         for i in range(self.numBalls):
             if(j == 0):
                 self.strip.setPixelColor(i*2, Color(50,50,50))
