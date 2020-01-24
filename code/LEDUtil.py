@@ -25,7 +25,7 @@ def opt_parse():
 
 # LED strip configuration:
 LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
-#LED_PIN        = 10      # GPIO pin connected to the pixels (10 uses SPI /dev/spidev0.0).
+LED_COUNT      = 256
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA        = 10       # DMA channel to use for generating signal (try 5)
 LED_BRIGHTNESS = 255     # Set to 0 for darkest and 255 for brightest
@@ -35,8 +35,8 @@ LED_STRIP      = ws.WS2811_STRIP_GRB   # Strip type and colour ordering
 
 
 class LEDStrip:
-    def __init__(self,ledCount):
-        self.strip = Adafruit_NeoPixel(ledCount, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
+    def __init__(self):
+        strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
         # Intialize the library (must be called once before other functions).
         self.strip.begin()
         self.animationFrame = 0
@@ -150,7 +150,7 @@ class LEDStrip:
         """Draw rainbow that fades across all pixels at once."""
         j = self.updateFrame(256)
         #for j in range(256*iterations):
-        for i in range(self.strip.numPixels()):
+        for i in range(0, self.strip.numPixels(), 2):
             self.strip.setPixelColor(i, self.wheel((i+j) & 255))
         self.strip.show()
         time.sleep(wait_ms/1000.0)
