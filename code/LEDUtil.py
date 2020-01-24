@@ -97,21 +97,6 @@ class LEDStrip:
         #time.sleep(0.005)
         return self.numBalls
 
-    def pacman(self):
-      self.clearPixels()
-
-      x = self.updateFrame(self.numBalls)
-      endPixel = x + (self.numBalls - 40)
-
-      for y in range(x,endPixel):
-        if y < (x + 5): #make pacman
-          self.strip.setPixelColor((y % self.numBalls), Color(255,255,0))
-        else:
-          if x % 5 == 0:  #make blues
-            self.strip.setPixelColor((y % self.numBalls), Color(0,0,255))
-
-      self.strip.show()
-
     def colorWipe(self,color, wait_ms=50):
         """Wipe color across display a pixel at a time."""
         i = self.updateFrame(self.numBalls)
@@ -179,6 +164,6 @@ class LEDStrip:
         for i in range(self.numBalls):
             if(j == 0):
                 self.strip.setPixelColor(i*2, Color(50,50,50))
-            if(j == 99):
+            if(j == 50):
                 self.clearPixels()
         self.strip.show()
