@@ -60,14 +60,6 @@ class LEDStrip:
             self.strip.setPixelColor(i*2,stripColor)
         self.strip.show()
 
-    def flashYellow(self):
-        for i in range(self.numBalls):
-            self.strip.setPixelColor(i*2, Color(125,125,0))
-        self.strip.show()
-        time.sleep(1)
-        self.clearPixels()
-        time.sleep(1)
-
     def chasing(self):
         #clearPixels(strip)
         #Purple
@@ -160,11 +152,21 @@ class LEDStrip:
 
     def flashGrey(self):
         j = self.updateFrame(100)
-        print j
+
         for i in range(self.numBalls):
             if(j == 0):
                 self.strip.setPixelColor(i*2, Color(50,50,50))
             if(j == 50):
                 self.strip.setPixelColor(i*2, Color(0,0,0))
-                #self.clearPixels()
         self.strip.show()
+
+    def rowStep(self):
+        j = self.updateFrame(7)
+
+        if j == 0:
+            self.clearPixels()
+
+        for i in row[j]:
+            self.strip.setPixelColor(i*2, Color(255,0,0))
+
+        time.sleep(1)
