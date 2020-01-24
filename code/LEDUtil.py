@@ -187,13 +187,14 @@ class LEDStrip:
         # Get the current local time and parse it out to usable variables
         t = time.localtime()
         hours = t.tm_hour
+        mins = t.tm_min
         if hours > 12:
             hours -= 12
         
         hoursStr = str(hours)
-        minsStr = str(t.tm_min)
+        minsStr = str(mins)
 
-        if int(mins) != self.minsPrev:    
+        if mins != self.minsPrev:    
             # Write the BG
             self.customColor([255,0,0])
 
@@ -213,4 +214,4 @@ class LEDStrip:
             self.writeChar(11,1,int(minsStr[0]))
             self.writeChar(15,1,int(minsStr[1]))
 
-            self.minsPrev = int(mins)
+            self.minsPrev = mins
