@@ -165,5 +165,6 @@ class LEDStrip:
             if(j == 0):
                 self.strip.setPixelColor(i*2, Color(50,50,50))
             if(j == 50):
-                self.clearPixels()
+                self.strip.setPixelColor(i*2, Color(0,0,0))
+                #self.clearPixels()
         self.strip.show()
