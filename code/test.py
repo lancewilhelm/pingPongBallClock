@@ -1,6 +1,6 @@
 import LEDUtil
 
-LED = LEDUtils.LEDStrip()
+LED = LEDUtil.LEDStrip()
 
 while(True):
     LED.rainbow()
