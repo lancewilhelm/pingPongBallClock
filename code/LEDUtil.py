@@ -18,7 +18,7 @@ def signal_handler(signal, frame):
 
 # LED strip configuration:
 LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
-LED_COUNT      = 128
+LED_COUNT      = 256
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA        = 10       # DMA channel to use for generating signal (try 5)
 LED_BRIGHTNESS = 255     # Set to 0 for darkest and 255 for brightest
@@ -31,6 +31,7 @@ class LEDStrip:
     def __init__(self):
         self.strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
         # Intialize the library (must be called once before other functions).
+        self.numBalls = 128
         self.strip.begin()
         self.animationFrame = 0
         self.animationEnd = 1
@@ -44,7 +45,7 @@ class LEDStrip:
 
     def clearPixels(self):
         #print ('Clearing')
-        for i in range(self.strip.numPixels()):
+        for i in range(self.numBalls):
             self.strip.setPixelColor(i*2, Color(0,0,0))
         self.strip.show()
 
@@ -53,12 +54,12 @@ class LEDStrip:
         green = color[1]
         blue = color[2]
         stripColor = Color(red,green,blue)
-        for i in range(self.strip.numPixels()):
+        for i in range(self.numBalls):
             self.strip.setPixelColor(i*2,stripColor)
         self.strip.show()
 
     def flashYellow(self):
-        for i in range(self.strip.numPixels()):
+        for i in range(self.numBalls):
             self.strip.setPixelColor(i*2, Color(125,125,0))
         self.strip.show()
         time.sleep(1)
@@ -68,17 +69,17 @@ class LEDStrip:
     def chasing(self):
         #clearPixels(strip)
         #Purple
-        x = self.updateFrame(self.strip.numPixels())
+        x = self.updateFrame(self.numBalls)
         #print x
         endPixel = x + 50
         #purple
         for i in range(x,endPixel):
-            self.strip.setPixelColor(i*2 % self.strip.numPixels(), Color(255,0,255))
+            self.strip.setPixelColor(i*2 % self.numBalls, Color(255,0,255))
             #Serial.println("setting pixel colors for 50");
 
         #green
-        for i in (x+(self.strip.numPixels()/2),endPixel+(self.strip.numPixels()/2)):
-            self.strip.setPixelColor(i*2 % self.strip.numPixels(), Color(100,255,0))
+        for i in (x+(self.numBalls/2),endPixel+(self.numBalls/2)):
+            self.strip.setPixelColor(i*2 % self.numBalls, Color(100,255,0))
             #Serial.println("setting pixel colors for 50");
 
         #clear purple
@@ -87,31 +88,31 @@ class LEDStrip:
 
         #clear green
         for i in range(1,5):
-            self.strip.setPixelColor((x+(self.strip.numPixels()/2) - i) % self.strip.numPixels(), Color(0,0,0))
+            self.strip.setPixelColor((x+(self.numBalls/2) - i) % self.numBalls, Color(0,0,0))
 
         self.strip.show()
         #print ('sleep')
         #time.sleep(0.005)
-        return self.strip.numPixels()
+        return self.numBalls
 
     def pacman(self):
       self.clearPixels()
 
-      x = self.updateFrame(self.strip.numPixels())
-      endPixel = x + (self.strip.numPixels() - 40)
+      x = self.updateFrame(self.numBalls)
+      endPixel = x + (self.numBalls - 40)
 
       for y in range(x,endPixel):
         if y < (x + 5): #make pacman
-          self.strip.setPixelColor((y % self.strip.numPixels()), Color(255,255,0))
+          self.strip.setPixelColor((y % self.numBalls), Color(255,255,0))
         else:
           if x % 5 == 0:  #make blues
-            self.strip.setPixelColor((y % self.strip.numPixels()), Color(0,0,255))
+            self.strip.setPixelColor((y % self.numBalls), Color(0,0,255))
 
       self.strip.show()
 
     def colorWipe(self,color, wait_ms=50):
         """Wipe color across display a pixel at a time."""
-        i = self.updateFrame(self.strip.numPixels())
+        i = self.updateFrame(self.numBalls)
         self.strip.setPixelColor(i*2, color)
         self.strip.show()
         time.sleep(wait_ms/1000.0)
@@ -120,11 +121,11 @@ class LEDStrip:
         """Movie theater light style chaser animation."""
         for j in range(iterations):
             for q in range(3):
-                for i in range(0, self.strip.numPixels(), 3):
+                for i in range(0, self.numBalls, 3):
                     self.strip.setPixelColor((i+q)*2, color)
                 self.strip.show()
                 time.sleep(wait_ms/1000.0)
-                for i in range(0, self.strip.numPixels(), 3):
+                for i in range(0, self.numBalls, 3):
                     self.strip.setPixelColor((i+q)*2, 0)
 
     def wheel(self,pos):
@@ -142,7 +143,7 @@ class LEDStrip:
         """Draw rainbow that fades across all pixels at once."""
         j = self.updateFrame(256)
         #for j in range(256*iterations):
-        for i in range(self.strip.numPixels()):
+        for i in range(self.numBalls):
             self.strip.setPixelColor(i*2, self.wheel((i+j) & 255))
         self.strip.show()
         time.sleep(wait_ms/1000.0)
@@ -151,8 +152,8 @@ class LEDStrip:
         """Draw rainbow that uniformly distributes itself across all pixels."""
         j = self.updateFrame(256)
         #for j in range(256*iterations):
-        for i in range(self.strip.numPixels()):
-            self.strip.setPixelColor(i*2, self.wheel((int(i * 256 / self.strip.numPixels()) + j) & 255))
+        for i in range(self.numBalls):
+            self.strip.setPixelColor(i*2, self.wheel((int(i * 256 / self.numBalls) + j) & 255))
         self.strip.show()
         time.sleep(wait_ms/1000.0)
 
@@ -162,17 +163,17 @@ class LEDStrip:
         y = int(127.5*math.cos((math.pi/50)*(x-50))+127.5)
 
         if(x < 100):
-            for j in range(self.strip.numPixels()):
+            for j in range(self.numBalls):
                 self.strip.setPixelColor(j, Color(y,0,y))
             self.strip.show()
         else:
-            for j in range(self.strip.numPixels()):
+            for j in range(self.numBalls):
                 self.strip.setPixelColor(j, Color(y/2,y,0))
             self.strip.show()
 
     def flashGrey(self):
         j = self.updateFrame(30)
-        for i in range(self.strip.numPixels()):
+        for i in range(self.numBalls):
             if(j == 0):
                 self.strip.setPixelColor(i*2, Color(50,50,50))
             if(j == 29):
@@ -183,24 +184,24 @@ class LEDStrip:
         """Rainbow movie theater light style chaser animation."""
         for j in range(256):
             for q in range(3):
-                for i in range(0, self.strip.numPixels(), 3):
+                for i in range(0, self.numBalls, 3):
                     self.strip.setPixelColor(i*2+q, self.wheel((i+j) % 255))
                 self.strip.show()
                 time.sleep(wait_ms/1000.0)
-                for i in range(0, self.strip.numPixels(), 3):
+                for i in range(0, self.numBalls, 3):
                     self.strip.setPixelColor(i*2+q, 0)
 
     def pacman(self):
 
-      x = self.updateFrame(self.strip.numPixels())
-      endPixel = x + (self.strip.numPixels() - 40)
+      x = self.updateFrame(self.numBalls)
+      endPixel = x + (self.numBalls - 40)
 
-      self.strip.setPixelColor(((x-1) % self.strip.numPixels()),Color(0,0,0))
+      self.strip.setPixelColor(((x-1) % self.numBalls),Color(0,0,0))
       for y in range(x,endPixel):
         if y < (x + 5): #make pacman
-          self.strip.setPixelColor((y % self.strip.numPixels()), Color(255,255,0))
+          self.strip.setPixelColor((y % self.numBalls), Color(255,255,0))
         else:
           if y % 5 == 0:  #make blues
-            self.strip.setPixelColor((y % self.strip.numPixels()), Color(0,0,255))
+            self.strip.setPixelColor((y % self.numBalls), Color(0,0,255))
 
       self.strip.show()
