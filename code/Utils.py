@@ -16,6 +16,13 @@ row = [
 #Slanted Numeral Font
 slanted = {}    #Define the slanted font dictionary
 
+slanted[0] = [
+    [1,1,1],
+    [1,0,1],
+    [1,0,1],
+    [1,0,1],
+    [1,1,1]
+]
 slanted[1] = [
     [0,0,1],
     [0,0,1],
