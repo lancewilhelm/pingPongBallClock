@@ -163,7 +163,7 @@ class LEDStrip:
         #for j in range(256*iterations):
         for i in range(0, self.strip.numPixels(), 2):
             if i in hi:
-                self.strip.setPixelColor(i, Color(255,255,255))
+                self.strip.setPixelColor(i, Color(125,125,125))
             else:
                 self.strip.setPixelColor(i, self.wheel((i+j) & 255))
         self.strip.show()
