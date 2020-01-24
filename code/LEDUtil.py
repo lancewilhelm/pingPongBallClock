@@ -205,7 +205,7 @@ class LEDStrip:
 
             # Write the actual numerals
             if hours < 10:
-                self.writeChar(1,1,0)
+                # self.writeChar(1,1,0)
                 self.writeChar(5,1,int(hoursStr[0]))
             else:
                 self.writeChar(1,1,int(hoursStr[0]))
