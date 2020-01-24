@@ -186,6 +186,6 @@ class LEDStrip:
         # t = time.localtime()
 
         self.clearPixels()
-        self.writeChar(14,1,j)
+        self.writeChar(14,1,0)
 
         time.sleep(1)
