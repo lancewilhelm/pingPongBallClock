@@ -183,6 +183,8 @@ class LEDStrip:
     def clock(self):
         j = self.updateFrame(10)
 
+        self.minsPrev = ''
+
         # Get the current local time and parse it out to usable variables
         t = time.localtime()
         hours = t.tm_hour
@@ -191,13 +193,16 @@ class LEDStrip:
         hours = str(hours)
         mins = str(t.tm_min)
 
-        # Write the colon in the middle
-        self.strip.setPixelColor(56*2,Color(125,125,125))
-        self.strip.setPixelColor(63*2,Color(125,125,125))
+        if mins != self.minsPrev:
+            # Write the colon in the middle
+            self.strip.setPixelColor(56*2,Color(125,125,125))
+            self.strip.setPixelColor(63*2,Color(125,125,125))
 
-        # Write the BG and the actual numerals
-        self.customColor([255,0,0])
-        self.writeChar(1,1,int(hours[0]))
-        self.writeChar(5,1,int(hours[1]))
-        self.writeChar(11,1,int(mins[0]))
-        self.writeChar(15,1,int(mins[1]))
+            # Write the BG and the actual numerals
+            self.customColor([255,0,0])
+            self.writeChar(1,1,int(hours[0]))
+            self.writeChar(5,1,int(hours[1]))
+            self.writeChar(11,1,int(mins[0]))
+            self.writeChar(15,1,int(mins[1]))
+
+            self.minsPrev = mins
