@@ -94,7 +94,7 @@ def clock():
         # Check to see if the hour has changed. If it has, write the new hour
         if hours != hoursPrev:
             # If it is midnight, change the clock to 12
-            if hours = 0:
+            if hours == 0:
                 hours = 12
             
             # Convert the mins to a string so that we can parse the individual numbers for display
