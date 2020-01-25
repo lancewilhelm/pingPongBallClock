@@ -55,7 +55,7 @@ class LEDStrip:
 
         # If the color is different than what the buffer has stored, write it and show it
         if buffer[row][col] != color:
-            self.strip.setPixelColor((row[y][x])*2,color)
+            self.strip.setPixelColor((ledAddresses[row][col])*2,color)
             buffer[row][col] = color
 
     def writeChar(self,col,row,char,bgcolor,color=Color(125,125,125),):
