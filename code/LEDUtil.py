@@ -71,9 +71,9 @@ class LEDStrip:
         for y in range(len(slanted[char])):
             for x in range(len(slanted[char][-(y+1)])): #Using -j to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
                 if slanted[char][-(y+1)][x]:
-                    self.writeBall(col+x,row+y,color,true)
+                    self.writeBall(col+x,row+y,color,True)
                 else:
-                    self.writeBall(col+x,row+y,bgcolor,false)
+                    self.writeBall(col+x,row+y,bgcolor,False)
         self.strip.show()
 
     def updateFrame(self, animationEnd):
@@ -86,7 +86,7 @@ class LEDStrip:
     def colorFill(self,color):
         for y in range(self.numRows):
             for x in range(self.numCols):
-                self.writeBall(x,y,color,false)
+                self.writeBall(x,y,color,False)
         self.strip.show()
 
     def wheel(self,pos):

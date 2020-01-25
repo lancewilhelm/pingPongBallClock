@@ -31,12 +31,12 @@ while(True):
         colonLit ^= True  #flip the colonLit bool
 
         if colonLit:
-            LED.writeBall(8,4,Color(125,125,125),true)
-            LED.writeBall(8,2,Color(125,125,125),true)
+            LED.writeBall(8,4,Color(125,125,125),True)
+            LED.writeBall(8,2,Color(125,125,125),True)
             LED.strip.show()
         else: 
-            LED.writeBall(8,4,bgcolor,false)
-            LED.writeBall(8,2,bgcolor,false)
+            LED.writeBall(8,4,bgcolor,False)
+            LED.writeBall(8,2,bgcolor,False)
             LED.strip.show()
 
         secsPrev = secs
