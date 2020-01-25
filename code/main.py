@@ -25,7 +25,7 @@ def clock():
     global minsPrev
     global secsPrev
     global colonLit
-    
+
     while(True):
         # Write the BG. Will not overwrite text per the function
         LED.colorFill(Color(0,125,0))
@@ -84,5 +84,6 @@ def clock():
             hoursPrev = hours
 
 if __name__ == '__main__':
-    clock()
+    x = threading.Thread(target=clock, args=())
+    x.start()
     # app.run(host='0.0.0.0', port=80)
