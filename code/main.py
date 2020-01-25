@@ -4,15 +4,6 @@ from neopixel import *
 import LEDUtil
 import time
 
-#Establish variables that will be used
-global hoursPrev = 99  #used for clock updating
-global minsPrev = 99   #used for clock updating
-global secsPrev = 99   #used for clock updating
-global colonLit = False
-
-# Initialize the LED class, start up the LED strip
-LED = LEDUtil.LEDStrip()
-
 #Setup the flask object and get it going
 app = Flask(__name__)
 
@@ -79,5 +70,14 @@ def clock():
             hoursPrev = hours
 
 if __name__ == '__main__':
+    #Establish variables that will be used
+    hoursPrev = 99  #used for clock updating
+    minsPrev = 99   #used for clock updating
+    secsPrev = 99   #used for clock updating
+    colonLit = False
+
+    # Initialize the LED class, start up the LED strip
+    LED = LEDUtil.LEDStrip()
+
     clock()
     # app.run(host='0.0.0.0', port=80)
