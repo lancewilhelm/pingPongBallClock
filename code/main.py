@@ -4,6 +4,15 @@ from neopixel import *
 import LEDUtil
 import time
 
+#Establish variables that will be used
+hoursPrev = 99  #used for clock updating
+minsPrev = 99   #used for clock updating
+secsPrev = 99   #used for clock updating
+colonLit = False
+
+# Initialize the LED class, start up the LED strip
+LED = LEDUtil.LEDStrip()
+
 #Setup the flask object and get it going
 app = Flask(__name__)
 
@@ -12,6 +21,11 @@ def index():
     return render_template('index.html')
 
 def clock():
+    global hoursPrev
+    global minsPrev
+    global secsPrev
+    global colonLit
+    
     while(True):
         # Write the BG. Will not overwrite text per the function
         LED.colorFill(Color(0,125,0))
@@ -70,14 +84,5 @@ def clock():
             hoursPrev = hours
 
 if __name__ == '__main__':
-    #Establish variables that will be used
-    hoursPrev = 99  #used for clock updating
-    minsPrev = 99   #used for clock updating
-    secsPrev = 99   #used for clock updating
-    colonLit = False
-
-    # Initialize the LED class, start up the LED strip
-    LED = LEDUtil.LEDStrip()
-
     clock()
     # app.run(host='0.0.0.0', port=80)
