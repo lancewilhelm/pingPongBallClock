@@ -86,7 +86,7 @@ class LEDStrip:
     def colorFill(self,color):
         for y in range(self.numRows):
             for x in range(self.numCols):
-                self.writeBall(x,y,color)
+                self.writeBall(x,y,color,false)
         self.strip.show()
 
     def wheel(self,pos):
