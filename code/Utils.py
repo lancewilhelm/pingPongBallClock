@@ -14,7 +14,7 @@ ledAddresses = [
 class Ball:
     def __init__(self, location):   #location is a list of two variables, [row, col]
         self.location = location    #[row,col]
-        self.ledNum = row[self.location[0]][self.location[1]]   #[row,col]
+        self.ledNum = ledAddresses[self.location[0]][self.location[1]]   #[row,col]
         self.text = False           #this is used to determine whether the ball is being used for text display or not
         self.color = Color(0,0,0)   #current ball color
 
