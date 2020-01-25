@@ -62,7 +62,7 @@ class LEDStrip:
             return
 
         # If the color is different than what the buffer has stored, write it and show it
-        if self.balls[row][col].color != color:
+        if self.balls[row][col].color != color or self.balls[row][col].text != text:
             self.strip.setPixelColor((self.balls[row][col].ledNum)*2,color)
             self.balls[row][col].color = color
             self.balls[row][col].text = text
