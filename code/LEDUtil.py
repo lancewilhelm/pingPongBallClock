@@ -206,22 +206,22 @@ class LEDStrip:
             # Write the BG
 
             # Write the colon in the middle
-            self.writeBall(9,4,Color(125,125,125))
-            self.writeBall(9,2,Color(125,125,125))
+            self.writeBall(8,4,Color(125,125,125))
+            self.writeBall(8,2,Color(125,125,125))
 
             # Write the actual numerals
             if hours < 10:
                 # self.writeChar(1,1,0)
-                self.writeChar(5,1,int(hoursStr[0]),bgcolor)
+                self.writeChar(4,1,int(hoursStr[0]),bgcolor)
             else:
-                self.writeChar(1,1,int(hoursStr[0]),bgcolor)
-                self.writeChar(5,1,int(hoursStr[1]),bgcolor)
+                self.writeChar(0,1,int(hoursStr[0]),bgcolor)
+                self.writeChar(4,1,int(hoursStr[1]),bgcolor)
 
             if mins < 10:
-                self.writeChar(11,1,0)
-                self.writeChar(15,1,int(minsStr[0]),bgcolor)
+                self.writeChar(10,1,0)
+                self.writeChar(14,1,int(minsStr[0]),bgcolor)
             else:
-                self.writeChar(11,1,int(minsStr[0]),bgcolor)
-                self.writeChar(15,1,int(minsStr[1]),bgcolor)
+                self.writeChar(10,1,int(minsStr[0]),bgcolor)
+                self.writeChar(14,1,int(minsStr[1]),bgcolor)
 
             self.minsPrev = mins
