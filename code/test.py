@@ -1,3 +1,4 @@
+from neopixel import *
 import LEDUtil
 
 LED = LEDUtil.LEDStrip()
