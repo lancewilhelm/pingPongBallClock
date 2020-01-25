@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Ping Pong Clock</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/style.css') }}"/>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,900" rel="stylesheet">
+  <style>
+  </style>
+</head>
+  <body>
+    <div class="jumbotron text-center">
+      <h1>PING PONG CLOCK</h1>
+    </div>
+    <div class="container-fluid text-center">
+      <div class="row">
+        <div class="col-sm">
+          <button type="button" class="btn btn-block btn-green" onclick="setGatesGreen()"></button>
+        </div>
+        <div class="col-sm">
+          <button type="button" class="btn btn-block btn-red" onclick="setGatesRed()"></button>
+        </div>
+        <div class="col-sm">
+          <button type="button" class="btn btn-block btn-blue" onclick="setGatesBlue()"></button>
+        </div>
+        <div class="col-sm">
+          <button type="button" class="btn btn-block btn-yellow" onclick="setGatesYellow()"></button>
+        </div>
+        <div class="col-sm">
+          <button type="button" class="btn btn-block btn-white" onclick="setGatesWhite()"></button>
+        </div>
+      </div>
+<hr>
+      <div class="row">
+        <div class="col-sm">
+          <div class="dropdown">
+            <button class="btn dropdown-toggle btn-lg btn-danger" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              PROGRAMS
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <button class="dropdown-item text-center" type="button" onclick="setAllGateColors('rainbow')">RAINBOW</button>
+            <button class="dropdown-item text-center" type="button" onclick="setAllGateColors('pacman')">PACMAN</button>
+            <button class="dropdown-item text-center" type="button" onclick="setAllGateColors('chasing')">CHASING</button>
+            <button class="dropdown-item text-center" type="button" onclick="setAllGateColors('breathing')">BREATHING</button>
+            </div>
+        </div>
+        </div>
+        <div class="col-sm">
+            <div class="color-picker">
+              <div class="sliders">
+                <div class="slide-container">
+                  <input class="red-slider short-slider" type="range" id="rangeinput" value="250" max="255" onchange="setRgb()" oninput="setRgb()" />
+                </div>
+                <div class="slide-container">
+                  <input class="green-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setRgb()" oninput="setRgb()" />
+                </div>
+                <div class="slide-container">
+                  <input class="blue-slider short-slider" type="range" id="rangeinput" value="0" max="255" oninput="setRgb()" onchange="setRgb()" />
+                </div>
+              </div>
+              <div id="color-preview" class="color-preview"></div>
+            </div>
+            <button id="sendColorBtn" type="button" class="btn btn-white" onclick="setAllGateColors('custom')">SEND COLOR</button>
+        </div>
+      </div>
+<hr>
+      <div class="row">
+        <div class="col">
+            <button id="updateBtn" type="button" class="btn btn-white">UPDATE GATES</button>
+            <input id="branchInput" class="form-control form-control-lg" type="text" placeholder="branch">
+        </div>
+        <div class="col">
+            <button type="button" class="btn btn-white" onclick="getGateList()">LIST GATES</button>
+            <div class="gates-list" id="gates-list"></div>
+        </div>
+        <!-- Update Modal -->
+        <div id="updateModal" class="modal">
+          <!-- Update Modal content -->
+          <div class="modal-content">
+            <div class="row">
+                <div class="col">
+                    <span class="close" id="updateSpan">&times;</span>
+                    <p>ARE YOU SURE, BRO?</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="yes btn btn-red">YES</button>
+                </div>
+                <div class="col">
+                    <button type="button" class="no btn btn-red">NO</button>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div id="branchAlertModal" class="modal">
+          <!-- Update Modal content -->
+          <div class="modal-content">
+            <div class="row">
+                <div class="col">
+                    <span class="close" id="branchAlertSpan">&times;</span>
+                    <p>YOU MUST SPECIFY A BRANCH...TRY AGAIN</p>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+<hr>
+      <div class="row">
+          <div class="col">
+              <button id="powerBtn" type="button" class="btn btn-red">POWER GATES</button>
+          </div>
+          <!-- Power Modal -->
+          <div id="powerModal" class="modal">
+            <!-- Power Modal content -->
+            <div class="modal-content">
+              <div class="row">
+                  <div class="col">
+                      <span class="close" id="powerSpan">&times;</span>
+                      <p>ARE YOU SURE, BRO?</p>
+                  </div>
+              </div>
+              <div class="row">
+                  <div class="col">
+                      <button id="rebootBtn" type="button" class="btn btn-red">REBOOT</button>
+                  </div>
+                  <div class="col">
+                      <button id="shutdownBtn" type="button" class="btn btn-red">SHUTDOWN</button>
+                  </div>
+              </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static',filename='js/script.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  </body>
+</html>

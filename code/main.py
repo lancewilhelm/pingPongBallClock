@@ -1,3 +1,4 @@
+from flask import Flask, request, render_template
 from neopixel import *
 import LEDUtil
 import time
@@ -10,6 +11,15 @@ colonLit = False
 
 # Initialize the LED class, start up the LED strip
 LED = LEDUtil.LEDStrip()
+
+#Setup the flask object and get it going
+app = Flask(__name__)
+
+@app.route("/", methods=['GET'])
+def index():
+    return render_template('index.html')
+
+app.run(host='0.0.0.0', port=80, debug=True)
 
 while(True):
     # Write the BG. Will not overwrite text per the function
