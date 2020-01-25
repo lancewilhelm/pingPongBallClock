@@ -35,8 +35,8 @@ while(True):
             LED.writeBall(8,2,Color(125,125,125),True)
             LED.strip.show()
         else: 
-            LED.writeBall(8,4,bgcolor,False)
-            LED.writeBall(8,2,bgcolor,False)
+            LED.writeBall(8,4,Color(125,125,125),False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
+            LED.writeBall(8,2,Color(125,125,125),False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
             LED.strip.show()
 
         secsPrev = secs
