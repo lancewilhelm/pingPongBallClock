@@ -51,14 +51,10 @@ class LEDStrip:
             self.strip.setPixelColor(i*2, Color(0,0,0))
         self.strip.show()
 
-    def customColor(self,color):
-        red = color[0]
-        green = color[1]
-        blue = color[2]
-        stripColor = Color(red,green,blue)
+    def colorFill(self,color):
         for i in range(7):
             for j in range(20):
-                self.writeBall(j,i,stripColor)
+                self.writeBall(j,i,color)
 
     def chasing(self):
         #clearPixels(strip)
@@ -194,7 +190,7 @@ class LEDStrip:
     def clock(self):
         # Write the Initial BG
         bgColor = Color(255,0,0)
-        self.customColor(bgColor)
+        self.colorFill(bgColor)
 
         # Get the current local time and parse it out to usable variables
         t = time.localtime()
