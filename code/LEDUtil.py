@@ -29,30 +29,41 @@ LED_STRIP      = ws.WS2811_STRIP_GRB   # Strip type and colour ordering
 
 class LEDStrip:
     def __init__(self):
-        self.strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
         # Intialize the library (must be called once before other functions).
-        self.numBalls = 128
+        self.strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
         self.strip.begin()
+
+        self.numBalls = 128
+        self.numRows = 7
+        self.numCols = 20
         self.animationFrame = 0
         self.animationEnd = 1
 
-    def writeBall(self,x,y,color):
+        # Set up the ball objects
+        self.setupBalls()
+
+    def setupBalls(self):
+        for y in range(self.numRows):
+            for x in range(self.numCols):
+                ball[y][x] = Ball([y,x])    #passes [row,col]
+
+    def writeBall(self,col,row,color):
         # Do not proceed if bad coordinates (could maybe replace with try/catch)
-        if x < 0 or x >= 20 or y < 0 or y >= 7:
+        if col < 0 or col >= 20 or row < 0 or row >= 7:
             return
 
         # If the color is different than what the buffer has stored, write it and show it
-        if buffer[y][x] != color:
+        if buffer[row][col] != color:
             self.strip.setPixelColor((row[y][x])*2,color)
-            buffer[y][x] = color
+            buffer[row][col] = color
 
-    def writeChar(self,x,y,char,bgcolor,color=Color(125,125,125),):
-        for j in range(len(slanted[char])):
-            for i in range(len(slanted[char][-(j+1)])): #Using -j to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
-                if slanted[char][-(j+1)][i]:
-                    self.writeBall(x+i,y+j,color)
+    def writeChar(self,col,row,char,bgcolor,color=Color(125,125,125),):
+        for y in range(len(slanted[char])):
+            for x in range(len(slanted[char][-(y+1)])): #Using -j to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
+                if slanted[char][-(y+1)][x]:
+                    self.writeBall(col+x,row+y,color)
                 else:
-                    self.writeBall(x+i,y+j,bgcolor)
+                    self.writeBall(col+x,row+y,bgcolor)
         self.strip.show()
 
     def updateFrame(self, animationEnd):
@@ -63,9 +74,9 @@ class LEDStrip:
         return self.animationFrame
 
     def colorFill(self,color):
-        for i in range(7):
-            for j in range(20):
-                self.writeBall(j,i,color)
+        for y in range(self.numRows):
+            for x in range(self.numCols):
+                self.writeBall(x,y,color)
         self.strip.show()
 
     def wheel(self,pos):
@@ -96,42 +107,3 @@ class LEDStrip:
             self.strip.setPixelColor(i*2, self.wheel((((i*2)/(self.numBalls*2))+j) & 255))
         self.strip.show()
         time.sleep(wait_ms/1000.0)
-
-    def clock(self):
-        # Write the Initial BG
-        bgcolor = Color(255,0,0)
-
-        # Get the current local time and parse it out to usable variables
-        t = time.localtime()
-        hours = t.tm_hour
-        mins = t.tm_min
-        if hours > 12:
-            hours -= 12
-        
-        hoursStr = str(hours)
-        minsStr = str(mins)
-
-        if mins != self.minsPrev:    
-            # Write the BG
-
-            # Write the colon in the middle
-            self.writeBall(8,4,Color(125,125,125))
-            self.writeBall(8,2,Color(125,125,125))
-            self.strip.show()
-
-            # Write the actual numerals
-            if hours < 10:
-                # self.writeChar(1,1,0)
-                self.writeChar(4,1,int(hoursStr[0]),bgcolor)
-            else:
-                self.writeChar(0,1,int(hoursStr[0]),bgcolor)
-                self.writeChar(4,1,int(hoursStr[1]),bgcolor)
-
-            if mins < 10:
-                self.writeChar(10,1,0,bgcolor)
-                self.writeChar(14,1,int(minsStr[0]),bgcolor)
-            else:
-                self.writeChar(10,1,int(minsStr[0]),bgcolor)
-                self.writeChar(14,1,int(minsStr[1]),bgcolor)
-
-            self.minsPrev = mins

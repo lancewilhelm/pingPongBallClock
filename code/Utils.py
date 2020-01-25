@@ -11,11 +11,12 @@ row = [
 [9,10,23,24,37,38,51,52,65,66,79,80,93,94,107,108,121,999,999,999]      #6
 ]
 
-class ball:
-    def __init__(self, ledNum):
-        self.ledNum = ledNum
-        self.text = False
-        self.color = Color(0,0,0)
+class Ball:
+    def __init__(self, location):   #location is a list of two variables, [row, col]
+        self.location = location    #[row,col]
+        self.ledNum = row[self.location[0]][self.location[1]]   #[row,col]
+        self.text = False           #this is used to determine whether the ball is being used for text display or not
+        self.color = Color(0,0,0)   #current ball color
 
 # Buffer
 buffer = [                          # This is tricky and must be defined this way. I'm creating 7 instances of a list that contains 20 instances of Color(0,0,0). They must all be separately defined
