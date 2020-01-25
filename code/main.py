@@ -17,8 +17,21 @@ LED = LEDUtil.LEDStrip()
 app = Flask(__name__)
 
 @app.route("/", methods=['GET'])
-def index():
-    return render_template('index.html')
+    def index():
+        return render_template('index.html')
+
+@app.route("/api/color", methods=['POST'])
+    def setBGColor():
+        # Read the values from the POST
+        program = request.form['color']
+        red = int(request.form['red'])
+        green = int(request.form['green'])
+        blue = int(request.form['blue'])
+        
+        # Change the bg color accordingly
+        LED.bgColor = Color(red,green,blue)
+        return ""
+
 
 def clock():
     global hoursPrev
