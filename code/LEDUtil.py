@@ -174,6 +174,7 @@ class LEDStrip:
 
     def writeBall(self,x,y,color):
         print "writing ball..."
+        print "x: ", x, " y: ", y
         if buffer[y][x] != color:
             self.strip.setPixelColor((row[y][x])*2,color)
             buffer[y][x] = color
