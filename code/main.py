@@ -66,4 +66,4 @@ while(True):
     #         LED.writeChar(0,1,int(hoursStr[0]),bgcolor)
     #         LED.writeChar(4,1,int(hoursStr[1]),bgcolor)
     #     hoursPrev = hours
-    LED.rainbow()
+    LED.rainbowCycle()

@@ -116,7 +116,10 @@ class LEDStrip:
         """Draw rainbow that uniformly distributes itself across all pixels."""
         j = self.updateFrame(256)
 
-        for i in range(self.numBalls):
-            self.strip.setPixelColor(i*2, self.wheel((((i*2)/(self.numBalls*2))+j) & 255))
+        for x in range(self.numCols):
+            for y in range(self.numRows):
+                i = x*self.numRows + y
+                if self.balls[y][x].text == False:
+                    self.writeBall(x,y,self.wheel((((i*2)/(self.numBalls*2))+j) & 255),False)
         self.strip.show()
         time.sleep(wait_ms/1000.0)
