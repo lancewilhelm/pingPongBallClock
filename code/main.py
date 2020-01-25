@@ -6,6 +6,7 @@ import time
 hoursPrev = 99  #used for clock updating
 minsPrev = 99   #used for clock updating
 secsPrev = 99   #used for clock updating
+colonLit = False
 
 # Initialize the LED class, start up the LED strip
 LED = LEDUtil.LEDStrip()
@@ -24,19 +25,26 @@ while(True):
     # Convert 24h time to 12h time
     if hours > 12:
         hours -= 12
-    
-    # Convert the hours and mins to strings so that we can parse the individual numbers for display
-    hoursStr = str(hours)
 
-    # Check to see if the minute has changed. If they have, write the new minutes
+    # Check to see if the second has changed. If it has, changed the colonLit activation
+    if secs != secsPrev:
+        !colonLit   #flip the colonLit bool
+
+        if colonLit:
+            LED.writeBall(8,4,Color(125,125,125))
+            LED.writeBall(8,2,Color(125,125,125))
+            LED.strip.show()
+        else: 
+            LED.writeBall(8,4,Color(0,0,0))
+            LED.writeBall(8,2,Color(0,0,0))
+            LED.strip.show()
+
+        secsPrev = secs
+
+    # Check to see if the minute has changed. If it has, write the new minute
     if mins != minsPrev:    
         # Convert the mins to a string so that we can parse the individual numbers for display
         minsStr = str(mins)
-
-        # Write the colon in the middle
-        LED.writeBall(8,4,Color(125,125,125))
-        LED.writeBall(8,2,Color(125,125,125))
-        LED.strip.show()
 
         # Write the actual numerals
         if mins < 10:
@@ -47,8 +55,11 @@ while(True):
             LED.writeChar(14,1,int(minsStr[1]),bgcolor)
         minsPrev = mins
 
-    # Check to see if the hour has changed. If they have, write the new minutes
+    # Check to see if the hour has changed. If it has, write the new hour
     if hours != hoursPrev:
+        # Convert the mins to a string so that we can parse the individual numbers for display
+        hoursStr = str(hours)
+
         if hours < 10:
             LED.writeChar(4,1,int(hoursStr[0]),bgcolor)
         else:
