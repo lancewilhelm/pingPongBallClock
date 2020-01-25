@@ -11,11 +11,10 @@ colonLit = False
 # Initialize the LED class, start up the LED strip
 LED = LEDUtil.LEDStrip()
 
-# Write the Initial BG
-bgcolor = Color(255,0,0)
-LED.colorFill(bgcolor)
-
 while(True):
+    # Write the BG. Will not overwrite text per the function
+    LED.rainbowCycle()
+
     # Get the current local time and parse it out to usable variables
     t = time.localtime()
     hours = t.tm_hour
@@ -48,11 +47,11 @@ while(True):
 
         # Write the actual numerals
         if mins < 10:
-            LED.writeChar(10,1,0,bgcolor)
-            LED.writeChar(14,1,int(minsStr[0]),bgcolor)
+            LED.writeChar(10,1,0)
+            LED.writeChar(14,1,int(minsStr[0]))
         else:
-            LED.writeChar(10,1,int(minsStr[0]),bgcolor)
-            LED.writeChar(14,1,int(minsStr[1]),bgcolor)
+            LED.writeChar(10,1,int(minsStr[0]))
+            LED.writeChar(14,1,int(minsStr[1]))
         minsPrev = mins
 
     # Check to see if the hour has changed. If it has, write the new hour
@@ -61,10 +60,8 @@ while(True):
         hoursStr = str(hours)
 
         if hours < 10:
-            LED.writeChar(4,1,int(hoursStr[0]),bgcolor)
+            LED.writeChar(4,1,int(hoursStr[0]))
         else:
-            LED.writeChar(0,1,int(hoursStr[0]),bgcolor)
-            LED.writeChar(4,1,int(hoursStr[1]),bgcolor)
+            LED.writeChar(0,1,int(hoursStr[0]))
+            LED.writeChar(4,1,int(hoursStr[1]))
         hoursPrev = hours
-
-    LED.rainbowCycle()
