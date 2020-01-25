@@ -104,8 +104,11 @@ class LEDStrip:
         """Draw rainbow that fades across all pixels at once."""
         j = self.updateFrame(256)
 
-        for i in range(self.numBalls):
-            self.strip.setPixelColor(i*2, self.wheel(((i*2)+j) & 255))
+        for x in range(self.numCols):
+            for y in range(self.numRows):
+                i = x*self.numRows + y
+                if balls[y][x].text == False:
+                    self.writeBall(x,y,self.wheel(((i*2)+j) & 255),False)
         self.strip.show()
         time.sleep(wait_ms/1000.0)
 
