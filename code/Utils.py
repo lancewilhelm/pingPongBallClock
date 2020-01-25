@@ -13,7 +13,7 @@ row = [
 
 # Buffer
 bufferRow = [Color(0,0,0)] * 20
-buffer = bufferRow * 7 
+buffer = [bufferRow] * 7 
 
 # -------------------------------------------------
 # Fonts

@@ -13,8 +13,6 @@ import signal
 import sys
 import math
 
-
-
 def signal_handler(signal, frame):
     colorWipe(self.strip, Color(0,0,0))
     sys.exit(0)
@@ -174,11 +172,17 @@ class LEDStrip:
         self.strip.show()
         time.sleep(0.5)
 
+    def writeBall(self,x,y,color):
+        if buffer[y][x] != color:
+            self.strip.setPixelColor(row[y][x]*2,color)
+            buffer[y][x] = color
+
     def writeChar(self,x,y,char,color=Color(125,125,125)):
         for j in range(len(slanted[char])):
             for i in range(len(slanted[char][-(j+1)])): #Using -j to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
                 if slanted[char][-(j+1)][i]:
-                    self.strip.setPixelColor((row[y+j][x+i])*2,color)
+                    # self.strip.setPixelColor((row[y+j][x+i])*2,color)
+                    writeBall(y+j,x+i,color)
         self.strip.show()
 
     def clock(self):
