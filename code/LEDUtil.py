@@ -45,7 +45,7 @@ class LEDStrip:
     def setupBalls(self):
         for y in range(self.numRows):
             for x in range(self.numCols):
-                ball[y][x] = Ball([y,x])    #passes [row,col]
+                self.ball[y][x] = Ball([y,x])    #passes [row,col]
 
     def writeBall(self,col,row,color):
         # Do not proceed if bad coordinates (could maybe replace with try/catch)
