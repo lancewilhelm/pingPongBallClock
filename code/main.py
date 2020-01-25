@@ -1,5 +1,6 @@
 from neopixel import *
 import LEDUtil
+import time
 
 #Establish variables that will be used
 hoursPrev = 99  #used for clock updating
