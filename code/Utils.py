@@ -1,7 +1,8 @@
 from neopixel import *
 
 class ball:
-    def __init__(self):
+    def __init__(self, location):
+        self.location = location
 
 # Define the rows the grid by defining the ball numbers 
 row = [
