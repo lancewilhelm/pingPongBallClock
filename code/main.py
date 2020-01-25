@@ -4,6 +4,8 @@ from neopixel import *
 import LEDUtil
 import time
 
+print "initializing..."
+
 #Establish variables that will be used
 hoursPrev = 99  #used for clock updating
 minsPrev = 99   #used for clock updating
