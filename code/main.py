@@ -29,7 +29,10 @@ def setBGColor():
     blue = int(request.form['blue'])
     
     # Change the bg color accordingly
-    LED.bgColor = Color(red,green,blue)
+    if program == "solid":
+        LED.bgColor = ["solid", Color(red,green,blue)]
+    else:
+        LED.bgColor = ["animation", program]
     return ""
 
 
@@ -41,9 +44,13 @@ def clock():
 
     while(True):
         # Write the BG. Will not overwrite text per the function
-        LED.colorFill(LED.bgColor)
-        # LED.rainbow()
-        # LED.rainbowCycle()
+        if LED.bgColor[0] == "solid":
+            LED.colorFill(LED.bgColor[1])
+        elif LED.bgColor[0] == "animation":
+            if LED.bgColor[1] == "rainbow":
+                LED.rainbow()
+            elif LED.bgColor[1] == "rainbowCycle":
+                LED.rainbowCycle()
 
         # Get the current local time and parse it out to usable variables
         t = time.localtime()
