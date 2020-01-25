@@ -207,6 +207,8 @@ class LEDStrip:
             self.writeBall(9,4,Color(125,125,125))
             self.strip.show()
 
+            print buffer #debug
+            
             # Write the actual numerals
             if hours < 10:
                 # self.writeChar(1,1,0)
