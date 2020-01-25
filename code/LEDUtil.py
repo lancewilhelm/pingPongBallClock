@@ -67,7 +67,7 @@ class LEDStrip:
             self.balls[row][col].color = color
             self.balls[row][col].text = text
 
-    def writeChar(self,col,row,writeChar,color=Color(125,125,125)):
+    def writeChar(self,col,row,char,color=Color(125,125,125)):
         for y in range(len(slanted[char])):
             for x in range(len(slanted[char][-(y+1)])): #Using -j to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
                 if slanted[char][-(y+1)][x]:
