@@ -175,7 +175,13 @@ class LEDStrip:
     def writeBall(self,x,y,color):
         print "writing ball..."
         print "x: ", x, " y: ", y
-        if buffer[y][x] != color & 0 <= x < 19 & 0 <= y < 7:
+
+        # Do not proceed if bad coordinates (could maybe replace with try/catch)
+        if x < 0 or x >= 20 or y < 0 or y >= 7:
+            return
+
+        # If the color is different than what the buffer has stored, write it and show it
+        if buffer[y][x] != color:
             self.strip.setPixelColor((row[y][x])*2,color)
             buffer[y][x] = color
             self.strip.show()
