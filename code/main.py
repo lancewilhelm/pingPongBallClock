@@ -28,7 +28,7 @@ while(True):
 
     # Check to see if the second has changed. If it has, changed the colonLit activation
     if secs != secsPrev:
-        !colonLit   #flip the colonLit bool
+        colonLit ^= True  #flip the colonLit bool
 
         if colonLit:
             LED.writeBall(8,4,Color(125,125,125))
