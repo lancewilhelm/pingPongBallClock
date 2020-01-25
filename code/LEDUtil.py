@@ -56,7 +56,7 @@ class LEDStrip:
             for x in range(self.numCols):
                 self.balls[y][x] = Ball([y,x])    #passes [row,col]
 
-    def writeBall(self,col,row,color):
+    def writeBall(self,col,row,color,text):
         # Do not proceed if bad coordinates (could maybe replace with try/catch)
         if col < 0 or col >= 20 or row < 0 or row >= 7:
             return
@@ -65,14 +65,15 @@ class LEDStrip:
         if self.balls[row][col].color != color:
             self.strip.setPixelColor((self.balls[row][col].ledNum)*2,color)
             self.balls[row][col].color = color
+            self.balls[row][col].text = text
 
-    def writeChar(self,col,row,char,bgcolor,color=Color(125,125,125),):
+    def writeChar(self,col,row,char,bgcolor,color=Color(125,125,125)):
         for y in range(len(slanted[char])):
             for x in range(len(slanted[char][-(y+1)])): #Using -j to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
                 if slanted[char][-(y+1)][x]:
-                    self.writeBall(col+x,row+y,color)
+                    self.writeBall(col+x,row+y,color,true)
                 else:
-                    self.writeBall(col+x,row+y,bgcolor)
+                    self.writeBall(col+x,row+y,bgcolor,false)
         self.strip.show()
 
     def updateFrame(self, animationEnd):
