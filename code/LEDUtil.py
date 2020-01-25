@@ -40,7 +40,7 @@ class LEDStrip:
         self.animationEnd = 1
 
         # Set up the ball objects
-        self.ball = [[0] * 20] * 7
+        self.ball = [[0] * self.numCols] * self.numRows
         self.setupBalls()
 
     def setupBalls(self):
