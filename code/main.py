@@ -13,7 +13,7 @@ LED = LEDUtil.LEDStrip()
 
 while(True):
     # Write the BG. Will not overwrite text per the function
-    LED.rainbowCycle()
+    LED.rainbow()
 
     # Get the current local time and parse it out to usable variables
     t = time.localtime()
