@@ -56,9 +56,9 @@ class LEDStrip:
         green = color[1]
         blue = color[2]
         stripColor = Color(red,green,blue)
-        for i in range(self.numBalls):
-            self.strip.setPixelColor(i*2,stripColor)
-        self.strip.show()
+        for i in range(7):
+            for j in range(20):
+                self.writeBall(j,i,stripColor)
 
     def chasing(self):
         #clearPixels(strip)
@@ -173,9 +173,6 @@ class LEDStrip:
         time.sleep(0.5)
 
     def writeBall(self,x,y,color):
-        print "writing ball..."
-        print "x: ", x, " y: ", y
-
         # Do not proceed if bad coordinates (could maybe replace with try/catch)
         if x < 0 or x >= 20 or y < 0 or y >= 7:
             return
@@ -195,7 +192,9 @@ class LEDStrip:
         self.strip.show()
 
     def clock(self):
-        j = self.updateFrame(10)
+        # Write the Initial BG
+        bgColor = color(255,0,0)
+
 
         # Get the current local time and parse it out to usable variables
         t = time.localtime()
@@ -209,7 +208,6 @@ class LEDStrip:
 
         if mins != self.minsPrev:    
             # Write the BG
-            self.customColor([255,0,0])
 
             # Write the colon in the middle
             self.writeBall(9,4,Color(125,125,125))
