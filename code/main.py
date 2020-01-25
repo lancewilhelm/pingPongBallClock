@@ -47,11 +47,11 @@ while(True):
 
         # Write the actual numerals
         if mins < 10:
-            LED.writeChar(10,1,0)
-            LED.writeChar(14,1,int(minsStr[0]))
+            LED.writeChar(10,1,0,LED.textColor)
+            LED.writeChar(14,1,int(minsStr[0]),LED.textColor)
         else:
-            LED.writeChar(10,1,int(minsStr[0]))
-            LED.writeChar(14,1,int(minsStr[1]))
+            LED.writeChar(10,1,int(minsStr[0]),LED.textColor)
+            LED.writeChar(14,1,int(minsStr[1]),LED.textColor)
         minsPrev = mins
 
     # Check to see if the hour has changed. If it has, write the new hour
@@ -60,8 +60,8 @@ while(True):
         hoursStr = str(hours)
 
         if hours < 10:
-            LED.writeChar(4,1,int(hoursStr[0]))
+            LED.writeChar(4,1,int(hoursStr[0]),LED.textColor)
         else:
-            LED.writeChar(0,1,int(hoursStr[0]))
-            LED.writeChar(4,1,int(hoursStr[1]))
+            LED.writeChar(0,1,int(hoursStr[0]),LED.textColor)
+            LED.writeChar(4,1,int(hoursStr[1]),LED.textColor)
         hoursPrev = hours
