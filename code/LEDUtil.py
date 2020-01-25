@@ -211,7 +211,11 @@ class LEDStrip:
                 self.writeChar(1,1,int(hoursStr[0]))
                 self.writeChar(5,1,int(hoursStr[1]))
 
-            self.writeChar(11,1,int(minsStr[0]))
-            self.writeChar(15,1,int(minsStr[1]))
+            if mins < 10:
+                self.writeChar(11,1,0)
+                self.writeChar(15,1,int(minsStr[0]))
+            else:
+                self.writeChar(11,1,int(minsStr[0]))
+                self.writeChar(15,1,int(minsStr[1]))
 
             self.minsPrev = mins
