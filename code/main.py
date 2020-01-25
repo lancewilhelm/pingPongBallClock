@@ -30,12 +30,12 @@ while(True):
         colonLit ^= True  #flip the colonLit bool
 
         if colonLit:
-            LED.writeBall(8,4,Color(125,125,125),True)
-            LED.writeBall(8,2,Color(125,125,125),True)
+            LED.writeBall(8,4,LED.textColor,True)
+            LED.writeBall(8,2,LED.textColor,True)
             LED.strip.show()
         else: 
-            LED.writeBall(8,4,Color(125,125,125),False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
-            LED.writeBall(8,2,Color(125,125,125),False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
+            LED.writeBall(8,4,LED.textColor,False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
+            LED.writeBall(8,2,LED.textColor,False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
             LED.strip.show()
 
         secsPrev = secs

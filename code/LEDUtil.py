@@ -38,6 +38,7 @@ class LEDStrip:
         self.numCols = 20
         self.animationFrame = 0
         self.animationEnd = 1
+        self.textColor = Color(125,125,125)
 
         # Set up the ball objects
         self.balls = [
@@ -67,7 +68,7 @@ class LEDStrip:
             self.balls[row][col].color = color
             self.balls[row][col].text = text
 
-    def writeChar(self,col,row,char,color=Color(125,125,125)):
+    def writeChar(self,col,row,char,color=self.textColor):
         for y in range(len(slanted[char])):
             for x in range(len(slanted[char][-(y+1)])): #Using -j to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
                 if slanted[char][-(y+1)][x]:
@@ -83,10 +84,16 @@ class LEDStrip:
             self.animationFrame = 0
         return self.animationFrame
 
-    def colorFill(self,color):
-        for y in range(self.numRows):
-            for x in range(self.numCols):
-                self.writeBall(x,y,color,False)
+    def colorFill(self,color,fullwipe=False):
+        if fullwipe:
+            for y in range(self.numRows):
+                for x in range(self.numCols):
+                    self.writeBall(x,y,color,False)
+        else:
+            for y in range(self.numRows):
+                for x in range(self.numCols):
+                    if self.balls[y][x].text == False:
+                        self.writeBall(x,y,color,False)
         self.strip.show()
 
     def wheel(self,pos):
