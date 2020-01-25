@@ -35,7 +35,6 @@ def setBGColor():
         LED.bgColor = ["animation", program]
     return ""
 
-
 def clock():
     global hoursPrev
     global minsPrev
@@ -100,10 +99,10 @@ def clock():
             # Convert the mins to a string so that we can parse the individual numbers for display
             hoursStr = str(hours)
 
-            if hours < 10:
-                LED.writeChar(4,1,int(hoursStr[0]),LED.textColor)
             if hoursPrev >= 10 and hours < 10:
                 LED.writeChar(0,1,'blank',LED.textColor)
+                LED.writeChar(4,1,int(hoursStr[0]),LED.textColor)
+            elif hours < 10:
                 LED.writeChar(4,1,int(hoursStr[0]),LED.textColor)
             else:
                 LED.writeChar(0,1,int(hoursStr[0]),LED.textColor)
