@@ -193,8 +193,8 @@ class LEDStrip:
 
     def clock(self):
         # Write the Initial BG
-        bgColor = color(255,0,0)
-
+        bgColor = Color(255,0,0)
+        self.customColor(bgColor)
 
         # Get the current local time and parse it out to usable variables
         t = time.localtime()
