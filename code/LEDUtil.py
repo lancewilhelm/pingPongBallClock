@@ -203,8 +203,8 @@ class LEDStrip:
             self.customColor([255,0,0])
 
             # Write the colon in the middle
-            self.writeBall(56,Color(125,125,125))
-            self.writeBall(63,Color(125,125,125))
+            self.writeBall(9,2,Color(125,125,125))
+            self.writeBall(9,4,Color(125,125,125))
             self.strip.show()
 
             # Write the actual numerals
