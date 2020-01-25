@@ -209,8 +209,8 @@ class LEDStrip:
             self.customColor([255,0,0])
 
             # Write the colon in the middle
-            self.writeBall(9,2,Color(125,125,125))
             self.writeBall(9,4,Color(125,125,125))
+            self.writeBall(9,2,Color(125,125,125))
 
             # Write the actual numerals
             if hours < 10:
