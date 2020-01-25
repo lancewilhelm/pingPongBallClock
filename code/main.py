@@ -102,6 +102,9 @@ def clock():
 
             if hours < 10:
                 LED.writeChar(4,1,int(hoursStr[0]),LED.textColor)
+            if hoursPrev >= 10 and hours < 10:
+                LED.writeChar(0,1,'blank',LED.textColor)
+                LED.writeChar(4,1,int(hoursStr[0]),LED.textColor)
             else:
                 LED.writeChar(0,1,int(hoursStr[0]),LED.textColor)
                 LED.writeChar(4,1,int(hoursStr[1]),LED.textColor)
