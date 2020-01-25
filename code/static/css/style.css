@@ -1,0 +1,185 @@
+* {
+  font-family: 'Raleway', sans-serif;
+}
+
+h1 {
+  font-weight: 900;
+}
+
+h3 {
+  font-weight: 700;
+}
+
+.row {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.form-control {
+    margin: 10px auto;
+    text-align: center;
+}
+
+.btn-green {
+  background-color: green;
+}
+
+.btn-red {
+  background-color: red;
+}
+
+.btn-white {
+  background-color: #e0e2e5;
+}
+
+.btn-yellow {
+  background-color: yellow;
+}
+
+.btn-blue {
+  background-color: #0000ff;
+}
+
+.btn-block {
+  padding: 50px;
+}
+
+.col-sm {
+  margin 20px;
+}
+
+.jumbotron {
+  background-color: #edfcab;
+  margin-bottom: 0px;
+}
+
+.dropdown-item {
+  font-weight: 700;
+}
+
+.dropdown-toggle {
+  font-weight: 700;
+}
+
+.gates-list {
+    margin: 10px auto;
+    font-size: 20px;
+}
+
+@media(max-width: 575px) {
+    .col-sm {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/*Color Picker*/
+
+.color-picker {
+    width: fit-content;
+    margin: 10px auto;
+    background-color: #333;
+    padding: 10px 20px;
+    .sliders {
+    float: left;
+    }
+    .color-preview {
+    border-radius: 50%;
+    float: right;
+    }
+}
+
+.short-slider {
+  -webkit-appearance: none;
+  background: #d3d3d3;
+  width: 150px;
+  height: 5px;
+  opacity: 0.7;
+  border-radius: 5px;
+}
+
+.short-slider:hover {
+    opacity: 1;
+}
+
+.short-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: circle;
+    width: 15px;
+    height: 15px;
+    border-radius: 7.5px;
+    cursor: pointer;
+}
+
+.red-slider::-webkit-slider-thumb {
+    background: #ff3300;
+}
+
+.green-slider::-webkit-slider-thumb {
+    background: #33cc33;
+}
+
+.blue-slider::-webkit-slider-thumb {
+    background: #336699;
+}
+
+.sliders{
+    display: inline-block;
+}
+
+.color-preview {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    margin: 2px;
+    display: inline-block;
+}
+
+#sendColorBtn {
+    margin: 10px 0px;
+}
+
+hr {
+    margin: 0px;
+}
