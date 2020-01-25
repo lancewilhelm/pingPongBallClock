@@ -12,8 +12,7 @@ row = [
 ]
 
 # Buffer
-bufferRow = [Color(0,0,0)] * 20
-buffer = [bufferRow] * 7 
+buffer = [[Color(0,0,0)] * 20] * 7      # This is tricky and must be defined this way. I'm creating 7 instances of a list that contains 20 instances of Color(0,0,0)
 
 # -------------------------------------------------
 # Fonts
