@@ -35,8 +35,8 @@ while(True):
             LED.writeBall(8,2,Color(125,125,125))
             LED.strip.show()
         else: 
-            LED.writeBall(8,4,Color(0,0,0))
-            LED.writeBall(8,2,Color(0,0,0))
+            LED.writeBall(8,4,bgcolor)
+            LED.writeBall(8,2,bgcolor)
             LED.strip.show()
 
         secsPrev = secs
