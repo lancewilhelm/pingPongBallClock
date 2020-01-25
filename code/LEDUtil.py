@@ -182,7 +182,7 @@ class LEDStrip:
             for i in range(len(slanted[char][-(j+1)])): #Using -j to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
                 if slanted[char][-(j+1)][i]:
                     # self.strip.setPixelColor((row[y+j][x+i])*2,color)
-                    writeBall(y+j,x+i,color)
+                    self.writeBall(y+j,x+i,color)
         self.strip.show()
 
     def clock(self):
