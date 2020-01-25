@@ -5,10 +5,10 @@ import LEDUtil
 import time
 
 #Establish variables that will be used
-hoursPrev = 99  #used for clock updating
-minsPrev = 99   #used for clock updating
-secsPrev = 99   #used for clock updating
-colonLit = False
+global hoursPrev = 99  #used for clock updating
+global minsPrev = 99   #used for clock updating
+global secsPrev = 99   #used for clock updating
+global colonLit = False
 
 # Initialize the LED class, start up the LED strip
 LED = LEDUtil.LEDStrip()
