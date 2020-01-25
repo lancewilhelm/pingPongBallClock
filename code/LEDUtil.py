@@ -40,13 +40,21 @@ class LEDStrip:
         self.animationEnd = 1
 
         # Set up the ball objects
-        self.ball = [[0] * self.numCols] * self.numRows
+        self.balls = [
+            [0] * self.numCols,
+            [0] * self.numCols,
+            [0] * self.numCols,
+            [0] * self.numCols,
+            [0] * self.numCols,
+            [0] * self.numCols,
+            [0] * self.numCols,
+            ]
         self.setupBalls()
 
     def setupBalls(self):
         for y in range(self.numRows):
             for x in range(self.numCols):
-                self.ball[y][x] = Ball([y,x])    #passes [row,col]
+                self.balls[y][x] = Ball([y,x])    #passes [row,col]
 
     def writeBall(self,col,row,color):
         # Do not proceed if bad coordinates (could maybe replace with try/catch)
@@ -54,9 +62,9 @@ class LEDStrip:
             return
 
         # If the color is different than what the buffer has stored, write it and show it
-        if self.ball[row][col].color != color:
-            self.strip.setPixelColor((self.ball[row][col].ledNum)*2,color)
-            self.ball[row][col].color = color
+        if self.balls[row][col].color != color:
+            self.strip.setPixelColor((self.balls[row][col].ledNum)*2,color)
+            self.balls[row][col].color = color
 
     def writeChar(self,col,row,char,bgcolor,color=Color(125,125,125),):
         for y in range(len(slanted[char])):
