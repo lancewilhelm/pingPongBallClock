@@ -179,17 +179,18 @@ class LEDStrip:
             self.strip.setPixelColor((row[y][x])*2,color)
             buffer[y][x] = color
 
-    def writeChar(self,x,y,char,color=Color(125,125,125)):
+    def writeChar(self,x,y,char,bgcolor,color=Color(125,125,125),):
         for j in range(len(slanted[char])):
             for i in range(len(slanted[char][-(j+1)])): #Using -j to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
                 if slanted[char][-(j+1)][i]:
-                    # self.strip.setPixelColor((row[y+j][x+i])*2,color)
                     self.writeBall(x+i,y+j,color)
+                else:
+                    self.writeBall(x+i,y+j,bgcolor)
         self.strip.show()
 
     def clock(self):
         # Write the Initial BG
-        bgColor = Color(255,0,0)
+        bgcolor = Color(255,0,0)
 
         # Get the current local time and parse it out to usable variables
         t = time.localtime()
@@ -211,16 +212,16 @@ class LEDStrip:
             # Write the actual numerals
             if hours < 10:
                 # self.writeChar(1,1,0)
-                self.writeChar(5,1,int(hoursStr[0]))
+                self.writeChar(5,1,int(hoursStr[0]),bgcolor)
             else:
-                self.writeChar(1,1,int(hoursStr[0]))
-                self.writeChar(5,1,int(hoursStr[1]))
+                self.writeChar(1,1,int(hoursStr[0]),bgcolor)
+                self.writeChar(5,1,int(hoursStr[1]),bgcolor)
 
             if mins < 10:
                 self.writeChar(11,1,0)
-                self.writeChar(15,1,int(minsStr[0]))
+                self.writeChar(15,1,int(minsStr[0]),bgcolor)
             else:
-                self.writeChar(11,1,int(minsStr[0]))
-                self.writeChar(15,1,int(minsStr[1]))
+                self.writeChar(11,1,int(minsStr[0]),bgcolor)
+                self.writeChar(15,1,int(minsStr[1]),bgcolor)
 
             self.minsPrev = mins
