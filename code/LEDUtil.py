@@ -72,7 +72,7 @@ class LEDStrip:
     def writeChar(self,col,row,char,color):
         # Check for the special case of a the slanted 1 at the beginning of the hour (10,11,12 hours)
         if col == 0 and row == 1 and char == 1:
-            char = 1s
+            char = '1s'
 
         for y in range(len(slanted[char])):
             for x in range(len(slanted[char][-(y+1)])): #Using -j to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
