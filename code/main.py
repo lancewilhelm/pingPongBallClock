@@ -87,7 +87,8 @@ def clock():
             sys.exit()
 
 if __name__ == '__main__':
-    x = threading.Thread(target=clock, args=(), daemon=True)
+    x = threading.Thread(target=clock, args=())
+    x.daemon = True
     x.start()
     
     app.run(host='0.0.0.0', port=80)
