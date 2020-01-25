@@ -218,7 +218,7 @@ class LEDStrip:
                 self.writeChar(4,1,int(hoursStr[1]),bgcolor)
 
             if mins < 10:
-                self.writeChar(10,1,0)
+                self.writeChar(10,1,0,bgcolor)
                 self.writeChar(14,1,int(minsStr[0]),bgcolor)
             else:
                 self.writeChar(10,1,int(minsStr[0]),bgcolor)
