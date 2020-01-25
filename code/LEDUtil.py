@@ -27,7 +27,6 @@ LED_INVERT     = False   # True to invert the signal (when using NPN transistor 
 LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 LED_STRIP      = ws.WS2811_STRIP_GRB   # Strip type and colour ordering
 
-
 class LEDStrip:
     def __init__(self):
         self.strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
@@ -36,7 +35,25 @@ class LEDStrip:
         self.strip.begin()
         self.animationFrame = 0
         self.animationEnd = 1
-        self.minsPrev = 99  #used for clock updating
+
+    def writeBall(self,x,y,color):
+        # Do not proceed if bad coordinates (could maybe replace with try/catch)
+        if x < 0 or x >= 20 or y < 0 or y >= 7:
+            return
+
+        # If the color is different than what the buffer has stored, write it and show it
+        if buffer[y][x] != color:
+            self.strip.setPixelColor((row[y][x])*2,color)
+            buffer[y][x] = color
+
+    def writeChar(self,x,y,char,bgcolor,color=Color(125,125,125),):
+        for j in range(len(slanted[char])):
+            for i in range(len(slanted[char][-(j+1)])): #Using -j to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
+                if slanted[char][-(j+1)][i]:
+                    self.writeBall(x+i,y+j,color)
+                else:
+                    self.writeBall(x+i,y+j,bgcolor)
+        self.strip.show()
 
     def updateFrame(self, animationEnd):
         self.animationFrame += 1
@@ -45,64 +62,11 @@ class LEDStrip:
             self.animationFrame = 0
         return self.animationFrame
 
-    def clearPixels(self):
-        #print ('Clearing')
-        for i in range(self.numBalls):
-            self.strip.setPixelColor(i*2, Color(0,0,0))
-        self.strip.show()
-
     def colorFill(self,color):
         for i in range(7):
             for j in range(20):
                 self.writeBall(j,i,color)
         self.strip.show()
-
-    def chasing(self):
-        #clearPixels(strip)
-        #Purple
-        x = self.updateFrame(self.numBalls)
-        #print x
-        endPixel = x + 50
-        #purple
-        for i in range(x,endPixel):
-            self.strip.setPixelColor(i*2 % self.numBalls, Color(255,0,255))
-            #Serial.println("setting pixel colors for 50");
-
-        #green
-        for i in (x+(self.numBalls/2),endPixel+(self.numBalls/2)):
-            self.strip.setPixelColor(i*2 % self.numBalls, Color(100,255,0))
-            #Serial.println("setting pixel colors for 50");
-
-        #clear purple
-        for i in range(1,5):
-            self.strip.setPixelColor(x - i, Color(0,0,0))
-
-        #clear green
-        for i in range(1,5):
-            self.strip.setPixelColor((x+(self.numBalls/2) - i) % self.numBalls, Color(0,0,0))
-
-        self.strip.show()
-        #print ('sleep')
-        #time.sleep(0.005)
-        return self.numBalls
-
-    def colorWipe(self,color, wait_ms=50):
-        """Wipe color across display a pixel at a time."""
-        i = self.updateFrame(self.numBalls)
-        self.strip.setPixelColor(i*2, color)
-        self.strip.show()
-        time.sleep(wait_ms/1000.0)
-
-    def theaterChase(self,color, wait_ms=50, iterations=1):
-        """Movie theater light style chaser animation."""
-        for j in range(iterations):
-            for q in range(3):
-                for i in range(0, self.numBalls, 3):
-                    self.strip.setPixelColor((i+q)*2, color)
-                self.strip.show()
-                time.sleep(wait_ms/1000.0)
-                for i in range(0, self.numBalls, 3):
-                    self.strip.setPixelColor((i+q)*2, 0)
 
     def wheel(self,pos):
         """Generate rainbow colors across 0-255 positions."""
@@ -133,61 +97,6 @@ class LEDStrip:
         self.strip.show()
         time.sleep(wait_ms/1000.0)
 
-    def breathing(self):
-        x = self.updateFrame(200)
-
-        y = int(127.5*math.cos((math.pi/50)*(x-50))+127.5)
-
-        if(x < 100):
-            for j in range(self.numBalls):
-                self.strip.setPixelColor(j, Color(y,0,y))
-            self.strip.show()
-        else:
-            for j in range(self.numBalls):
-                self.strip.setPixelColor(j, Color(y/2,y,0))
-            self.strip.show()
-
-    def flashGrey(self):
-        j = self.updateFrame(100)
-
-        for i in range(self.numBalls):
-            if(j == 0):
-                self.strip.setPixelColor(i*2, Color(50,50,50))
-            if(j == 50):
-                self.strip.setPixelColor(i*2, Color(0,0,0))
-        self.strip.show()
-
-    def rowStep(self):
-        j = self.updateFrame(7)
-
-        if j == 0:
-            self.clearPixels()
-
-        for i in row[j]:
-            self.strip.setPixelColor(i*2, Color(255,0,0))
-
-        self.strip.show()
-        time.sleep(0.5)
-
-    def writeBall(self,x,y,color):
-        # Do not proceed if bad coordinates (could maybe replace with try/catch)
-        if x < 0 or x >= 20 or y < 0 or y >= 7:
-            return
-
-        # If the color is different than what the buffer has stored, write it and show it
-        if buffer[y][x] != color:
-            self.strip.setPixelColor((row[y][x])*2,color)
-            buffer[y][x] = color
-
-    def writeChar(self,x,y,char,bgcolor,color=Color(125,125,125),):
-        for j in range(len(slanted[char])):
-            for i in range(len(slanted[char][-(j+1)])): #Using -j to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
-                if slanted[char][-(j+1)][i]:
-                    self.writeBall(x+i,y+j,color)
-                else:
-                    self.writeBall(x+i,y+j,bgcolor)
-        self.strip.show()
-
     def clock(self):
         # Write the Initial BG
         bgcolor = Color(255,0,0)
@@ -208,6 +117,7 @@ class LEDStrip:
             # Write the colon in the middle
             self.writeBall(8,4,Color(125,125,125))
             self.writeBall(8,2,Color(125,125,125))
+            self.strip.show()
 
             # Write the actual numerals
             if hours < 10:

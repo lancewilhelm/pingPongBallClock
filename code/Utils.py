@@ -1,9 +1,5 @@
 from neopixel import *
 
-class ball:
-    def __init__(self, location):
-        self.location = location
-
 # Define the rows the grid by defining the ball numbers 
 row = [
 [999,999,999,3,16,17,30,31,44,45,58,59,72,73,86,87,100,101,114,115],    #0
@@ -14,6 +10,12 @@ row = [
 [8,11,22,25,36,39,50,53,64,67,78,81,92,95,106,109,120,122,999,999],     #5
 [9,10,23,24,37,38,51,52,65,66,79,80,93,94,107,108,121,999,999,999]      #6
 ]
+
+class ball:
+    def __init__(self, ledNum):
+        self.ledNum = ledNum
+        self.text = False
+        self.color = Color(0,0,0)
 
 # Buffer
 buffer = [                          # This is tricky and must be defined this way. I'm creating 7 instances of a list that contains 20 instances of Color(0,0,0). They must all be separately defined
