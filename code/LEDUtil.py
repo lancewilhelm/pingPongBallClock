@@ -173,9 +173,12 @@ class LEDStrip:
         time.sleep(0.5)
 
     def writeBall(self,x,y,color):
+        print "writing ball:"
+        print "before: ", buffer[y][x]
         if buffer[y][x] != color:
-            self.strip.setPixelColor(row[y][x]*2,color)
+            self.strip.setPixelColor((row[y][x])*2,color)
             buffer[y][x] = color
+            print "after: ", buffer[y][x]
             self.strip.show()
 
     def writeChar(self,x,y,char,color=Color(125,125,125)):
@@ -203,13 +206,12 @@ class LEDStrip:
             # Write the BG
             self.customColor([255,0,0])
 
-            print
             # Write the colon in the middle
             self.writeBall(9,2,Color(125,125,125))
             self.writeBall(9,4,Color(125,125,125))
 
-            print buffer #debug
-
+            print buffer
+            
             # Write the actual numerals
             if hours < 10:
                 # self.writeChar(1,1,0)
