@@ -3,9 +3,9 @@ function setCustomBGColor(color){
   // gateColorURL = "{{ url_for('index') }}?color="+color
   // alert("sending POST call to "+gateColorUrl);
   var xhttp = new XMLHttpRequest();
-  var red = document.querySelector('.color-picker .red-slider').value;
-  var green = document.querySelector('.color-picker .green-slider').value;
-  var blue = document.querySelector('.color-picker .blue-slider').value;
+  var red = document.querySelector('.bg-color-picker .bg-red-slider').value;
+  var green = document.querySelector('.bg-color-picker .bg-green-slider').value;
+  var blue = document.querySelector('.bg-color-picker .bg-blue-slider').value;
   // event.preventDefault();
   //xhttp.open("POST", "{{ url_for('index')}}", true);
   xhttp.open("POST", "/api/bgcolor", true);
@@ -18,9 +18,9 @@ function setCustomTextColor(color){
   // gateColorURL = "{{ url_for('index') }}?color="+color
   // alert("sending POST call to "+gateColorUrl);
   var xhttp = new XMLHttpRequest();
-  var red = document.querySelector('.color-picker .red-slider').value;
-  var green = document.querySelector('.color-picker .green-slider').value;
-  var blue = document.querySelector('.color-picker .blue-slider').value;
+  var red = document.querySelector('.text-color-picker .text-red-slider').value;
+  var green = document.querySelector('.text-color-picker .text-green-slider').value;
+  var blue = document.querySelector('.text-color-picker .text-blue-slider').value;
   // event.preventDefault();
   //xhttp.open("POST", "{{ url_for('index')}}", true);
   xhttp.open("POST", "/api/textcolor", true);
