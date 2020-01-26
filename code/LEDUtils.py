@@ -230,7 +230,7 @@ class LEDStrip:
 				# Convert the mins to a string so that we can parse the individual numbers for display
 				hoursStr = str(hours)
 
-				if hoursPrev >= 10 and hours < 10:
+				if self.hoursPrev >= 10 and hours < 10:
 					self.writeChar(1,1,'blank',self.textColor[1])
 					self.writeChar(5,1,int(hoursStr[0]),self.textColor[1])
 				elif hours < 10:
