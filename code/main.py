@@ -8,7 +8,7 @@ from neopixel import *
 
 if __name__ == '__main__':
 	# Start the flask server
-	x = threading.Thread(target=app.run, kwargs=dict(host='0.0.0.0',debug=False,use_reloader=False))
+	x = threading.Thread(target=app.run, kwargs=dict(host='0.0.0.0',port=80))
 	x.daemon = True
 	x.start()
 	
