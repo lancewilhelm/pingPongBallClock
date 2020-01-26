@@ -45,15 +45,15 @@ def setTextColor():
 	# Flask Font API
 @app.route("/api/font", methods=['POST'])
 def setFont():
-	global hoursPrev
-	global minsPrev
-	global secsPrev
-
 	# Read the values from the POST
 	font = request.form['font']
 	
 	# Assign the font variable in LED class
-	PPB.font = font
+	if font == "slanted":
+		PPB.font = slanted
+	elif font == "digits":
+		PPB.font = digits
+
 	print "changing font to", PPB.font
 
 	# Reset the background and variables to make the screen refresh completely on next loop iteration
