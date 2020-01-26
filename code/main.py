@@ -12,4 +12,5 @@ if __name__ == '__main__':
 	x.daemon = True
 	x.start()
 	
-	PPB.clock()
+	while(true):
+		PPB.clock()
