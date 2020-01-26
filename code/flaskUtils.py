@@ -51,8 +51,10 @@ def setFont():
 	# Assign the font variable in LED class
 	if font == "slanted":
 		PPB.font = slanted
+		PPB.textSpacing = 1
 	elif font == "digits":
 		PPB.font = digits
+		PPB.textSpacing = 0
 
 	print "changing font to", PPB.font
 
