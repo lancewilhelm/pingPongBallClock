@@ -13,4 +13,7 @@ if __name__ == '__main__':
 	x.start()
 	
 	# Start the clock server
-	PPB.clock()
+	y = threading.Thread(target=PPB.clock, args=())
+	y.daemon = True
+	y.start()
+	# PPB.clock()
