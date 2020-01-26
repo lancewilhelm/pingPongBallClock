@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Ping Pong Clock</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/style.css') }}"/>
+    <link rel="stylesheet" type="text/css" href= "../static/css/style.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,900" rel="stylesheet">
+    <style>
+    </style>
+</head>
+<body>
+    <div class="jumbotron text-left">
+        <h1>PING PONG CLOCK</h1>
+    </div>
+    <div class="container-fluid text-center">  
+        <div class="row no-bottom-pad">
+            <div class="col-sm text-right">
+                <h4>BG STYLE PICKER</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <button type="button" class="btn btn-block btn-green" onclick="setBGGreen()"></button>
+            </div>
+            <div class="col-sm">
+                <button type="button" class="btn btn-block btn-red" onclick="setBGRed()"></button>
+            </div>
+            <div class="col-sm">
+                <button type="button" class="btn btn-block btn-blue" onclick="setBGBlue()"></button>
+            </div>
+        </div>
+
+    <hr class="minor">
+
+    <div class="row">
+        <div class="col-sm">
+            <div class="dropdown">
+            <button class="btn dropdown-toggle btn-lg btn-danger" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                ANIMATIONS
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <button class="dropdown-item text-center" type="button" onclick="setCustomBGColor('rainbow')">RAINBOW</button>
+            <button class="dropdown-item text-center" type="button" onclick="setCustomBGColor('rainbowCycle')">RAINBOW CYCLE</button>
+            </div>
+        </div>
+        </div>
+        <div class="col-sm">
+            <b>CUSTOM COLOR:</b>
+            <div class="bg-color-picker">
+                <div class="sliders">
+                    <div class="slide-container">
+                        <input class="bg-red-slider short-slider" type="range" id="rangeinput" value="250" max="255" onchange="setBGRgb()" oninput="setBGRgb()" />
+                    </div>
+                    <div class="slide-container">
+                        <input class="bg-green-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setBGRgb()" oninput="setBGRgb()" />
+                    </div>
+                    <div class="slide-container">
+                        <input class="bg-blue-slider short-slider" type="range" id="rangeinput" value="0" max="255" oninput="setBGRgb()" onchange="setBGRgb()" />
+                    </div>
+                </div>
+                <div id="bg-color-preview" class="bg-color-preview"></div>
+            </div>
+            <button id="sendColorBtn" type="button" class="btn btn-white" onclick="setCustomBGColor('solid')">SEND BG COLOR</button>
+        </div>
+    </div>
+
+    <hr class="major">
+
+    <div class="row no-bottom-pad">
+        <div class="col-sm text-right">
+            <h4>TEXT STYLE PICKER</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <button type="button" class="btn btn-block btn-white" onclick="setTextWhite()"></button>
+        </div>
+    </div>
+
+    <hr class="minor">
+
+    <div class="row">
+        <div class="col-sm">
+            <b>CUSTOM COLOR:</b>
+            <div class="text-color-picker">
+                <div class="sliders">
+                    <div class="slide-container">
+                        <input class="text-red-slider short-slider" type="range" id="rangeinput" value="250" max="255" onchange="setTextRgb()" oninput="setTextRgb()" />
+                    </div>
+                    <div class="slide-container">
+                        <input class="text-green-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setTextRgb()" oninput="setTextRgb()" />
+                    </div>
+                    <div class="slide-container">
+                        <input class="text-blue-slider short-slider" type="range" id="rangeinput" value="0" max="255" oninput="setTextRgb()" onchange="setTextRgb()" />
+                    </div>
+                </div>
+                <div id="text-color-preview" class="text-color-preview"></div>
+            </div>
+            <button id="sendColorBtn" type="button" class="btn btn-white" onclick="setCustomTextColor('solid')">SEND TEXT COLOR</button>
+        </div>
+    </div>
+<script src="{{ url_for('static',filename='js/script.js') }}"></script>
+<script src="../static/js/script.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+</body>
+</html>
