@@ -112,6 +112,7 @@ def clock():
 
         # Check to see if the hour has changed. If it has, write the new hour
         if hours != hoursPrev:
+            print "updating hours..."
             # If it is midnight, change the clock to 12
             if hours == 0:
                 hours = 12
