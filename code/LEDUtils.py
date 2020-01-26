@@ -70,7 +70,7 @@ class PingPongBoard:
 
 	def writeChar(self,col,row,char,color,textBool=True):
 		for y in range(len(self.font[char])):
-			for x in range(len(font[char][-(y+1)])): #Using -j to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
+			for x in range(len(self.font[char][-(y+1)])): #Using -j to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
 				if self.font[char][-(y+1)][x]:
 					self.writeBall(col+x,row+y,color,textBool)
 				else:
