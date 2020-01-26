@@ -68,12 +68,12 @@ def clock():
             colonLit ^= True  #flip the colonLit bool
 
             if colonLit:
-                LED.writeBall(8,4,LED.textColor,True)
-                LED.writeBall(9,2,LED.textColor,True)
+                LED.writeBall(9,4,LED.textColor,True)
+                LED.writeBall(10,2,LED.textColor,True)
                 LED.strip.show()
             else: 
-                LED.writeBall(8,4,LED.textColor,False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
-                LED.writeBall(9,2,LED.textColor,False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
+                LED.writeBall(9,4,LED.textColor,False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
+                LED.writeBall(10,2,LED.textColor,False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
                 LED.strip.show()
 
             secsPrev = secs
@@ -102,13 +102,13 @@ def clock():
             hoursStr = str(hours)
 
             if hoursPrev >= 10 and hours < 10:
-                LED.writeChar(0,1,'blank',LED.textColor)
-                LED.writeChar(4,1,int(hoursStr[0]),LED.textColor)
+                LED.writeChar(1,1,'blank',LED.textColor)
+                LED.writeChar(5,1,int(hoursStr[0]),LED.textColor)
             elif hours < 10:
-                LED.writeChar(4,1,int(hoursStr[0]),LED.textColor)
+                LED.writeChar(5,1,int(hoursStr[0]),LED.textColor)
             else:
-                LED.writeChar(0,1,int(hoursStr[0]),LED.textColor)
-                LED.writeChar(4,1,int(hoursStr[1]),LED.textColor)
+                LED.writeChar(1,1,int(hoursStr[0]),LED.textColor)
+                LED.writeChar(5,1,int(hoursStr[1]),LED.textColor)
             hoursPrev = hours
 
 if __name__ == '__main__':
