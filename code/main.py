@@ -42,8 +42,6 @@ def setBGColor():
 # Flask Text Color API
 @app.route("/api/textcolor", methods=['POST'])
 def setTextColor():
-	# Flip the bool so the whole programs knows we changed text color
-
 	# Read the values from the POST
 	program = request.form['color']
 	red = int(request.form['red'])
@@ -56,6 +54,17 @@ def setTextColor():
 		LED.changeTextColor(LED.textColor[1])
 	else:
 		LED.textColor = ["animation", program]
+	return ""
+
+	# Flask Font API
+@app.route("/api/font", methods=['POST'])
+def setFont():
+	# Read the values from the POST
+	font = request.form['font']
+	
+	# Assign the font variable in LED class
+	LED.font = font
+	print "changing font to ", LED.font
 	return ""
 
 def clock():

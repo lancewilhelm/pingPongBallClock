@@ -42,6 +42,7 @@ class LEDStrip:
 
 		self.textColor = ["solid", Color(255,255,255)]
 		self.textColorChange = False
+		self.font = "digits"
 
 		self.bgColor = ["solid", Color(0,0,255)]
 		self.bgColorChange = False
