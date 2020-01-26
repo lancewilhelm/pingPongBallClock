@@ -134,6 +134,6 @@ class LEDStrip:
                 if self.balls[y][x].text == False:
                     self.writeBall(x,y,self.wheel((((i*2)/(self.numBalls*2))+j) & 255),False)
                 else:
-                    self.writeBall(x,y,Color(255,255,255) - (self.wheel((((i*2)/(self.numBalls*2))+j) & 255)),True)
+                    self.writeBall(x,y,self.wheel((((i*2)/(self.numBalls*2))+j) & 0),True)
         self.strip.show()
         time.sleep(wait_ms/1000.0)
