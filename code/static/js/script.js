@@ -1,4 +1,4 @@
-function setCustomColor(color){
+function setCustomBGColor(color){
   origin = window.location.origin
   // gateColorURL = "{{ url_for('index') }}?color="+color
   // alert("sending POST call to "+gateColorUrl);
@@ -8,12 +8,27 @@ function setCustomColor(color){
   var blue = document.querySelector('.color-picker .blue-slider').value;
   // event.preventDefault();
   //xhttp.open("POST", "{{ url_for('index')}}", true);
-  xhttp.open("POST", "/api/color", true);
+  xhttp.open("POST", "/api/bgcolor", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("color="+color+"&red="+red+"&green="+green+"&blue="+blue);
 }
 
-function setGreen(){
+function setCustomTextColor(color){
+  origin = window.location.origin
+  // gateColorURL = "{{ url_for('index') }}?color="+color
+  // alert("sending POST call to "+gateColorUrl);
+  var xhttp = new XMLHttpRequest();
+  var red = document.querySelector('.color-picker .red-slider').value;
+  var green = document.querySelector('.color-picker .green-slider').value;
+  var blue = document.querySelector('.color-picker .blue-slider').value;
+  // event.preventDefault();
+  //xhttp.open("POST", "{{ url_for('index')}}", true);
+  xhttp.open("POST", "/api/textcolor", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("color="+color+"&red="+red+"&green="+green+"&blue="+blue);
+}
+
+function setBGGreen(){
   origin = window.location.origin
   // gateColorURL = "{{ url_for('index') }}?color="+color
   // alert("sending POST call to "+gateColorUrl);
@@ -23,12 +38,12 @@ function setGreen(){
   var blue = 0;
   // event.preventDefault();
   //xhttp.open("POST", "{{ url_for('index')}}", true);
-  xhttp.open("POST", "/api/color", true);
+  xhttp.open("POST", "/api/bgcolor", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
 }
 
-function setRed(){
+function setBGRed(){
   origin = window.location.origin
   // gateColorURL = "{{ url_for('index') }}?color="+color
   // alert("sending POST call to "+gateColorUrl);
@@ -38,12 +53,12 @@ function setRed(){
   var blue = 0;
   // event.preventDefault();
   //xhttp.open("POST", "{{ url_for('index')}}", true);
-  xhttp.open("POST", "/api/color", true);
+  xhttp.open("POST", "/api/bgcolor", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
 }
 
-function setBlue(){
+function setBGBlue(){
   origin = window.location.origin
   // gateColorURL = "{{ url_for('index') }}?color="+color
   // alert("sending POST call to "+gateColorUrl);
@@ -53,37 +68,22 @@ function setBlue(){
   var blue = 255;
   // event.preventDefault();
   //xhttp.open("POST", "{{ url_for('index')}}", true);
-  xhttp.open("POST", "/api/color", true);
+  xhttp.open("POST", "/api/bgcolor", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
 }
 
-function setYellow(){
+function setTextWhite(){
   origin = window.location.origin
   // gateColorURL = "{{ url_for('index') }}?color="+color
   // alert("sending POST call to "+gateColorUrl);
   var xhttp = new XMLHttpRequest();
   var red = 125;
   var green = 125;
-  var blue = 0;
+  var blue = 125;
   // event.preventDefault();
   //xhttp.open("POST", "{{ url_for('index')}}", true);
-  xhttp.open("POST", "/api/color", true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
-}
-
-function setWhite(){
-  origin = window.location.origin
-  // gateColorURL = "{{ url_for('index') }}?color="+color
-  // alert("sending POST call to "+gateColorUrl);
-  var xhttp = new XMLHttpRequest();
-  var red = 50;
-  var green = 50;
-  var blue = 50;
-  // event.preventDefault();
-  //xhttp.open("POST", "{{ url_for('index')}}", true);
-  xhttp.open("POST", "/api/color", true);
+  xhttp.open("POST", "/api/textcolor", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
 }
@@ -135,16 +135,6 @@ function getGateList(){
   xhttp.open("GET", "/api/server/gates", true);
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send("");
-}
-
-function gateClick(gate) {
-    origin = window.location.origin
-    var xhttp = new XMLHttpRequest();
-    var id = " element" + gate;
-    console.log(responseTextArray[gate]);
-    // xhttp.open("POST", "/api/color", true);
-    // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    // xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
 }
 
 // Get the modal
@@ -212,12 +202,21 @@ window.onclick = function(event) {
 }
 
 // Color picker
-
-function setRgb () {
-  var red = document.querySelector('.color-picker .red-slider').value;
-  var green = document.querySelector('.color-picker .green-slider').value;
-  var blue = document.querySelector('.color-picker .blue-slider').value;
+function setBGRgb () {
+  var red = document.querySelector('.bg-color-picker .bg-red-slider').value;
+  var green = document.querySelector('.bg-color-picker .bg-green-slider').value;
+  var blue = document.querySelector('.bg-color-picker .bg-blue-slider').value;
   var color = "rgb(" + red + "," + green + "," + blue + ")";
-  document.querySelector('.color-preview').style.background = color;
+  document.querySelector('.bg-color-preview').style.background = color;
 }
-  setRgb();
+  setBGRgb();
+
+  // Color picker
+function setTextRgb () {
+  var red = document.querySelector('.text-color-picker .text-red-slider').value;
+  var green = document.querySelector('.text-color-picker .text-green-slider').value;
+  var blue = document.querySelector('.text-color-picker .text-blue-slider').value;
+  var color = "rgb(" + red + "," + green + "," + blue + ")";
+  document.querySelector('.text-color-preview').style.background = color;
+}
+  setTextRgb();

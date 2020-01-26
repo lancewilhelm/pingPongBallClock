@@ -18,11 +18,13 @@ LED = LEDUtil.LEDStrip()
 #Setup the flask object and get it going
 app = Flask(__name__)
 
+# Flask Index
 @app.route("/", methods=['GET'])
 def index():
     return render_template('index.html')
 
-@app.route("/api/color", methods=['POST'])
+# Flask BG Color API
+@app.route("/api/bgcolor", methods=['POST'])
 def setBGColor():
     # Read the values from the POST
     program = request.form['color']
@@ -35,6 +37,22 @@ def setBGColor():
         LED.bgColor = ["solid", Color(red,green,blue)]
     else:
         LED.bgColor = ["animation", program]
+    return ""
+
+# Flask Text Color API
+@app.route("/api/textcolor", methods=['POST'])
+def setBGColor():
+    # Read the values from the POST
+    program = request.form['color']
+    red = int(request.form['red'])
+    green = int(request.form['green'])
+    blue = int(request.form['blue'])
+    
+    # Change the bg color accordingly
+    if program == "solid":
+        LED.textColor = ["solid", Color(red,green,blue)]
+    else:
+        LED.textColor = ["animation", program]
     return ""
 
 def clock():
@@ -68,12 +86,12 @@ def clock():
             colonLit ^= True  #flip the colonLit bool
 
             if colonLit:
-                LED.writeBall(9,4,LED.textColor,True)
-                LED.writeBall(10,2,LED.textColor,True)
+                LED.writeBall(9,4,LED.textColor[1],True)
+                LED.writeBall(10,2,LED.textColor[1],True)
                 LED.strip.show()
             else: 
-                LED.writeBall(9,4,LED.textColor,False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
-                LED.writeBall(10,2,LED.textColor,False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
+                LED.writeBall(9,4,LED.textColor[1],False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
+                LED.writeBall(10,2,LED.textColor[1],False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
                 LED.strip.show()
 
             secsPrev = secs
@@ -85,11 +103,11 @@ def clock():
 
             # Write the actual numerals
             if mins < 10:
-                LED.writeChar(11,1,0,LED.textColor)
-                LED.writeChar(15,1,int(minsStr[0]),LED.textColor)
+                LED.writeChar(11,1,0,LED.textColor[1])
+                LED.writeChar(15,1,int(minsStr[0]),LED.textColor[1])
             else:
-                LED.writeChar(11,1,int(minsStr[0]),LED.textColor)
-                LED.writeChar(15,1,int(minsStr[1]),LED.textColor)
+                LED.writeChar(11,1,int(minsStr[0]),LED.textColor[1])
+                LED.writeChar(15,1,int(minsStr[1]),LED.textColor[1])
             minsPrev = mins
 
         # Check to see if the hour has changed. If it has, write the new hour
@@ -102,13 +120,13 @@ def clock():
             hoursStr = str(hours)
 
             if hoursPrev >= 10 and hours < 10:
-                LED.writeChar(1,1,'blank',LED.textColor)
-                LED.writeChar(5,1,int(hoursStr[0]),LED.textColor)
+                LED.writeChar(1,1,'blank',LED.textColor[1])
+                LED.writeChar(5,1,int(hoursStr[0]),LED.textColor[1])
             elif hours < 10:
-                LED.writeChar(5,1,int(hoursStr[0]),LED.textColor)
+                LED.writeChar(5,1,int(hoursStr[0]),LED.textColor[1])
             else:
-                LED.writeChar(1,1,int(hoursStr[0]),LED.textColor)
-                LED.writeChar(5,1,int(hoursStr[1]),LED.textColor)
+                LED.writeChar(1,1,int(hoursStr[0]),LED.textColor[1])
+                LED.writeChar(5,1,int(hoursStr[1]),LED.textColor[1])
             hoursPrev = hours
 
 if __name__ == '__main__':

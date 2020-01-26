@@ -23,13 +23,13 @@
         </div>
         <div class="row">
             <div class="col-sm">
-                <button type="button" class="btn btn-block btn-green" onclick="setGreen()"></button>
+                <button type="button" class="btn btn-block btn-green" onclick="setBGGreen()"></button>
             </div>
             <div class="col-sm">
-                <button type="button" class="btn btn-block btn-red" onclick="setRed()"></button>
+                <button type="button" class="btn btn-block btn-red" onclick="setBGRed()"></button>
             </div>
             <div class="col-sm">
-                <button type="button" class="btn btn-block btn-blue" onclick="setBlue()"></button>
+                <button type="button" class="btn btn-block btn-blue" onclick="setBGBlue()"></button>
             </div>
         </div>
 
@@ -42,28 +42,28 @@
                 ANIMATIONS
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <button class="dropdown-item text-center" type="button" onclick="setCustomColor('rainbow')">RAINBOW</button>
-            <button class="dropdown-item text-center" type="button" onclick="setCustomColor('rainbowCycle')">RAINBOW CYCLE</button>
+            <button class="dropdown-item text-center" type="button" onclick="setCustomBGColor('rainbow')">RAINBOW</button>
+            <button class="dropdown-item text-center" type="button" onclick="setCustomBGColor('rainbowCycle')">RAINBOW CYCLE</button>
             </div>
         </div>
         </div>
         <div class="col-sm">
             <b>CUSTOM:</b>
-            <div class="color-picker">
+            <div class="bg-color-picker">
                 <div class="sliders">
                     <div class="slide-container">
-                        <input class="red-slider short-slider" type="range" id="rangeinput" value="250" max="255" onchange="setRgb()" oninput="setRgb()" />
+                        <input class="bg-red-slider short-slider" type="range" id="rangeinput" value="250" max="255" onchange="setBGRgb()" oninput="setBGRgb()" />
                     </div>
                     <div class="slide-container">
-                        <input class="green-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setRgb()" oninput="setRgb()" />
+                        <input class="bg-green-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setBGRgb()" oninput="setBGRgb()" />
                     </div>
                     <div class="slide-container">
-                        <input class="blue-slider short-slider" type="range" id="rangeinput" value="0" max="255" oninput="setRgb()" onchange="setRgb()" />
+                        <input class="bg-blue-slider short-slider" type="range" id="rangeinput" value="0" max="255" oninput="setBGRgb()" onchange="setBGRgb()" />
                     </div>
                 </div>
-                <div id="color-preview" class="color-preview"></div>
+                <div id="bg-color-preview" class="bg-color-preview"></div>
             </div>
-            <button id="sendColorBtn" type="button" class="btn btn-white" onclick="setCustomColor('solid')">SEND COLOR</button>
+            <button id="sendColorBtn" type="button" class="btn btn-white" onclick="setCustomBGColor('solid')">SEND BG COLOR</button>
         </div>
     </div>
 
@@ -76,22 +76,30 @@
     </div>
     <div class="row">
         <div class="col-sm">
+            <button type="button" class="btn btn-block btn-white" onclick="setTextWhite()"></button>
+        </div>
+    </div>
+
+    <hr class="minor">
+
+    <div class="row">
+        <div class="col-sm">
             <b>CUSTOM:</b>
-            <div class="color-picker">
+            <div class="text-color-picker">
                 <div class="sliders">
                     <div class="slide-container">
-                        <input class="red-slider short-slider" type="range" id="rangeinput" value="250" max="255" onchange="setRgb()" oninput="setRgb()" />
+                        <input class="text-red-slider short-slider" type="range" id="rangeinput" value="250" max="255" onchange="setTextRgb()" oninput="setTextRgb()" />
                     </div>
                     <div class="slide-container">
-                        <input class="green-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setRgb()" oninput="setRgb()" />
+                        <input class="text-green-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setTextRgb()" oninput="setTextRgb()" />
                     </div>
                     <div class="slide-container">
-                        <input class="blue-slider short-slider" type="range" id="rangeinput" value="0" max="255" oninput="setRgb()" onchange="setRgb()" />
+                        <input class="text-blue-slider short-slider" type="range" id="rangeinput" value="0" max="255" oninput="setTextRgb()" onchange="setTextRgb()" />
                     </div>
                 </div>
-                <div id="color-preview" class="color-preview"></div>
+                <div id="text-color-preview" class="text-color-preview"></div>
             </div>
-            <button id="sendColorBtn" type="button" class="btn btn-white" onclick="setCustomColor('solid')">SEND COLOR</button>
+            <button id="sendColorBtn" type="button" class="btn btn-white" onclick="setCustomTextColor('solid')">SEND TEXT COLOR</button>
         </div>
     </div>
 <script src="{{ url_for('static',filename='js/script.js') }}"></script>
