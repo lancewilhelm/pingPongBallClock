@@ -59,6 +59,10 @@ def setTextColor():
 	# Flask Font API
 @app.route("/api/font", methods=['POST'])
 def setFont():
+	global hoursPrev
+	global minsPrev
+	global secsPrev
+	
 	# Read the values from the POST
 	font = request.form['font']
 	
