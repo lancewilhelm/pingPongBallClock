@@ -41,7 +41,7 @@ def setBGColor():
 
 # Flask Text Color API
 @app.route("/api/textcolor", methods=['POST'])
-def setBGColor():
+def setTextColor():
     # Read the values from the POST
     program = request.form['color']
     red = int(request.form['red'])
