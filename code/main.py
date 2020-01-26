@@ -6,14 +6,6 @@ from flaskUtils import app
 from LEDUtils import PPB
 from neopixel import *
 
-print "initializing..."
-
-#Establish variables that will be used
-hoursPrev = 99  #used for clock updating
-minsPrev = 99   #used for clock updating
-secsPrev = 99   #used for clock updating
-colonLit = False
-
 if __name__ == '__main__':
 	# Start the clock function
 	x = threading.Thread(target=PPB.clock, args=())
