@@ -1,8 +1,8 @@
 from flask import Flask
 import threading
 from neopixel import *
-from utils.LEDUtils import *
-from utils.flaskUtils import app
+from LEDUtils import *
+from flaskUtils import app
 import time
 
 print "initializing..."
