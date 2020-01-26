@@ -1,5 +1,6 @@
 * {
 	font-family: 'Raleway', sans-serif;
+	color: #302686
 }
 
 h1 {
@@ -8,6 +9,11 @@ h1 {
 
 h3 {
 	font-weight: 700;
+}
+
+h4 {
+	font-weight: 600;
+	color: #302686;
 }
 
 .row {
@@ -29,7 +35,7 @@ h3 {
 }
 
 .btn-white {
-	background-color: #e0e2e5;
+	background-color: #ffffff;
 }
 
 .btn-yellow {
@@ -40,12 +46,17 @@ h3 {
 	background-color: #0000ff;
 }
 
+.btn-purple {
+	background-color: #302686;
+	color: white;
+}
+
 .btn-block {
 	padding: 50px;
 }
 
 .col-sm {
-	margin: 20px;
+	margin: 00px;
 }
 
 .jumbotron {
@@ -123,15 +134,17 @@ h3 {
 .bg-color-picker {
 	width: fit-content;
 	margin: 10px auto;
-	background-color: #333;
+	background-color: #302686;
 	padding: 10px 20px;
+	border-radius: 10px;
 }
 
 .text-color-picker {
 	width: fit-content;
 	margin: 10px auto;
-	background-color: #333;
+	background-color: #302686;
 	padding: 10px 20px;
+	border-radius: 10px;
 }
 .short-slider {
 	-webkit-appearance: none;
@@ -172,6 +185,7 @@ h3 {
 	height: 50px;
 	border-radius: 25px;
 	margin: 2px;
+	margin-left: 15px;
 	display: inline-block;
 }
 
@@ -192,11 +206,13 @@ width: 50px;
 height: 50px;
 border-radius: 25px;
 margin: 2px;
+margin-left: 15px;
 display: inline-block;
 }
 
 .sliders{
 	display: inline-block;
+	padding-bottom: 5px;
 }
 
 #sendColorBtn {
@@ -204,17 +220,25 @@ display: inline-block;
 }
 
 hr.minor {
-	border-top: 1px dashed lightgray;
+	border-top: 1px dashed #302686;
 	margin: 0px;
 }
 
 hr.major {
-	border-top: 2px solid lightgray;
-	margin-top: 10px;
-	margin-bottom: 10px;
-}
+	border-top: 2px solid #302686;
+	margin-top: 0px;
+	margin-bottom: 0px;
 
+}
 
 .no-bottom-pad {
 	padding-bottom: 0px;
+}
+
+.bg {
+	background-color: #dfe0ff;
+}
+
+.bg-header {
+	background-color: #d0d2fd;
 }
