@@ -80,11 +80,12 @@ class PingPongBoard:
 		self.strip.show()
 
 	def writeString(self,col,row,string,color,textBool=True):
-		distanceToNext = 0 # For the first character it does not matter
+		x = col # For the first character it is the col
 		for i in range(len(string)):
-			print (col + i*distanceToNext), " ", row
-			self.writeChar((col + i*distanceToNext),row,string[i],color)
+			print x, " ", row
+			self.writeChar(x,row,string[i],color)
 			distanceToNext = len(self.font[ord(string[i])][0]) + self.textSpacing
+			x += distanceToNext
 
 	def updateFrame(self, animationEnd):
 		self.animationFrame += 1

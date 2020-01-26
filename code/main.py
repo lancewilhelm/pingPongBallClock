@@ -13,4 +13,4 @@ if __name__ == '__main__':
 	x.start()
 	
 	while(True):
-		PPB.clock([1,1])
+		PPB.clock([0,1])
