@@ -1,7 +1,7 @@
 from flask import Flask
 import threading
 from neopixel import *
-from utils import LEDUtils
+from utils.LEDUtils import *
 from utils.flaskUtils import app
 import time
 
