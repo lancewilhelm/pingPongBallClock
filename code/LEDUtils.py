@@ -81,8 +81,8 @@ class PingPongBoard:
 
 	def writeString(self,col,row,string,color,textBool=True):
 		for i in range(len(string)):
-			distanceToNext = len(self.font[ord(string[i])][0]) + self.textSpacing
 			self.writeChar((col + i*distanceToNext),row,string[i],color)
+			distanceToNext = len(self.font[ord(string[i])][0]) + self.textSpacing
 
 	def updateFrame(self, animationEnd):
 		self.animationFrame += 1
