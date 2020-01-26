@@ -72,17 +72,16 @@ class PingPongBoard:
 		# Convert the char to the ASCII value
 		char = ord(char)
 		for y in range(len(self.font[char])):
-			for x in range(len(self.font[char][-(y+1)])): #Using -j to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
+			for x in range(len(self.font[char][-(y+1)])): #Using -y to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
 				if self.font[char][-(y+1)][x]:
 					self.writeBall(col+x,row+y,color,textBool)
 				else:
-					self.writeBall(col+x,row+y,self.balls[row+y][col+x].color,False)
+					self.writeBall(col+x,row+y,self.balls[row+y][col+x].color,False)	#write the text to false so that it will be overwritten
 		self.strip.show()
 
 	def writeString(self,col,row,string,color,textBool=True):
 		x = col # For the first character it is the col
 		for i in range(len(string)):
-			print x, " ", row
 			self.writeChar(x,row,string[i],color)
 			distanceToNext = len(self.font[ord(string[i])][0]) + self.textSpacing
 			x += distanceToNext
@@ -187,7 +186,6 @@ class PingPongBoard:
 
 		# Concatenate the strings with a colon in the middle
 		timeStr = hourStr + ':' + minStr
-		print timeStr	#debugging
 
 		# Check to see if the minute has changed. If it has, write the the new time
 		if mins != self.minsPrev:    
