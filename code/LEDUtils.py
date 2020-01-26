@@ -187,7 +187,7 @@ class PingPongBoard:
 		# Check to see if the minute has changed. If it has, write the the new time
 		if mins != self.minsPrev:    
 			# Write the string
-			writeString(origin[0],origin[1],timeStr,PPB.textColor[1])
+			self.writeString(origin[0],origin[1],timeStr,PPB.textColor[1])
 
 			self.minsPrev = mins
 
