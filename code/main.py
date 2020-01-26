@@ -42,6 +42,9 @@ def setBGColor():
 # Flask Text Color API
 @app.route("/api/textcolor", methods=['POST'])
 def setTextColor():
+    # Flip the bool so the whole programs knows we changed text color
+    LED.textColorChange = True
+
     # Read the values from the POST
     program = request.form['color']
     red = int(request.form['red'])
@@ -86,7 +89,7 @@ def clock():
             hours = 12
 
         # Check to see if the second has changed. If it has, changed the colonLit activation
-        if secs != secsPrev:
+        if secs != secsPrev or LED.textColorChange:
             colonLit ^= True  #flip the colonLit bool
 
             if colonLit:
@@ -101,7 +104,7 @@ def clock():
             secsPrev = secs
 
         # Check to see if the minute has changed. If it has, write the new minute
-        if mins != minsPrev:    
+        if mins != minsPrev or LED.textColorChange:    
             # Convert the mins to a string so that we can parse the individual numbers for display
             minsStr = str(mins)
 
@@ -115,8 +118,7 @@ def clock():
             minsPrev = mins
 
         # Check to see if the hour has changed. If it has, write the new hour
-        if hours != hoursPrev:
-            print hours, " ", hoursPrev
+        if hours != hoursPrev or LED.textColorChange:
             
             # Convert the mins to a string so that we can parse the individual numbers for display
             hoursStr = str(hours)
@@ -130,6 +132,9 @@ def clock():
                 LED.writeChar(1,1,int(hoursStr[0]),LED.textColor[1])
                 LED.writeChar(5,1,int(hoursStr[1]),LED.textColor[1])
             hoursPrev = hours
+
+        # If there was a chnaged text color, indicate that we have taken care of it
+        LED.textColorChange = False
 
 if __name__ == '__main__':
     x = threading.Thread(target=clock, args=())

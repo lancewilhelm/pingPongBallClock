@@ -36,10 +36,15 @@ class LEDStrip:
         self.numBalls = 128
         self.numRows = 7
         self.numCols = 20
+        
         self.animationFrame = 0
         self.animationEnd = 1
+
         self.textColor = ["solid", Color(125,125,125)]
+        self.textColorChange = False
+
         self.bgColor = ["solid", Color(0,125,0)]
+        self.bgColorChange = False
 
         # Set up the ball objects
         self.balls = [
