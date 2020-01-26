@@ -58,8 +58,8 @@ def setFont():
 
 	# Reset the background and variables to make the screen refresh completely on next loop iteration
 	PPB.colorFill(PPB.bgColor[1], True)		# True boolean to make sure that the whole screen wipes including text
-	secsPrev = 99
-	minsPrev = 99
-	hoursPrev = 99
+	PPB.secsPrev = 99
+	PPB.minsPrev = 99
+	PPB.hoursPrev = 99
 	return ""
 
