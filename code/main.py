@@ -67,7 +67,7 @@ def setFont():
 	print "changing font to", LED.font
 
 	# Reset the background and variables to make the screen refresh completely on next loop iteration
-	LED.colorFill(LED.bgColor[1])
+	LED.colorFill(LED.bgColor[1], True)		# True boolean to make sure that the whole screen wipes including text
 	secsPrev = 99
 	minsPrev = 99
 	hoursPrev = 99
