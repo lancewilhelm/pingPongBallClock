@@ -13,10 +13,6 @@ import signal
 import sys
 import math
 
-def signal_handler(signal, frame):
-	colorWipe(self.strip, Color(0,0,0))
-	sys.exit(0)
-
 # LED strip configuration:
 LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
 LED_COUNT      = 256
