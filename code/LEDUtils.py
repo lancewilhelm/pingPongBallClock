@@ -195,9 +195,9 @@ class LEDStrip:
 
 			# Check to see if the second has changed. If it has, changed the colonLit activation
 			if secs != self.secsPrev:
-				colonLit ^= True  #flip the colonLit bool
+				self.colonLit ^= True  #flip the colonLit bool
 
-				if colonLit:
+				if self.colonLit:
 					self.writeChar(9,2,':',self.textColor[1])
 					# self.writeBall(9,4,self.textColor[1],True)
 					# self.writeBall(10,2,self.textColor[1],True)
