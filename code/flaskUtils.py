@@ -20,9 +20,9 @@ def setBGColor():
 	
 	# Change the bg color accordingly
 	if program == "solid":
-		LED.bgColor = ["solid", Color(red,green,blue)]
+		PPB.bgColor = ["solid", Color(red,green,blue)]
 	else:
-		LED.bgColor = ["animation", program]
+		PPB.bgColor = ["animation", program]
 	return ""
 
 # Flask Text Color API
@@ -36,10 +36,10 @@ def setTextColor():
 	
 	# Change the bg color accordingly
 	if program == "solid":
-		LED.textColor = ["solid", Color(red,green,blue)]
-		LED.changeTextColor(LED.textColor[1])
+		PPB.textColor = ["solid", Color(red,green,blue)]
+		PPB.changeTextColor(PPB.textColor[1])
 	else:
-		LED.textColor = ["animation", program]
+		PPB.textColor = ["animation", program]
 	return ""
 
 	# Flask Font API
@@ -53,11 +53,11 @@ def setFont():
 	font = request.form['font']
 	
 	# Assign the font variable in LED class
-	LED.font = font
-	print "changing font to", LED.font
+	PPB.font = font
+	print "changing font to", PPB.font
 
 	# Reset the background and variables to make the screen refresh completely on next loop iteration
-	LED.colorFill(LED.bgColor[1], True)		# True boolean to make sure that the whole screen wipes including text
+	PPB.colorFill(PPB.bgColor[1], True)		# True boolean to make sure that the whole screen wipes including text
 	secsPrev = 99
 	minsPrev = 99
 	hoursPrev = 99

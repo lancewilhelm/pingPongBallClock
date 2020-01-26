@@ -1,9 +1,9 @@
 import threading
 import time
 
-import LEDUtils
 from flask import Flask
 from flaskUtils import app
+from LEDUtils import PPB
 from neopixel import *
 
 print "initializing..."
@@ -15,10 +15,8 @@ secsPrev = 99   #used for clock updating
 colonLit = False
 
 if __name__ == '__main__':
-	# Initialize the LEDs
-	LED = LEDUtils.LEDStrip()
-
-	x = threading.Thread(target=LED.clock, args=())
+	# Start the clock function
+	x = threading.Thread(target=PPB.clock, args=())
 	x.daemon = True
 	x.start()
 	
