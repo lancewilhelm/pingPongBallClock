@@ -82,6 +82,7 @@ class PingPongBoard:
 	def writeString(self,col,row,string,color,textBool=True):
 		distanceToNext = len(self.font[ord('0')][0]) + self.textSpacing
 		for i in range(len(string)):
+			print "x: ", (col + 0*distanceToNext), " y: ", row
 			self.writeChar((col + i*distanceToNext),row,string[i],color)
 
 	def updateFrame(self, animationEnd):
