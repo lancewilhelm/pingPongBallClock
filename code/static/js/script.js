@@ -78,9 +78,9 @@ function setTextWhite(){
   // gateColorURL = "{{ url_for('index') }}?color="+color
   // alert("sending POST call to "+gateColorUrl);
   var xhttp = new XMLHttpRequest();
-  var red = 125;
-  var green = 125;
-  var blue = 125;
+  var red = 255;
+  var green = 255;
+  var blue = 255;
   // event.preventDefault();
   //xhttp.open("POST", "{{ url_for('index')}}", true);
   xhttp.open("POST", "/api/textcolor", true);
