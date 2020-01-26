@@ -69,16 +69,16 @@ class PingPongBoard:
 			self.balls[row][col].text = text
 
 	def writeChar(self,col,row,char,color,textBool=True):
-		for y in range(len(font[char])):
+		for y in range(len(self.font[char])):
 			for x in range(len(font[char][-(y+1)])): #Using -j to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
-				if font[char][-(y+1)][x]:
+				if self.font[char][-(y+1)][x]:
 					self.writeBall(col+x,row+y,color,textBool)
 				else:
 					self.writeBall(col+x,row+y,self.balls[row+y][col+x].color,False)
 		self.strip.show()
 
 	def writeString(self,col,row,string,color,textBool=True):
-		distanceToNext = len(PPB.font[0][0]) + PPB.textSpacing
+		distanceToNext = len(self.font[0][0]) + self.textSpacing
 		for i in range(len(string)):
 			self.writeChar((col + i*distanceToNext),row,string[i],color)
 
@@ -187,7 +187,7 @@ class PingPongBoard:
 		# Check to see if the minute has changed. If it has, write the the new time
 		if mins != self.minsPrev:    
 			# Write the string
-			self.writeString(origin[0],origin[1],timeStr,PPB.textColor[1])
+			self.writeString(origin[0],origin[1],timeStr,self.textColor[1])
 
 			self.minsPrev = mins
 
