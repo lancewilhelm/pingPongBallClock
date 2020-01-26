@@ -80,6 +80,7 @@ class PingPongBoard:
 		self.strip.show()
 
 	def writeString(self,col,row,string,color,textBool=True):
+		distanceToNext = 0 # For the first character it does not matter
 		for i in range(len(string)):
 			self.writeChar((col + i*distanceToNext),row,string[i],color)
 			distanceToNext = len(self.font[ord(string[i])][0]) + self.textSpacing
