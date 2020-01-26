@@ -65,6 +65,12 @@ def setFont():
 	# Assign the font variable in LED class
 	LED.font = font
 	print "changing font to", LED.font
+
+	# Reset the background and variables to make the screen refresh completely on next loop iteration
+	LED.colorFill(LED.bgColor[1])
+	secsPrev = 99
+	minsPrev = 99
+	hoursPrev = 99
 	return ""
 
 def clock():
