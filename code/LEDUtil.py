@@ -76,13 +76,14 @@ class LEDStrip:
 			self.balls[row][col].text = text
 
 	def writeChar(self,col,row,char,color):
-		# Check for the special case of a the slanted 1 at the beginning of the hour (10,11,12 hours)
-		# if col == 0 and row == 1 and char == 1:
-		#     char = '1s'
+		if self.font = "slanted":
+			font = slanted
+		elif self.font = "digits":
+			font = digits
 
-		for y in range(len(digits[char])):
-			for x in range(len(digits[char][-(y+1)])): #Using -j to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
-				if digits[char][-(y+1)][x]:
+		for y in range(len(font[char])):
+			for x in range(len(font[char][-(y+1)])): #Using -j to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
+				if font[char][-(y+1)][x]:
 					self.writeBall(col+x,row+y,color,True)
 				else:
 					self.writeBall(col+x,row+y,self.balls[row+y][col+x].color,False)

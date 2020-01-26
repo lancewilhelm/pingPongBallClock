@@ -64,7 +64,7 @@ def setFont():
 	
 	# Assign the font variable in LED class
 	LED.font = font
-	print "changing font to ", LED.font
+	print "changing font to", LED.font
 	return ""
 
 def clock():
