@@ -6,7 +6,7 @@
 import time
 
 from neopixel import *
-from Utils import *
+from utils import *
 
 import argparse
 import signal
