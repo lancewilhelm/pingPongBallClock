@@ -169,77 +169,76 @@ class LEDStrip:
 		time.sleep(wait_ms/1000.0)
 
 	def clock(self):
+		while(True):
+			# Write the BG. Will not overwrite text per the function
+			if self.bgColor[0] == "solid":
+				self.colorFill(self.bgColor[1])
+			elif self.bgColor[0] == "animation":
+				if self.bgColor[1] == "rainbow":
+					self.rainbow()
+				elif self.bgColor[1] == "rainbowCycle":
+					self.rainbowCycle()
 
-	while(True):
-		# Write the BG. Will not overwrite text per the function
-		if self.bgColor[0] == "solid":
-			self.colorFill(self.bgColor[1])
-		elif self.bgColor[0] == "animation":
-			if self.bgColor[1] == "rainbow":
-				self.rainbow()
-			elif self.bgColor[1] == "rainbowCycle":
-				self.rainbowCycle()
+			# Get the current local time and parse it out to usable variables
+			t = time.localtime()
+			hours = t.tm_hour
+			mins = t.tm_min
+			secs = t.tm_sec
 
-		# Get the current local time and parse it out to usable variables
-		t = time.localtime()
-		hours = t.tm_hour
-		mins = t.tm_min
-		secs = t.tm_sec
+			# Convert 24h time to 12h time
+			if hours > 12:
+				hours -= 12
 
-		# Convert 24h time to 12h time
-		if hours > 12:
-			hours -= 12
+			# If it is midnight, change the clock to 12
+			if hours == 0:
+				hours = 12
 
-		# If it is midnight, change the clock to 12
-		if hours == 0:
-			hours = 12
+			# Check to see if the second has changed. If it has, changed the colonLit activation
+			if secs != self.secsPrev:
+				colonLit ^= True  #flip the colonLit bool
 
-		# Check to see if the second has changed. If it has, changed the colonLit activation
-		if secs != self.secsPrev:
-			colonLit ^= True  #flip the colonLit bool
+				if colonLit:
+					self.writeChar(9,2,':',self.textColor[1])
+					# self.writeBall(9,4,self.textColor[1],True)
+					# self.writeBall(10,2,self.textColor[1],True)
+					# self.strip.show()
+				else: 
+					self.writeChar(9,2,':',self.textColor[1],False)	#Keep the color white, but we toggle the text to False so that it will be overwritten by the bg
+					# self.writeBall(9,4,self.textColor[1],False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the bg
+					# self.writeBall(10,2,self.textColor[1],False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
+					self.strip.show()
 
-			if colonLit:
-				self.writeChar(9,2,':',self.textColor[1])
-				# self.writeBall(9,4,self.textColor[1],True)
-				# self.writeBall(10,2,self.textColor[1],True)
-				# self.strip.show()
-			else: 
-				self.writeChar(9,2,':',self.textColor[1],False)	#Keep the color white, but we toggle the text to False so that it will be overwritten by the bg
-				# self.writeBall(9,4,self.textColor[1],False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the bg
-				# self.writeBall(10,2,self.textColor[1],False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
-				self.strip.show()
+				self.secsPrev = secs
 
-			self.secsPrev = secs
+			# Check to see if the minute has changed. If it has, write the new minute
+			if mins != self.minsPrev:    
+				# Convert the mins to a string so that we can parse the individual numbers for display
+				minsStr = str(mins)
 
-		# Check to see if the minute has changed. If it has, write the new minute
-		if mins != self.minsPrev:    
-			# Convert the mins to a string so that we can parse the individual numbers for display
-			minsStr = str(mins)
+				# Write the actual numerals
+				if mins < 10:
+					self.writeChar(11,1,0,self.textColor[1])
+					self.writeChar(15,1,int(minsStr[0]),self.textColor[1])
+				else:
+					self.writeChar(11,1,int(minsStr[0]),self.textColor[1])
+					self.writeChar(15,1,int(minsStr[1]),self.textColor[1])
+				self.minsPrev = mins
 
-			# Write the actual numerals
-			if mins < 10:
-				self.writeChar(11,1,0,self.textColor[1])
-				self.writeChar(15,1,int(minsStr[0]),self.textColor[1])
-			else:
-				self.writeChar(11,1,int(minsStr[0]),self.textColor[1])
-				self.writeChar(15,1,int(minsStr[1]),self.textColor[1])
-			self.minsPrev = mins
+			# Check to see if the hour has changed. If it has, write the new hour
+			if hours != self.hoursPrev:
+				
+				# Convert the mins to a string so that we can parse the individual numbers for display
+				hoursStr = str(hours)
 
-		# Check to see if the hour has changed. If it has, write the new hour
-		if hours != self.hoursPrev:
-			
-			# Convert the mins to a string so that we can parse the individual numbers for display
-			hoursStr = str(hours)
+				if hoursPrev >= 10 and hours < 10:
+					self.writeChar(1,1,'blank',self.textColor[1])
+					self.writeChar(5,1,int(hoursStr[0]),self.textColor[1])
+				elif hours < 10:
+					self.writeChar(5,1,int(hoursStr[0]),self.textColor[1])
+				else:
+					self.writeChar(1,1,int(hoursStr[0]),self.textColor[1])
+					self.writeChar(5,1,int(hoursStr[1]),self.textColor[1])
+				self.hoursPrev = hours
 
-			if hoursPrev >= 10 and hours < 10:
-				self.writeChar(1,1,'blank',self.textColor[1])
-				self.writeChar(5,1,int(hoursStr[0]),self.textColor[1])
-			elif hours < 10:
-				self.writeChar(5,1,int(hoursStr[0]),self.textColor[1])
-			else:
-				self.writeChar(1,1,int(hoursStr[0]),self.textColor[1])
-				self.writeChar(5,1,int(hoursStr[1]),self.textColor[1])
-			self.hoursPrev = hours
-
-		# If there was a chnaged text color, indicate that we have taken care of it
-		self.textColorChange = False
+			# If there was a chnaged text color, indicate that we have taken care of it
+			self.textColorChange = False
