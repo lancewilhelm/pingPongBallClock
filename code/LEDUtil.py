@@ -36,7 +36,7 @@ class LEDStrip:
         self.numBalls = 128
         self.numRows = 7
         self.numCols = 20
-        
+
         self.animationFrame = 0
         self.animationEnd = 1
 
@@ -104,6 +104,14 @@ class LEDStrip:
                 for x in range(self.numCols):
                     if self.balls[y][x].text == False:
                         self.writeBall(x,y,color,False)
+        self.strip.show()
+
+    def changeTextColor(self, color):
+        for y in range(self.numRows):
+            for x in range(self.numCols):
+                if self.balls[y][x].text == True:
+                    self.writeBall(x,y,color,True)
+
         self.strip.show()
 
     def wheel(self,pos):

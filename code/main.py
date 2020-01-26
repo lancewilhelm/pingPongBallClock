@@ -43,7 +43,6 @@ def setBGColor():
 @app.route("/api/textcolor", methods=['POST'])
 def setTextColor():
     # Flip the bool so the whole programs knows we changed text color
-    LED.textColorChange = True
 
     # Read the values from the POST
     program = request.form['color']
@@ -54,6 +53,7 @@ def setTextColor():
     # Change the bg color accordingly
     if program == "solid":
         LED.textColor = ["solid", Color(red,green,blue)]
+        LED.changeTextColor(LED.textColor[1])
     else:
         LED.textColor = ["animation", program]
     return ""
@@ -89,7 +89,7 @@ def clock():
             hours = 12
 
         # Check to see if the second has changed. If it has, changed the colonLit activation
-        if secs != secsPrev or LED.textColorChange:
+        if secs != secsPrev:
             colonLit ^= True  #flip the colonLit bool
 
             if colonLit:
@@ -104,7 +104,7 @@ def clock():
             secsPrev = secs
 
         # Check to see if the minute has changed. If it has, write the new minute
-        if mins != minsPrev or LED.textColorChange:    
+        if mins != minsPrev:    
             # Convert the mins to a string so that we can parse the individual numbers for display
             minsStr = str(mins)
 
@@ -118,7 +118,7 @@ def clock():
             minsPrev = mins
 
         # Check to see if the hour has changed. If it has, write the new hour
-        if hours != hoursPrev or LED.textColorChange:
+        if hours != hoursPrev:
             
             # Convert the mins to a string so that we can parse the individual numbers for display
             hoursStr = str(hours)
