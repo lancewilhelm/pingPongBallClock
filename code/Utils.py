@@ -120,11 +120,11 @@ slanted['blank'] = [
 	[0,0,0],
 	[0,0,0]
 ]
-slanted[':'] = {
+slanted[':'] = [
 	[1],
 	[0],
 	[1]
-}
+]
 
 # Digits Numeral Font ----------------------------
 digits = {}    #Define the slanted font dictionary
@@ -206,8 +206,8 @@ digits['blank'] = [
 	[0,0,0,0],
 	[0,0,0,0]
 ]
-digits[':'] = {
+digits[':'] = []
 	[1,0],
 	[0,0],
 	[0,1]
-}
+]
