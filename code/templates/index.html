@@ -74,6 +74,26 @@
             <h4>TEXT STYLE PICKER</h4>
         </div>
     </div>
+    <div class="row">
+        <div class="col-sm">
+            <b>CUSTOM:</b>
+            <div class="color-picker">
+                <div class="sliders">
+                    <div class="slide-container">
+                        <input class="red-slider short-slider" type="range" id="rangeinput" value="250" max="255" onchange="setRgb()" oninput="setRgb()" />
+                    </div>
+                    <div class="slide-container">
+                        <input class="green-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setRgb()" oninput="setRgb()" />
+                    </div>
+                    <div class="slide-container">
+                        <input class="blue-slider short-slider" type="range" id="rangeinput" value="0" max="255" oninput="setRgb()" onchange="setRgb()" />
+                    </div>
+                </div>
+                <div id="color-preview" class="color-preview"></div>
+            </div>
+            <button id="sendColorBtn" type="button" class="btn btn-white" onclick="setCustomColor('solid')">SEND COLOR</button>
+        </div>
+    </div>
 <script src="{{ url_for('static',filename='js/script.js') }}"></script>
 <script src="../static/js/script.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
