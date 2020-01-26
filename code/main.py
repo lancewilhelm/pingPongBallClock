@@ -18,7 +18,7 @@ if __name__ == '__main__':
 	# Initialize the LEDs
 	LED = LEDUtils.LEDStrip()
 
-	x = threading.Thread(target=clock, args=())
+	x = threading.Thread(target=LED.clock, args=())
 	x.daemon = True
 	x.start()
 	
