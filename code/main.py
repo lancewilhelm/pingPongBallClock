@@ -69,11 +69,11 @@ def clock():
 
             if colonLit:
                 LED.writeBall(8,4,LED.textColor,True)
-                LED.writeBall(8,2,LED.textColor,True)
+                LED.writeBall(9,2,LED.textColor,True)
                 LED.strip.show()
             else: 
                 LED.writeBall(8,4,LED.textColor,False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
-                LED.writeBall(8,2,LED.textColor,False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
+                LED.writeBall(9,2,LED.textColor,False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
                 LED.strip.show()
 
             secsPrev = secs
