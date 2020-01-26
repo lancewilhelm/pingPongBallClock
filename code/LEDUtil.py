@@ -102,8 +102,8 @@ class LEDStrip:
         self.strip.show()
 
     def wheel(self,pos):
-        """Generate rainbow colors across 0-255 positions."""
-    	if pos < 85:
+        # Generate rainbow colors across 0-255 positions.
+        if pos < 85:
             return Color(pos * 3, 255 - pos * 3, 0)
         elif pos < 170:
             pos -= 85
@@ -113,7 +113,7 @@ class LEDStrip:
             return Color(0, pos * 3, 255 - pos * 3)
 
     def rainbow(self,wait_ms=20):
-        """Draw rainbow that fades across all pixels at once."""
+        # Draw rainbow that fades across all pixels at once.
         j = self.updateFrame(256)
 
         for x in range(self.numCols):
@@ -125,7 +125,7 @@ class LEDStrip:
         time.sleep(wait_ms/1000.0)
 
     def rainbowCycle(self,wait_ms=20):
-        """Draw rainbow that uniformly distributes itself across all pixels."""
+        # Draw rainbow that uniformly distributes itself across all pixels.
         j = self.updateFrame(256)
 
         for x in range(self.numCols):
@@ -133,5 +133,7 @@ class LEDStrip:
                 i = x*self.numRows + y
                 if self.balls[y][x].text == False:
                     self.writeBall(x,y,self.wheel((((i*2)/(self.numBalls*2))+j) & 255),False)
+                else:
+                    self.writeBall(x,y,Color(255,255,255) - self.wheel((((i*2)/(self.numBalls*2))+j) & 255),True)
         self.strip.show()
         time.sleep(wait_ms/1000.0)
