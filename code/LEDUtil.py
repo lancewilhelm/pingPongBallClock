@@ -43,7 +43,7 @@ class LEDStrip:
         self.textColor = ["solid", Color(255,255,255)]
         self.textColorChange = False
 
-        self.bgColor = ["solid", Color(0,255,0)]
+        self.bgColor = ["solid", Color(0,0,255)]
         self.bgColorChange = False
 
         # Set up the ball objects
