@@ -49,8 +49,12 @@ h3 {
 }
 
 .jumbotron {
-  background-color: #edfcab;
+  background-color: #302686;
+  color: white;
   margin-bottom: 0px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 0px;
 }
 
 .dropdown-item {
@@ -180,6 +184,18 @@ h3 {
     margin: 10px 0px;
 }
 
-hr {
+hr.minor {
+  border-top: 1px dashed lightgray;
     margin: 0px;
+}
+
+hr.major {
+  border-top: 2px solid lightgray;
+  margin-top: 10px; 
+  margin-bottom: 10px;
+}
+
+
+.no-bottom-pad {
+  padding-bottom: 0px;
 }
