@@ -47,7 +47,11 @@ class LEDStrip:
 		self.bgColor = ["solid", Color(0,0,255)]
 		self.bgColorChange = False
 
-		self.colonX = [9,10]
+		#Establish variables that will be used for the clock
+		self.hoursPrev = 99  #used for clock updating
+		self.minsPrev = 99   #used for clock updating
+		self.secsPrev = 99   #used for clock updating
+		self.colonLit = False
 
 		# Set up the ball objects
 		self.balls = [
@@ -165,10 +169,6 @@ class LEDStrip:
 		time.sleep(wait_ms/1000.0)
 
 	def clock(self):
-	global hoursPrev
-	global minsPrev
-	global secsPrev
-	global colonLit
 
 	while(True):
 		# Write the BG. Will not overwrite text per the function
@@ -195,7 +195,7 @@ class LEDStrip:
 			hours = 12
 
 		# Check to see if the second has changed. If it has, changed the colonLit activation
-		if secs != secsPrev:
+		if secs != self.secsPrev:
 			colonLit ^= True  #flip the colonLit bool
 
 			if colonLit:
@@ -209,10 +209,10 @@ class LEDStrip:
 				# self.writeBall(10,2,self.textColor[1],False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
 				self.strip.show()
 
-			secsPrev = secs
+			self.secsPrev = secs
 
 		# Check to see if the minute has changed. If it has, write the new minute
-		if mins != minsPrev:    
+		if mins != self.minsPrev:    
 			# Convert the mins to a string so that we can parse the individual numbers for display
 			minsStr = str(mins)
 
@@ -223,10 +223,10 @@ class LEDStrip:
 			else:
 				self.writeChar(11,1,int(minsStr[0]),self.textColor[1])
 				self.writeChar(15,1,int(minsStr[1]),self.textColor[1])
-			minsPrev = mins
+			self.minsPrev = mins
 
 		# Check to see if the hour has changed. If it has, write the new hour
-		if hours != hoursPrev:
+		if hours != self.hoursPrev:
 			
 			# Convert the mins to a string so that we can parse the individual numbers for display
 			hoursStr = str(hours)
@@ -239,7 +239,7 @@ class LEDStrip:
 			else:
 				self.writeChar(1,1,int(hoursStr[0]),self.textColor[1])
 				self.writeChar(5,1,int(hoursStr[1]),self.textColor[1])
-			hoursPrev = hours
+			self.hoursPrev = hours
 
 		# If there was a chnaged text color, indicate that we have taken care of it
 		self.textColorChange = False
