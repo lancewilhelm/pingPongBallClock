@@ -76,9 +76,9 @@ class LEDStrip:
 			self.balls[row][col].text = text
 
 	def writeChar(self,col,row,char,color):
-		if self.font = "slanted":
+		if self.font == "slanted":
 			font = slanted
-		elif self.font = "digits":
+		elif self.font == "digits":
 			font = digits
 
 		for y in range(len(font[char])):
