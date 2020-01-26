@@ -45,7 +45,7 @@ h3 {
 }
 
 .col-sm {
-	margin 20px;
+	margin: 20px;
 }
 
 .jumbotron {
@@ -125,13 +125,6 @@ h3 {
 	margin: 10px auto;
 	background-color: #333;
 	padding: 10px 20px;
-	.sliders {
-	float: left;
-	}
-	.color-preview {
-	border-radius: 50%;
-	float: right;
-	}
 }
 
 .text-color-picker {
@@ -139,13 +132,6 @@ h3 {
 	margin: 10px auto;
 	background-color: #333;
 	padding: 10px 20px;
-	.sliders {
-	float: left;
-	}
-	.color-preview {
-	border-radius: 50%;
-	float: right;
-	}
 }
 .short-slider {
 	-webkit-appearance: none;
