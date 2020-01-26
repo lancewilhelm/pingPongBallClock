@@ -62,7 +62,7 @@ def setFont():
 	global hoursPrev
 	global minsPrev
 	global secsPrev
-	
+
 	# Read the values from the POST
 	font = request.form['font']
 	
@@ -112,12 +112,14 @@ def clock():
 			colonLit ^= True  #flip the colonLit bool
 
 			if colonLit:
-				LED.writeBall(9,4,LED.textColor[1],True)
-				LED.writeBall(10,2,LED.textColor[1],True)
-				LED.strip.show()
+				LED.writeChar(9,2,':',LED.textColor[1])
+				# LED.writeBall(9,4,LED.textColor[1],True)
+				# LED.writeBall(10,2,LED.textColor[1],True)
+				# LED.strip.show()
 			else: 
-				LED.writeBall(9,4,LED.textColor[1],False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
-				LED.writeBall(10,2,LED.textColor[1],False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
+				LED.writeChar(9,2,':',LED.textColor[1],False)	#Keep the color white, but we toggle the text to False so that it will be overwritten by the bg
+				# LED.writeBall(9,4,LED.textColor[1],False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the bg
+				# LED.writeBall(10,2,LED.textColor[1],False)     #Keep the color white, but we toggle the text to False so that it will be overwritten by the rainbow
 				LED.strip.show()
 
 			secsPrev = secs
