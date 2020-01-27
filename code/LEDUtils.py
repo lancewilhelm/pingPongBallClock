@@ -31,7 +31,7 @@ class PingPongBoard:
 
 		self.textColor = ["solid", Color(255,255,255)]
 		self.textColorChange = False
-		self.font = digits
+		self.font = slanted
 		self.textSpacing = 0
 		self.textOrigin = [20,1]
 
