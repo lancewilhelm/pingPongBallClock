@@ -62,9 +62,6 @@ class PingPongBoard:
 		if col < 0 or col >= 20 or row < 0 or row >= 7:
 			return
 
-		if self.textColor[0] == "animation":
-			color = self.balls[row][col].color
-
 		# If the color is different than what the buffer has stored, write it and show it
 		if self.balls[row][col].color != color or self.balls[row][col].text != text:
 			self.strip.setPixelColor((self.balls[row][col].ledNum)*2,color)
