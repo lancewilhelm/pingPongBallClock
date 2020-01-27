@@ -25,6 +25,9 @@ class PingPongBoard:
 
 		self.animationFrame = 0
 		self.animationEnd = 1
+		self.startTime = 0
+		self.timeElapsed = 0
+		self.animationSpeed = 2
 
 		self.textColor = ["solid", Color(255,255,255)]
 		self.textColorChange = False
@@ -127,6 +130,23 @@ class PingPongBoard:
 					if self.balls[y][x].text == True:
 						self.writeBallColor(x,y,color)
 			self.strip.show()
+
+	def updateTextAnimation(self):
+		# If start time has not been defined, do so
+		if self.startTime == 0:
+			self.startTime = time.time()
+		
+		# Determine the time elapsed since the start time
+		self.timeElapsed = time.time() - self.startTime
+
+		# If the time elapsed is >= the time one frame should take for our set speed, do the things
+		if self.timeElapsed >= 1/self.animationSpeed:
+			# Move the text one space to the left
+			self.textOrigin[0] -= 1
+
+			# Reset the x text origin to 20 if it gets through the screen
+			if self.textOrigin[0] < -20:
+				self.textOrigin[0] = 20
 
 	def updateBGColor(self):
 		# Write the BG. Will not overwrite text per the function
@@ -236,13 +256,6 @@ class PingPongBoard:
 		if secs != self.secsPrev:    
 			# Write the string
 			self.writeString(self.textOrigin[0],self.textOrigin[1],timeStr)
-			
-			#move the text one space to the left every second
-			self.textOrigin[0] -= 1
-
-			# Reset the x text origin to 20 if it gets through the screen
-			if self.textOrigin[0] < -20:
-				self.textOrigin[0] = 20
 
 			# Set seconds to previous seconds
 			self.secsPrev = secs
