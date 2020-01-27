@@ -129,6 +129,12 @@ slanted[ord(':')] = [
 	[1,0],
 	[0,0]
 ]
+slanted[ord(';')] = [
+	[0,0],
+	[0,0],
+	[0,0],
+	[0,0]
+]
 
 # Digits Numeral Font ----------------------------
 digits = {}    #Define the slanted font dictionary
@@ -214,5 +220,11 @@ digits[ord(':')] = [
 	[1,0],
 	[0,0],
 	[0,1],
+	[0,0]
+]
+digits[ord(';')] = [
+	[0,0],
+	[0,0],
+	[0,0],
 	[0,0]
 ]

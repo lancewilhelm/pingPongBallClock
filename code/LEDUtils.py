@@ -226,15 +226,19 @@ class PingPongBoard:
 		else:
 			hourStr = str(hours)
 
-		# Concatenate the strings with a colon in the middle
-		timeStr = hourStr + ':' + minStr
+		if secs % 2 == 0:
+			# Even seconds, concatenate the strings with a colon in the middle
+			timeStr = hourStr + ':' + minStr
+		else:
+			# Odd seconds, concatenate the strings with a semicolon(blank) in the middle
+			timeStr = hourStr + ';' + minStr
 
 		# Check to see if the minute has changed. If it has, write the the new time
-		if mins != self.minsPrev:    
+		if secs != self.secsPrev:    
 			# Write the string
-			self.writeString(origin[0],origin[1],timeStr,self.textColor[1])
+			self.writeString(origin[0],origin[1],timeStr)
 
-			self.minsPrev = mins
+			self.secsPrev = secs
 
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
