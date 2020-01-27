@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
 		# Check to see if we have a text color animation
 		if PPB.textColor[0] == "animation":
-			if PPB.textColor[1] == "rainbow"
+			if PPB.textColor[1] == "rainbow":
 				PPB.rainbowText()
-			elif PPB.textColor[1] == "rainbowCycle"
+			elif PPB.textColor[1] == "rainbowCycle":
 				PPB.rainbowCycleText()
