@@ -126,7 +126,8 @@ slanted[ord(' ')] = [
 slanted[ord(':')] = [
 	[1],
 	[0],
-	[1]
+	[1],
+	[0]
 ]
 
 # Digits Numeral Font ----------------------------
