@@ -14,4 +14,10 @@ if __name__ == '__main__':
 	
 	while(True):
 		PPB.clock([0,1])
-		PPB.rainbowText()
+
+		# Check to see if we have a text color animation
+		if PPB.textColor[0] == "animation":
+			if PPB.textColor[1] == "rainbow"
+				PPB.rainbowText()
+			elif PPB.textColor[1] == "rainbowCycle"
+				PPB.rainbowCycleText()

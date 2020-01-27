@@ -160,6 +160,18 @@ class PingPongBoard:
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
+	def rainbowCycleText(self,wait_ms=20):
+		# Draw rainbow that uniformly distributes itself across all pixels.
+		j = self.updateFrame(256)
+
+		for x in range(self.numCols):
+			for y in range(self.numRows):
+				i = x*self.numRows + y
+				if self.balls[y][x].text == True:
+					self.writeBall(x,y,self.wheel((((i*2)/(self.numBalls*2))+j) & 255),True)
+		self.strip.show()
+		time.sleep(wait_ms/1000.0)
+
 	def clock(self, origin):
 		# Write the BG. Will not overwrite text per the function
 		if self.bgColor[0] == "solid":
