@@ -65,12 +65,13 @@ def setFont():
 def setTextAnimation():
 	# Read the values from the POST
 	animation = request.form['animation']
-	
+	speed = request.form['speed']
+
 	if animation == "static":
 		PPB.textOrigin = [1,1]
 		PPB.animationSpeed = 0
 	if animation == "scrolling":
-		PPB.animationSpeed = 1.5
+		PPB.animationSpeed = speed
 	
 	# Wipe the screen
 	PPB.textStateWipe()
