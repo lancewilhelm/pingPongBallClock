@@ -115,18 +115,19 @@ class PingPongBoard:
 		self.strip.show()
 
 	def updateTextColor(self):
+		color = self.textColor[1]	# Capture the color here to prevent errors during color updating
 		# Check to see if we have a text color animation
 		if self.textColor[0] == "animation":
-			if self.textColor[1] == "rainbow":
+			if color == "rainbow":
 				self.rainbowText()
-			elif self.textColor[1] == "rainbowCycle":
+			elif color == "rainbowCycle":
 				self.rainbowCycleText()
 		# Else, check for solid notification
 		elif self.textColor[0] == 'solid':
 			for y in range(self.numRows):
 				for x in range(self.numCols):
 					if self.balls[y][x].text == True:
-						self.writeBallColor(x,y,self.textColor[1])
+						self.writeBallColor(x,y,color)
 			self.strip.show()
 
 	def wheel(self,pos):
