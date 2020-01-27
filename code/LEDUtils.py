@@ -197,7 +197,7 @@ class PingPongBoard:
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
-	def clock(self, origin):
+	def clock(self):
 		# Get the current local time and parse it out to usable variables
 		t = time.localtime()
 		hours = t.tm_hour
