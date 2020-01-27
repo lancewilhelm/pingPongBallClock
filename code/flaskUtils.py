@@ -65,7 +65,7 @@ def setFont():
 def setTextAnimation():
 	# Read the values from the POST
 	animation = request.form['animation']
-	speed = request.form['speed']
+	speed = float(request.form['speed'])
 
 	if animation == "static":
 		PPB.textOrigin = [1,1]
