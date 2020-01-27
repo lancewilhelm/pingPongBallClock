@@ -79,6 +79,12 @@ class PingPongBoard:
 			self.balls[row][col].text = text
 
 	def writeChar(self,col,row,char,textBool=True):
+		# Do not write characters outside of the display area
+		if col <= -4 or col > 20:
+			return
+		if row < -5 or row >= 7:
+			return
+
 		# Convert the char to the ASCII value
 		char = ord(char)
 		for y in range(len(self.font[char])):
