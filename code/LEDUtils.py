@@ -30,6 +30,7 @@ class PingPongBoard:
 		self.textColorChange = False
 		self.font = digits
 		self.textSpacing = 0
+		self.textOrigin = [20,1]
 
 		self.bgColor = ["solid", Color(0,0,255)]
 		self.bgColorChange = False
@@ -234,7 +235,14 @@ class PingPongBoard:
 		# Check to see if the minute has changed. If it has, write the the new time
 		if secs != self.secsPrev:    
 			# Write the string
-			self.writeString(origin[0],origin[1],timeStr)
+			self.writeString(self.textOrigin[0],self.textOrigin[1],timeStr)
+			
+			#move the text one space to the left every second
+			self.textOrigin[0] -= 1
+
+			# Reset the x text origin to 20 if it gets through the screen
+			if self.textOrigin[0] < -20:
+				self.textOrigin[0] = 20
 
 			# Set seconds to previous seconds
 			self.secsPrev = secs
