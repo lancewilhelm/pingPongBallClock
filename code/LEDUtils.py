@@ -253,12 +253,12 @@ class PingPongBoard:
 			timeStr = hourStr + ';' + minStr
 
 		# Check to see if the minute has changed. If it has, write the the new time
-		if secs != self.secsPrev:    
-			# Write the string
-			self.writeString(self.textOrigin[0],self.textOrigin[1],timeStr)
+		# if secs != self.secsPrev:    
+		# Write the string
+		self.writeString(self.textOrigin[0],self.textOrigin[1],timeStr)
 
-			# Set seconds to previous seconds
-			self.secsPrev = secs
+		# Set seconds to previous seconds
+		# self.secsPrev = secs
 
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
