@@ -37,7 +37,6 @@ def setTextColor():
 	# Change the bg color accordingly
 	if program == "solid":
 		PPB.textColor = ["solid", Color(red,green,blue)]
-		PPB.changeTextColor(PPB.textColor[1])
 	else:
 		PPB.textColor = ["animation", program]
 	return ""
@@ -72,5 +71,8 @@ def setTextAnimation():
 		PPB.animationSpeed = 0
 	if animation == "scrolling":
 		PPB.animationSpeed = 1.5
+	
+	# Wipe the screen
+	PPB.colorFill(PPB.bgColor[1], True)		# True boolean to make sure that the whole screen wipes including text
 	return ""
 
