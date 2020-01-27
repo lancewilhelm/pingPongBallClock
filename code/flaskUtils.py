@@ -56,8 +56,6 @@ def setFont():
 		PPB.font = digits
 		PPB.textSpacing = 0
 
-	print "changing font to", PPB.font
-
 	# Reset the background and variables to make the screen refresh completely on next loop iteration
 	PPB.colorFill(PPB.bgColor[1], True)		# True boolean to make sure that the whole screen wipes including text
 	PPB.secsPrev = 99
