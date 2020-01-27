@@ -95,6 +95,10 @@ class PingPongBoard:
 			distanceToNext = len(self.font[ord(string[i])][0]) + self.textSpacing
 			x += distanceToNext
 
+		# If we are in a scroll animation, added a blank on the end to erase trailing bulbs
+		if self.animationSpeed != 0:
+			self.writeChar(x,row,' ')
+
 	def updateFrame(self, animationEnd):
 		self.animationFrame += 1
 		self.animationEnd = animationEnd
