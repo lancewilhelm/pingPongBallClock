@@ -238,6 +238,13 @@ class PingPongBoard:
 		hours = t.tm_hour
 		mins = t.tm_min
 		secs = t.tm_sec
+		mon = t.tm_mon
+		day = t.tm_mday
+		year = t.tm_year
+
+		monStr = str(mon)
+		dayStr = str(day)
+		yearStr = str(year)
 
 		# Convert 24h time to 12h time
 		if hours > 12:
@@ -262,10 +269,10 @@ class PingPongBoard:
 		# Used to determine colon lit state
 		if secs % 2 == 0:
 			# Even seconds, concatenate the strings with a colon in the middle
-			timeStr = hourStr + ':' + minStr
+			timeStr = hourStr + ':' + minStr + ' ' + monStr + '-' + dayStr + '-' + yearStr
 		else:
 			# Odd seconds, concatenate the strings with a semicolon(blank) in the middle
-			timeStr = hourStr + ';' + minStr
+			timeStr = hourStr + ';' + minStr + ' ' + monStr + '-' + dayStr + '-' + yearStr
 
 		# Check to see if the minute has changed. If it has, write the the new time
 		# if secs != self.secsPrev:    
