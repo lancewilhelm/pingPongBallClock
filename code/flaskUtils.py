@@ -62,7 +62,7 @@ def setFont():
 	return ""
 
 # Flask Text Animation API
-@app.route("/api/textAnimation", methods=['POST'])
+@app.route("/api/textanimation", methods=['POST'])
 def setTextAnimation():
 	# Read the values from the POST
 	animation = request.form['animation']
