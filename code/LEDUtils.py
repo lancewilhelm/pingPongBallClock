@@ -102,6 +102,11 @@ class PingPongBoard:
 			self.animationFrame = 0
 		return self.animationFrame
 
+	def textStateWipe(self):
+		for y in range(self.numRows):
+			for x in range(self.numCols):
+				self.writeBallTextState(x,y,False)
+
 	def colorFill(self,color,fullwipe=False):
 		if fullwipe:
 			for y in range(self.numRows):

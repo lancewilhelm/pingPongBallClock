@@ -73,6 +73,6 @@ def setTextAnimation():
 		PPB.animationSpeed = 1.5
 	
 	# Wipe the screen
-	PPB.colorFill(PPB.bgColor[1], True)		# True boolean to make sure that the whole screen wipes including text
+	PPB.textStateWipe()
 	return ""
 
