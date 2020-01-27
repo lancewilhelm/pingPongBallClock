@@ -14,6 +14,10 @@ if __name__ == '__main__':
 	
 	while(True):
 		PPB.updateBGColor()
-		PPB.clock([0,1])
+		PPB.clock()
+
+		if PPB.animationSpeed != 0:
+			PPB.updateTextAnimation()
+			
 		PPB.updateTextColor()
 	

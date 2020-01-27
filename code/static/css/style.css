@@ -22,7 +22,7 @@ h4 {
 }
 
 .form-control {
-	margin: 10px auto;
+	margin: 0px auto;
 	text-align: center;
 }
 
@@ -241,4 +241,13 @@ hr.major {
 
 .bg-header {
 	background-color: #d0d2fd;
+}
+
+.btn-lg {
+	font-weight: 700;
+}
+
+p {
+	margin: 0px;
+	margin-top: 10px;
 }

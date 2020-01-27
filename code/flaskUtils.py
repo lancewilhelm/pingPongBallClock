@@ -37,12 +37,11 @@ def setTextColor():
 	# Change the bg color accordingly
 	if program == "solid":
 		PPB.textColor = ["solid", Color(red,green,blue)]
-		PPB.changeTextColor(PPB.textColor[1])
 	else:
 		PPB.textColor = ["animation", program]
 	return ""
 
-	# Flask Font API
+# Flask Font API
 @app.route("/api/font", methods=['POST'])
 def setFont():
 	# Read the values from the POST
@@ -59,5 +58,23 @@ def setFont():
 	PPB.secsPrev = 99
 	PPB.minsPrev = 99
 	PPB.hoursPrev = 99
+	return ""
+
+# Flask Text Animation API
+@app.route("/api/textanimation", methods=['POST'])
+def setTextAnimation():
+	# Read the values from the POST
+	animation = request.form['animation']
+
+	if animation == "static":
+		PPB.textOrigin = [1,1]
+		PPB.animationSpeed = 0
+	if animation == "scrolling":
+		speed = float(request.form['speed'])
+		PPB.animationSpeed = speed
+
+	
+	# Wipe the screen
+	PPB.textStateWipe()
 	return ""
 
