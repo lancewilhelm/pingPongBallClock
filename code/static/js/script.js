@@ -73,6 +73,15 @@ function setFont(font){
 	xhttp.send("font="+font);
 }
 
+function setTextAnimation(animation){
+	origin = window.location.origin
+	var xhttp = new XMLHttpRequest();
+	var speed = document.getElementById('speedInput').value;
+	xhttp.open("POST", "/api/textanimation", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("animation="+animation+"&speed="+speed);
+}
+
 function sendElementCommand(command){
 	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();

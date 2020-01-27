@@ -99,6 +99,31 @@
 			</div>
 
 			<div class="col-sm">
+				<div class="dropdown">
+					<button class="btn dropdown-toggle btn-lg btn-purple" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						COLOR ANIMATIONS
+					</button>		
+					<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+						<button class="dropdown-item text-center" type="button" onclick="setCustomTextColor('rainbow')">RAINBOW</button>
+						<button class="dropdown-item text-center" type="button" onclick="setCustomTextColor('rainbowCycle')">RAINBOW CYCLE</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm">
+				<form>
+					<button class="btn btn-lg btn-purple" type="submit" onclick="setTextAnimation('scrolling')">
+						SCROLLING
+					</button>	
+					<button class="btn btn-lg btn-purple" type="button" onclick="setTextAnimation('static')">
+						STATIC
+					</button>
+					<P>SPEED INPUT (balls/s):</P>
+					<input id="speedInput" class="form-control form-control-lg" type="text" placeholder="animation speed" min="0" required>	
+				</form>
+			</div>
+
+			<div class="col-sm">
 				<b>CUSTOM COLOR:</b>
 				<div class="text-color-picker">
 					<div class="sliders">

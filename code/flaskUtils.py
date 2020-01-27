@@ -37,29 +37,44 @@ def setTextColor():
 	# Change the bg color accordingly
 	if program == "solid":
 		PPB.textColor = ["solid", Color(red,green,blue)]
-		PPB.changeTextColor(PPB.textColor[1])
 	else:
 		PPB.textColor = ["animation", program]
 	return ""
 
-	# Flask Font API
+# Flask Font API
 @app.route("/api/font", methods=['POST'])
 def setFont():
-	global hoursPrev
-	global minsPrev
-	global secsPrev
-
 	# Read the values from the POST
 	font = request.form['font']
 	
 	# Assign the font variable in LED class
-	PPB.font = font
-	print "changing font to", PPB.font
+	if font == "slanted":
+		PPB.font = slanted
+	elif font == "digits":
+		PPB.font = digits
 
 	# Reset the background and variables to make the screen refresh completely on next loop iteration
 	PPB.colorFill(PPB.bgColor[1], True)		# True boolean to make sure that the whole screen wipes including text
 	PPB.secsPrev = 99
 	PPB.minsPrev = 99
 	PPB.hoursPrev = 99
+	return ""
+
+# Flask Text Animation API
+@app.route("/api/textanimation", methods=['POST'])
+def setTextAnimation():
+	# Read the values from the POST
+	animation = request.form['animation']
+
+	if animation == "static":
+		PPB.textOrigin = [1,1]
+		PPB.animationSpeed = 0
+	if animation == "scrolling":
+		speed = float(request.form['speed'])
+		PPB.animationSpeed = speed
+
+	
+	# Wipe the screen
+	PPB.textStateWipe()
 	return ""
 
