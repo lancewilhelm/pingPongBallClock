@@ -13,6 +13,7 @@ if __name__ == '__main__':
 	x.start()
 	
 	while(True):
+		PPB.updateBGColor()
 		PPB.clock([0,1])
 		PPB.updateTextColor()
 	

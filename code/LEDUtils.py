@@ -130,6 +130,16 @@ class PingPongBoard:
 						self.writeBallColor(x,y,color)
 			self.strip.show()
 
+	def updateBGColor(self):
+		# Write the BG. Will not overwrite text per the function
+		if self.bgColor[0] == "solid":
+			self.colorFill(self.bgColor[1])
+		elif self.bgColor[0] == "animation":
+			if self.bgColor[1] == "rainbow":
+				self.rainbow()
+			elif self.bgColor[1] == "rainbowCycle":
+				self.rainbowCycle()
+
 	def wheel(self,pos):
 		# Generate rainbow colors across 0-255 positions.
 		if pos < 85:
@@ -190,15 +200,6 @@ class PingPongBoard:
 		time.sleep(wait_ms/1000.0)
 
 	def clock(self, origin):
-		# Write the BG. Will not overwrite text per the function
-		if self.bgColor[0] == "solid":
-			self.colorFill(self.bgColor[1])
-		elif self.bgColor[0] == "animation":
-			if self.bgColor[1] == "rainbow":
-				self.rainbow()
-			elif self.bgColor[1] == "rainbowCycle":
-				self.rainbowCycle()
-
 		# Get the current local time and parse it out to usable variables
 		t = time.localtime()
 		hours = t.tm_hour
