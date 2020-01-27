@@ -57,32 +57,40 @@ class PingPongBoard:
 			for x in range(self.numCols):
 				self.balls[y][x] = Ball([y,x])    #passes [row,col]
 
-	def writeBall(self,col,row,color,text):
+	def writeBallColor(self,col,row,color):
 		# Do not proceed if bad coordinates (could maybe replace with try/catch)
 		if col < 0 or col >= 20 or row < 0 or row >= 7:
 			return
 
 		# If the color is different than what the buffer has stored, write it and show it
-		if self.balls[row][col].color != color or self.balls[row][col].text != text:
+		if self.balls[row][col].color != color:
 			self.strip.setPixelColor((self.balls[row][col].ledNum)*2,color)
 			self.balls[row][col].color = color
+
+	def writeBallTextState(self,col,row,text):
+		# Do not proceed if bad coordinates (could maybe replace with try/catch)
+		if col < 0 or col >= 20 or row < 0 or row >= 7:
+			return
+
+		# If the color is different than what the buffer has stored, write it and show it
+		if self.balls[row][col].text != text:
 			self.balls[row][col].text = text
 
-	def writeChar(self,col,row,char,color,textBool=True):
+	def writeChar(self,col,row,char,textBool=True):
 		# Convert the char to the ASCII value
 		char = ord(char)
 		for y in range(len(self.font[char])):
 			for x in range(len(self.font[char][-(y+1)])): #Using -y to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
 				if self.font[char][-(y+1)][x]:
-					self.writeBall(col+x,row+y,color,textBool)
+					self.writeBallTextState(col+x,row+y,textBool)
 				else:
-					self.writeBall(col+x,row+y,self.balls[row+y][col+x].color,False)	#write the text to false so that it will be overwritten
+					self.writeBallTextState(col+x,row+y,False)	#write the text to false so that it will be overwritten
 		self.strip.show()
 
-	def writeString(self,col,row,string,color,textBool=True):
+	def writeString(self,col,row,string,textBool=True):
 		x = col # For the first character it is the col
 		for i in range(len(string)):
-			self.writeChar(x,row,string[i],color)
+			self.writeChar(x,row,string[i])
 			distanceToNext = len(self.font[ord(string[i])][0]) + self.textSpacing
 			x += distanceToNext
 
@@ -97,19 +105,20 @@ class PingPongBoard:
 		if fullwipe:
 			for y in range(self.numRows):
 				for x in range(self.numCols):
-					self.writeBall(x,y,color,False)
+					self.writeBallTextState(x,y,False)
+					self.writeBallColor(x,y,color)
 		else:
 			for y in range(self.numRows):
 				for x in range(self.numCols):
 					if self.balls[y][x].text == False:
-						self.writeBall(x,y,color,False)
+						self.writeBallColor(x,y,color)
 		self.strip.show()
 
 	def changeTextColor(self, color):
 		for y in range(self.numRows):
 			for x in range(self.numCols):
 				if self.balls[y][x].text == True:
-					self.writeBall(x,y,color,True)
+					self.writeBallColor(x,y,color)
 		self.strip.show()
 
 	def wheel(self,pos):
@@ -131,7 +140,7 @@ class PingPongBoard:
 			for y in range(self.numRows):
 				i = x*self.numRows + y
 				if self.balls[y][x].text == False:
-					self.writeBall(x,y,self.wheel(((i*2)+j) & 255),False)
+					self.writeBallColor(x,y,self.wheel(((i*2)+j) & 255))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
@@ -143,7 +152,7 @@ class PingPongBoard:
 			for y in range(self.numRows):
 				i = x*self.numRows + y
 				if self.balls[y][x].text == True:
-					self.writeBall(x,y,self.wheel(((i*2)+j) & 255),True)
+					self.writeBallColor(x,y,self.wheel(((i*2)+j) & 255))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
@@ -155,7 +164,7 @@ class PingPongBoard:
 			for y in range(self.numRows):
 				i = x*self.numRows + y
 				if self.balls[y][x].text == False:
-					self.writeBall(x,y,self.wheel((((i*2)/(self.numBalls*2))+j) & 255),False)
+					self.writeBallColor(x,y,self.wheel((((i*2)/(self.numBalls*2))+j) & 255))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
@@ -167,7 +176,7 @@ class PingPongBoard:
 			for y in range(self.numRows):
 				i = x*self.numRows + y
 				if self.balls[y][x].text == True:
-					self.writeBall(x,y,self.wheel((((i*2)/(self.numBalls*2))+j) & 255),True)
+					self.writeBallColor(x,y,self.wheel((((i*2)/(self.numBalls*2))+j) & 255))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
