@@ -15,3 +15,4 @@ if __name__ == '__main__':
 	while(True):
 		PPB.clock([0,1])
 		PPB.updateTextColor()
+	
