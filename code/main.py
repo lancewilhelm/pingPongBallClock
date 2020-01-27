@@ -14,6 +14,6 @@ if __name__ == '__main__':
 	
 	while(True):
 		PPB.updateBGColor()
-		PPB.clock([0,1])
+		PPB.clock([15,1])
 		PPB.updateTextColor()
 	

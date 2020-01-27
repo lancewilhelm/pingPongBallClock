@@ -242,3 +242,7 @@ hr.major {
 .bg-header {
 	background-color: #d0d2fd;
 }
+
+.btn-lg {
+	font-weight: 700;
+}

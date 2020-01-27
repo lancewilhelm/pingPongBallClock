@@ -42,7 +42,7 @@ def setTextColor():
 		PPB.textColor = ["animation", program]
 	return ""
 
-	# Flask Font API
+# Flask Font API
 @app.route("/api/font", methods=['POST'])
 def setFont():
 	# Read the values from the POST
@@ -59,5 +59,14 @@ def setFont():
 	PPB.secsPrev = 99
 	PPB.minsPrev = 99
 	PPB.hoursPrev = 99
+	return ""
+
+# Flask Text Animation API
+@app.route("/api/textAnimation", methods=['POST'])
+def setTextAnimation():
+	# Read the values from the POST
+	animation = request.form['animation']
+	
+	
 	return ""
 
