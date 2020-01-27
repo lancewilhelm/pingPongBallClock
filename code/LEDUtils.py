@@ -35,10 +35,7 @@ class PingPongBoard:
 		self.bgColorChange = False
 
 		#Establish variables that will be used for the clock
-		self.hoursPrev = 99  #used for clock updating
-		self.minsPrev = 99   #used for clock updating
 		self.secsPrev = 99   #used for clock updating
-		self.colonLit = False
 
 		# Set up the ball objects
 		self.balls = [
@@ -226,6 +223,7 @@ class PingPongBoard:
 		else:
 			hourStr = str(hours)
 
+		# Used to determine colon lit state
 		if secs % 2 == 0:
 			# Even seconds, concatenate the strings with a colon in the middle
 			timeStr = hourStr + ':' + minStr
@@ -238,6 +236,7 @@ class PingPongBoard:
 			# Write the string
 			self.writeString(origin[0],origin[1],timeStr)
 
+			# Set seconds to previous seconds
 			self.secsPrev = secs
 
 # Initialize an instance of the LEDStrip class
