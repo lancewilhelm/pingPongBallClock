@@ -111,14 +111,16 @@
 			</div>
 
 			<div class="col-sm">
-				<button class="btn btn-lg btn-purple" type="button" onclick="setTextAnimation('scrolling')">
-					SCROLLING
-				</button>	
-				<button class="btn btn-lg btn-purple" type="button" onclick="setTextAnimation('static')">
-					STATIC
-				</button>
-				<P>SPEED INPUT (balls/s):</P>
-				<input id="speedInput" class="form-control form-control-lg" type="text" placeholder="animation speed" min="0">	
+				<form>
+					<button class="btn btn-lg btn-purple" type="submit" onclick="setTextAnimation('scrolling')">
+						SCROLLING
+					</button>	
+					<button class="btn btn-lg btn-purple" type="button" onclick="setTextAnimation('static')">
+						STATIC
+					</button>
+					<P>SPEED INPUT (balls/s):</P>
+					<input id="speedInput" class="form-control form-control-lg" type="text" placeholder="animation speed" min="0" required>	
+				</form>
 			</div>
 
 			<div class="col-sm">
