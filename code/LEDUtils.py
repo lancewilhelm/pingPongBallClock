@@ -34,6 +34,7 @@ class PingPongBoard:
 		self.font = digits
 		self.textSpacing = 0
 		self.textOrigin = [20,1]
+		self.stringLength = 0
 
 		self.bgColor = ["solid", Color(0,0,255)]
 		self.bgColorChange = False
@@ -156,7 +157,7 @@ class PingPongBoard:
 			self.textOrigin[0] -= 1
 
 			# Reset the x text origin to 20 if it gets through the screen
-			if self.textOrigin[0] < -20:
+			if self.textOrigin[0] < -self.stringLength:
 				self.textOrigin[0] = 20
 
 			# Set the start time to this time now
@@ -269,6 +270,7 @@ class PingPongBoard:
 		# Check to see if the minute has changed. If it has, write the the new time
 		# if secs != self.secsPrev:    
 		# Write the string
+		self.stringLength = len(timeStr)*self.font[ord(' ')][0]			# Used to determine when a full string has been scrolled through
 		self.writeString(self.textOrigin[0],self.textOrigin[1],timeStr)
 
 		# Set seconds to previous seconds
