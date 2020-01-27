@@ -270,7 +270,7 @@ class PingPongBoard:
 		# Check to see if the minute has changed. If it has, write the the new time
 		# if secs != self.secsPrev:    
 		# Write the string
-		self.stringLength = len(timeStr)*self.font[ord(' ')][0]			# Used to determine when a full string has been scrolled through
+		self.stringLength = len(timeStr)*len(self.font[ord(' ')][0])			# Used to determine when a full string has been scrolled through
 		self.writeString(self.textOrigin[0],self.textOrigin[1],timeStr)
 
 		# Set seconds to previous seconds
