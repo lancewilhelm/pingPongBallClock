@@ -136,6 +136,18 @@ class PingPongBoard:
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
+	def rainbowText(self,wait_ms=20):
+		# Draw rainbow that fades across all pixels at once.
+		j = self.updateFrame(256)
+
+		for x in range(self.numCols):
+			for y in range(self.numRows):
+				i = x*self.numRows + y
+				if self.balls[y][x].text == True:
+					self.writeBall(x,y,self.wheel(((i*2)+j) & 255),True)
+		self.strip.show()
+		time.sleep(wait_ms/1000.0)
+
 	def rainbowCycle(self,wait_ms=20):
 		# Draw rainbow that uniformly distributes itself across all pixels.
 		j = self.updateFrame(256)
