@@ -51,10 +51,8 @@ def setFont():
 	# Assign the font variable in LED class
 	if font == "slanted":
 		PPB.font = slanted
-		PPB.textSpacing = 1
 	elif font == "digits":
 		PPB.font = digits
-		PPB.textSpacing = 0
 
 	# Reset the background and variables to make the screen refresh completely on next loop iteration
 	PPB.colorFill(PPB.bgColor[1], True)		# True boolean to make sure that the whole screen wipes including text
