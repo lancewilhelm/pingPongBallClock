@@ -67,6 +67,10 @@ def setTextAnimation():
 	# Read the values from the POST
 	animation = request.form['animation']
 	
-	
+	if animation == "static":
+		PPB.textOrigin = [1,1]
+		PPB.animationSpeed = 0
+	if animation == "scrolling":
+		PPB.animationSpeed = 1.5
 	return ""
 
