@@ -115,8 +115,8 @@ class PingPongBoard:
 			y = self.textOrigin[1]
 			for i in range(len(self.displayString)):
 				print i
+				print self.displayString[i]
 				distanceToNext = self.writeChar(x,y,self.displayString[i])
-				# distanceToNext = len(font[ord(self.displayString[i])][0]) + self.textSpacing
 				x += distanceToNext
 
 			# After we write a new string, reset/set booleans and set the prev variable to the current string
