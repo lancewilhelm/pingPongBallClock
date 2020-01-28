@@ -109,6 +109,10 @@ function setTextAnimation(animation){
 	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	var speed = document.getElementById('speedInput').value;
+	if (speed == ''){
+		speed = 5;
+	}
+	console.log(speed);
 	xhttp.open("POST", "/api/textanimation", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("animation="+animation+"&speed="+speed);
