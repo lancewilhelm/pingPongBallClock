@@ -355,9 +355,9 @@ class PingPongBoard:
 		x = response.json()
 
 		if x['cod'] != '404':
-			main = x['main']
+			y = x['main']
 
-			current_temperature = main['temp']
+			current_temperature = y['temp']
 
 			weather_description = x['weather'][0]['description']
 
