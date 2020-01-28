@@ -77,3 +77,17 @@ def setTextAnimation():
 	PPB.textStateWipe()
 	return ""
 
+	# Flask Select Content API
+@app.route("/api/setcontent", methods=['POST'])
+def setContent():
+	# Read the values from the POST
+	content = request.form['content']
+	checked = request.form['checked']
+
+	if checked:
+		PPB.content.append(content)
+	else:
+		PPB.content.remove(content)
+
+	return ""
+

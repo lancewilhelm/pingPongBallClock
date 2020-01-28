@@ -150,6 +150,25 @@
 		</div>
 	</div>
 
+	<hr class="major">
+
+	<div class="container-fluid text-center bg"> 
+		<div class="row bg-header">
+			<div class="col-sm text-right">
+				<h4>CONTENT</h4>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm">
+				<h5>SELECT CONTENT</h5>
+				<form>
+					<input type="checkbox" name="time" id="time" onclick="setContent('time')" checked>Time<br>
+					<input type="checkbox" name="date" id="date" onclick="setContent('date')">Date<br>
+					<input type="checkbox" name="text" id="text" onclick="setContent('text')">Custom Text
+				</form>
+			</div>	
+		</div>
+	</div>
 <script src="{{ url_for('static',filename='js/script.js') }}"></script>
 <script src="../static/js/script.js"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

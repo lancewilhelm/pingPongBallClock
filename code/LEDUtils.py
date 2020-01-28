@@ -38,6 +38,9 @@ class PingPongBoard:
 		self.displayString = ''
 		self.displayStringPrev = ''
 		self.displayStringLength = 0
+		self.customText = ''
+
+		self.content = ['time']
 
 		self.bgColor = ["solid", Color(0,0,255), True]
 

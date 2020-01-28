@@ -18,10 +18,13 @@ if __name__ == '__main__':
 		PPB.displayString = ''
 
 		# Get the display string components
-		# PPB.time()
-		# PPB.date()
-		PPB.text()
-
+		for x in PPB.content:
+			if x == 'time':
+				PPB.time()
+			elif x == 'date':
+				PPB.date()
+			elif x == 'text':
+				PPB.text()a
 
 		# If the animation speed is not 0, then update the animation
 		if PPB.animationSpeed != 0:
