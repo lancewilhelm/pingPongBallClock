@@ -102,6 +102,11 @@ class PingPongBoard:
 					self.writeBallTextState(col+x,row+y,False)	#write the text to false so that it will be overwritten
 		self.strip.show()
 
+		# Determine the distance to the next character based on the current character and the spacing setting
+		distanceToNext = len(font[char][0]) + self.textSpacing
+
+		return distanceToNext
+
 	def updateDisplayString(self):
 		# This makes sure that we get the right font to get the spacing correct
 		if char.isdigit() == False and char != ':' and char != ';':
@@ -113,8 +118,8 @@ class PingPongBoard:
 			x = PPB.textOrigin[0] 
 			y = PPB.textOrigin[1]
 			for i in range(len(PPB.displayString)):
-				self.writeChar(x,y,PPB.displayString[i])
-				distanceToNext = len(font[ord(PPB.displayString[i])][0]) + self.textSpacing
+				distanceToNext = self.writeChar(x,y,PPB.displayString[i])
+				# distanceToNext = len(font[ord(PPB.displayString[i])][0]) + self.textSpacing
 				x += distanceToNext
 
 			# After we write a new string, reset/set booleans and set the prev variable to the current string
