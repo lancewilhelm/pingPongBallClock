@@ -10,7 +10,7 @@ import signal
 import sys
 import time
 
-import requests
+import request
 from neopixel import *
 from Utils import *
 
