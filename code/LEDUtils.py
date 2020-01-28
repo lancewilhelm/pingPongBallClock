@@ -145,11 +145,10 @@ class PingPongBoard:
 			elif self.bgColor[1] == "rainbowCycle":
 				self.rainbowCycle()
 		elif self.bgColor[0] == "solid" and self.displayChanged:
-			print "writing BG color..."	#debugging
+			# print "writing BG color..."	#debugging
 			self.colorFill(self.bgColor[1])
 
 		# Color the Text
-		print "writing TEXT color..."		#debugging
 		# Check to see if we have a text color animation
 		if self.textColor[0] == "animation":
 			if self.textColor[1] == "rainbow":
@@ -158,6 +157,7 @@ class PingPongBoard:
 				self.rainbowCycleText()
 		# Else, check for solid notification
 		elif self.textColor[0] == 'solid' and self.displayChanged:
+			# print "writing TEXT color..."		#debugging
 			for y in range(self.numRows):
 				for x in range(self.numCols):
 					if self.balls[y][x].text == True:
