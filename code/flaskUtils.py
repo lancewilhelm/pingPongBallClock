@@ -82,9 +82,9 @@ def setTextAnimation():
 def setContent():
 	# Read the values from the POST
 	content = str(request.form['content'])
-	checked = bool(request.form['checked'])
+	checked = str(request.form['checked'])
 
-	if checked:
+	if checked == 'true':
 		PPB.content.append(content)
 	else:
 		PPB.content.remove(content)
