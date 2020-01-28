@@ -346,7 +346,7 @@ class PingPongBoard:
 
 		# base_url variable to store url //
 		base_url = "http://api.openweathermap.org/data/2.5/weather?"
-		complete_url = base_url + "appid" + apiKey + "&q=" + self.weatherLocation
+		complete_url = base_url + "appid=" + apiKey + "&q=" + self.weatherLocation
 		
 		if self.updateWeather:
 			response = requests.get(complete_url) 
