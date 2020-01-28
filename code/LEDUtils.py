@@ -87,7 +87,10 @@ class PingPongBoard:
 			font = self.font
 
 		# Determine the distance to the next character based on the current character and the spacing setting
-		distanceToNext = len(font[char][0]) + self.textSpacing
+		if char.isspace():
+			distanceToNext = 4
+		else:
+			distanceToNext = len(font[char][0]) + self.textSpacing
 
 		# Do not write characters outside of the display area
 		if col <= -4 or col > 20:
