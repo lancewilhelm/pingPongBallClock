@@ -88,9 +88,9 @@ class PingPongBoard:
 
 		# Do not write characters outside of the display area
 		if col <= -4 or col > 20:
-			return 'done'
+			return
 		if row < -5 or row >= 7:
-			return 'done'
+			return
 
 		print char
 		# Convert the char to the ASCII value
