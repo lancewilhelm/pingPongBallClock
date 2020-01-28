@@ -3,15 +3,17 @@
 #
 # Direct port of the Arduino NeoPixel library strandtest example.  Showcases
 # various animations on a strip of NeoPixels.
+import argparse
+import json
+import math
+import signal
+import sys
 import time
 
+import requests
 from neopixel import *
 from Utils import *
 
-import argparse
-import signal
-import sys
-import math
 
 class PingPongBoard:
 	def __init__(self):
@@ -330,6 +332,14 @@ class PingPongBoard:
 		textStr = self.customText.upper()
 
 		self.displayString += textStr + ' '
+
+	def weather(self):
+		apiKey = 68ba9f27bc6d081421c5d2707f019a9a
+
+		# base_url variable to store url 
+		base_url = "http://api.openweathermap.org/data/2.5/weather?"
+
+		
+
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
-
