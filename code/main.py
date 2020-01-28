@@ -13,11 +13,20 @@ if __name__ == '__main__':
 	x.start()
 	
 	while(True):
-		PPB.updateBGColor()
-		PPB.clock()
 
+		# Reset the string at the beginning of each loop
+		PPB.displayString = ''
+
+		PPB.updateBGColor()
+		PPB.time()
+		PPB.date()
+
+		PPB.displayStringLength = len(PPB.displayString)*len(PPB.font[ord(' ')][0])			# Used to determine when a full string has been scrolled through
+		PPB.writeString(PPB.textOrigin[0],PPB.textOrigin[1],PPB.displayString)
+
+		# If the animation speed is not 0, then update the animation
 		if PPB.animationSpeed != 0:
 			PPB.updateTextAnimation()
-			
+
 		PPB.updateTextColor()
 	

@@ -34,7 +34,9 @@ class PingPongBoard:
 		self.font = digits
 		self.textSpacing = 0
 		self.textOrigin = [20,1]
-		self.stringLength = 0
+		self.displayString = ''
+		self.displayStringPrev = ''
+		self.displayStringLength = 0
 
 		self.bgColor = ["solid", Color(0,0,255)]
 		self.bgColorChange = False
@@ -101,10 +103,6 @@ class PingPongBoard:
 			self.writeChar(x,row,string[i])
 			distanceToNext = len(self.font[ord(string[i])][0]) + self.textSpacing
 			x += distanceToNext
-
-		# If we are in a scroll animation, added a blank on the end to erase trailing bulbs
-		if self.animationSpeed != 0:
-			self.writeChar(x,row,' ')
 
 	def updateFrame(self, animationEnd):
 		self.animationFrame += 1
@@ -239,19 +237,12 @@ class PingPongBoard:
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
-	def clock(self):
+	def time(self):
 		# Get the current local time and parse it out to usable variables
 		t = time.localtime()
 		hours = t.tm_hour
 		mins = t.tm_min
 		secs = t.tm_sec
-		mon = t.tm_mon
-		day = t.tm_mday
-		year = t.tm_year
-
-		monStr = str(mon)
-		dayStr = str(day)
-		yearStr = str(year)
 
 		# Convert 24h time to 12h time
 		if hours > 12:
@@ -268,7 +259,7 @@ class PingPongBoard:
 			minStr = str(mins)
 
 		# Create the hour string
-		if hours < 10:
+		if hours < 10 and self.animationSpeed == 0:
 			hourStr = ' ' + str(hours)
 		else:
 			hourStr = str(hours)
@@ -276,19 +267,30 @@ class PingPongBoard:
 		# Used to determine colon lit state
 		if secs % 2 == 0:
 			# Even seconds, concatenate the strings with a colon in the middle
-			timeStr = hourStr + ':' + minStr + ' ' + monStr + '-' + dayStr + '-' + yearStr
+			timeStr = hourStr + ':' + minStr
 		else:
 			# Odd seconds, concatenate the strings with a semicolon(blank) in the middle
-			timeStr = hourStr + ';' + minStr + ' ' + monStr + '-' + dayStr + '-' + yearStr
+			timeStr = hourStr + ';' + minStr 
 
-		# Check to see if the minute has changed. If it has, write the the new time
-		# if secs != self.secsPrev:    
-		# Write the string
-		self.stringLength = len(timeStr)*len(self.font[ord(' ')][0])			# Used to determine when a full string has been scrolled through
-		self.writeString(self.textOrigin[0],self.textOrigin[1],timeStr)
+		# Concatenate the date string to the master string with a space termination
+		self.displayString += timeStr + ' '
 
-		# Set seconds to previous seconds
-		# self.secsPrev = secs
+	def date(self):
+		# Get the current local time and parse it out to usable variables
+		t = time.localtime()
+		mon = t.tm_mon
+		day = t.tm_mday
+		year = t.tm_year
+
+		monStr = str(mon)
+		dayStr = str(day)
+		yearStr = str(year)
+
+		# Write the date string
+		dateStr = monStr + '-' + dayStr + '-' + yearStr[-2:]
+		
+		# Concatenate the date string to the master string with a space termination
+		self.displayString += dateStr + ' '
 
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
