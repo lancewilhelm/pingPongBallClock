@@ -85,6 +85,7 @@ def setContent():
 	checked = request.form['checked']
 
 	print content, checked
+	print type(content)
 	if checked:
 		PPB.content.append(content)
 	else:
