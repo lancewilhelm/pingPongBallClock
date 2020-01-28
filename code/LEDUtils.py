@@ -27,7 +27,7 @@ class PingPongBoard:
 		self.animationEnd = 1
 		self.startTime = 0
 		self.timeElapsed = 0
-		self.animationSpeed = 5.0									# Balls/s for animations. Needs to be a float (.0)
+		self.animationSpeed = 0									 # Balls/s for animations. Needs to be a float (.0). Static default
 
 		self.textColor = ["solid", Color(255,255,255), False]
 		self.font = digits
