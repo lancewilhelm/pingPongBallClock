@@ -132,6 +132,7 @@ class PingPongBoard:
 		self.strip.show()
 
 	def updateTextColor(self):
+		print "updating text"
 		color = self.textColor[1]	# Capture the color here to prevent errors during color updating
 		# Check to see if we have a text color animation
 		if self.textColor[0] == "animation":
