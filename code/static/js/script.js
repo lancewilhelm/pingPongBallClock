@@ -53,6 +53,17 @@ function setBGBlue(){
 	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
 }
 
+function setBGBlack(){
+	origin = window.location.origin
+	var xhttp = new XMLHttpRequest();
+	var red = 0;
+	var green = 0;
+	var blue = 0;
+	xhttp.open("POST", "/api/bgcolor", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
+}
+
 function setTextWhite(){
 	origin = window.location.origin
 
@@ -60,6 +71,18 @@ function setTextWhite(){
 	var red = 255;
 	var green = 255;
 	var blue = 255;
+	xhttp.open("POST", "/api/textcolor", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
+}
+
+function setTextBlack(){
+	origin = window.location.origin
+
+	var xhttp = new XMLHttpRequest();
+	var red = 0;
+	var green = 0;
+	var blue = 0;
 	xhttp.open("POST", "/api/textcolor", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
