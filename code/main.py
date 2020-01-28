@@ -24,7 +24,7 @@ if __name__ == '__main__':
 			elif x == 'date':
 				PPB.date()
 			elif x == 'text':
-				PPB.text()a
+				PPB.text()
 
 		# If the animation speed is not 0, then update the animation
 		if PPB.animationSpeed != 0:
