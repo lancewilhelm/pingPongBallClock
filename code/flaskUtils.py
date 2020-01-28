@@ -90,5 +90,6 @@ def setContent():
 	else:
 		PPB.content.remove(content)
 
+	print PPB.content
 	return ""
 

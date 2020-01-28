@@ -18,7 +18,6 @@ if __name__ == '__main__':
 		PPB.displayString = ''
 
 		# Get the display string components
-		print PPB.content
 		for x in PPB.content:
 			if x == 'time':
 				PPB.time()
