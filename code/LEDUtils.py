@@ -108,12 +108,6 @@ class PingPongBoard:
 		return distanceToNext
 
 	def updateDisplayString(self):
-		# This makes sure that we get the right font to get the spacing correct
-		if char.isdigit() == False and char != ':' and char != ';':
-			font = slanted
-		else:
-			font = self.font
-
 		if self.displayString != self.displayStringPrev or self.textOriginMoved or self.fontChanged:
 			x = PPB.textOrigin[0] 
 			y = PPB.textOrigin[1]
