@@ -142,7 +142,7 @@ class PingPongBoard:
 
 		# Write the BG. Will not overwrite text per the function
 		if self.bgColor[0] == "solid":
-			# print "writing BG color..."	#debugging
+			print "writing BG color..."	#debugging
 			self.colorFill(self.bgColor[1])
 		elif self.bgColor[0] == "animation":
 			if self.bgColor[1] == "rainbow":
