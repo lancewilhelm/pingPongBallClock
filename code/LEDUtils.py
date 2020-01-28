@@ -104,7 +104,7 @@ class PingPongBoard:
 
 		# Determine the distance to the next character based on the current character and the spacing setting
 		distanceToNext = len(font[char][0]) + self.textSpacing
-
+		print distanceToNext
 		return distanceToNext
 
 	def updateDisplayString(self):
@@ -117,7 +117,6 @@ class PingPongBoard:
 				print self.displayString[i]
 				distanceToNext = self.writeChar(x,y,self.displayString[i])
 				# distanceToNext = len(font[ord(self.displayString[i])][0]) + self.textSpacing
-				print distanceToNext
 				x += distanceToNext
 
 			# After we write a new string, reset/set booleans and set the prev variable to the current string
