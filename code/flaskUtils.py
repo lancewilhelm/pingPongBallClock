@@ -49,15 +49,15 @@ def setFont():
 	# Read the values from the POST
 	font = request.form['font']
 	
-	PPB.displayChanged = True
 	# Assign the font variable in LED class
 	if font == "slanted":
 		PPB.font = slanted
 	elif font == "digits":
 		PPB.font = digits
 
-	# Reset variables to make the screen refresh completely on next loop iteration
-	PPB.secsPrev = 99
+	PPB.fontChanged = True
+	PPB.updateDisplayString()
+
 	return ""
 
 # Flask Text Animation API
