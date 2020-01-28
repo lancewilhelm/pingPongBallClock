@@ -86,11 +86,14 @@ class PingPongBoard:
 		else:
 			font = self.font
 
+		# Determine the distance to the next character based on the current character and the spacing setting
+		distanceToNext = len(font[char][0]) + self.textSpacing
+
 		# Do not write characters outside of the display area
 		if col <= -4 or col > 20:
-			return
+			return distanceToNext
 		if row < -5 or row >= 7:
-			return
+			return distanceToNext
 
 		# Convert the char to the ASCII value
 		char = ord(char)
@@ -102,8 +105,6 @@ class PingPongBoard:
 					self.writeBallTextState(col+x,row+y,False)	#write the text to false so that it will be overwritten
 		self.strip.show()
 
-		# Determine the distance to the next character based on the current character and the spacing setting
-		distanceToNext = len(font[char][0]) + self.textSpacing
 		return distanceToNext
 
 	def updateDisplayString(self):
@@ -112,16 +113,16 @@ class PingPongBoard:
 			y = self.textOrigin[1]
 			for i in range(len(self.displayString)):
 				distanceToNext = self.writeChar(x,y,self.displayString[i])
-				if distanceToNext != None:
-					x += distanceToNext
-				else:
-					break
+					
+				x += distanceToNext
+
 
 			# After we write a new string, reset/set booleans and set the prev variable to the current string
 			self.textOriginMoved = False					# We just addressed this change, so change it back to false
 			self.fontChanged = False						# We just addressed this change, so change it back to false
 			self.displayChanged = True						# We have written a new string, so the display has changed
 			self.displayStringPrev = self.displayString		# Set the displayStringPrev to the current string
+			self.displayStringLength = x					# This so happens to show up after we are done here. Useful for the animation scroll
 
 	def updateFrame(self, animationEnd):
 		self.animationFrame += 1
@@ -180,7 +181,7 @@ class PingPongBoard:
 
 	def updateTextAnimation(self):
 		# Used to determine whether or not we have scrolled through the whole string
-		self.displayStringLength = len(self.displayString)*len(self.font[ord(' ')][0])
+		# self.displayStringLength = len(self.displayString)*len(self.font[ord(' ')][0])
 
 		# If start time has not been defined, do so
 		if self.startTime == 0:
