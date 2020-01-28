@@ -92,7 +92,6 @@ class PingPongBoard:
 		if row < -5 or row >= 7:
 			return
 
-		print char
 		# Convert the char to the ASCII value
 		char = ord(char)
 		for y in range(len(font[char])):
@@ -108,13 +107,10 @@ class PingPongBoard:
 		return distanceToNext
 
 	def updateDisplayString(self):
-		print self.displayString
 		if self.displayString != self.displayStringPrev or self.textOriginMoved or self.fontChanged:
 			x = self.textOrigin[0] 
 			y = self.textOrigin[1]
 			for i in range(len(self.displayString)):
-				print i
-				print self.displayString[i]
 				distanceToNext = self.writeChar(x,y,self.displayString[i])
 				if distanceToNext != None:
 					x += distanceToNext
