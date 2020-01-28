@@ -321,7 +321,7 @@ class PingPongBoard:
 		self.displayString += dateStr + ' '
 
 	def text(self):
-		textStr = 'hello lance'
+		textStr = 'hello angelica'
 		textStr = textStr.upper()
 
 		self.displayString += textStr + ' '
