@@ -172,7 +172,10 @@ class PingPongBoard:
 			for y in range(self.numRows):
 				for x in range(self.numCols):
 					if self.balls[y][x].text == True:
-						self.writeBallColor(x,y,self.textColor[1])
+						if self.textColor[0] == 'animation':
+							return
+						else:
+							self.writeBallColor(x,y,self.textColor[1])
 			self.strip.show()
 
 		# Reset the display changed boolean now that it has been updated
