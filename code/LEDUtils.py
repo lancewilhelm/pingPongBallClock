@@ -88,9 +88,9 @@ class PingPongBoard:
 
 		# Do not write characters outside of the display area
 		if col <= -4 or col > 20:
-			return
+			return 'done'
 		if row < -5 or row >= 7:
-			return
+			return 'done'
 
 		print char
 		# Convert the char to the ASCII value
@@ -105,7 +105,6 @@ class PingPongBoard:
 
 		# Determine the distance to the next character based on the current character and the spacing setting
 		distanceToNext = len(font[char][0]) + self.textSpacing
-		print distanceToNext
 		return distanceToNext
 
 	def updateDisplayString(self):
@@ -117,7 +116,10 @@ class PingPongBoard:
 				print i
 				print self.displayString[i]
 				distanceToNext = self.writeChar(x,y,self.displayString[i])
-				x += distanceToNext
+				if x != None:
+					x += distanceToNext
+				else:
+					break
 
 			# After we write a new string, reset/set booleans and set the prev variable to the current string
 			self.textOriginMoved = False					# We just addressed this change, so change it back to false
@@ -323,7 +325,7 @@ class PingPongBoard:
 		self.displayString += dateStr + ' '
 
 	def text(self):
-		textStr = 'lanc'
+		textStr = 'lance'
 		textStr = textStr.upper()
 
 		self.displayString += textStr + ' '
