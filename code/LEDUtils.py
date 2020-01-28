@@ -100,17 +100,17 @@ class PingPongBoard:
 
 	def updateDisplayString(self):
 		if self.displayString != self.displayStringPrev or self.textOriginMoved:
-		x = PPB.textOrigin[0] 
-		y = PPB.textOrigin[1]
-		for i in range(len(PPB.displayString)):
-			self.writeChar(x,y,PPB.displayString[i])
-			distanceToNext = len(self.font[ord(PPB.displayString[i])][0]) + self.textSpacing
-			x += distanceToNext
+			x = PPB.textOrigin[0] 
+			y = PPB.textOrigin[1]
+			for i in range(len(PPB.displayString)):
+				self.writeChar(x,y,PPB.displayString[i])
+				distanceToNext = len(self.font[ord(PPB.displayString[i])][0]) + self.textSpacing
+				x += distanceToNext
 
-		# After we write a new string, reset/set booleans and set the prev variable to the current string
-		self.textOriginMoved = False					# We just addressed this change, so change it back to false
-		self.displayChanged = True						# We have written a new string, so the display has changed
-		self.displayStringPrev = self.displayString		# Set the displayStringPrev to the current string
+			# After we write a new string, reset/set booleans and set the prev variable to the current string
+			self.textOriginMoved = False					# We just addressed this change, so change it back to false
+			self.displayChanged = True						# We have written a new string, so the display has changed
+			self.displayStringPrev = self.displayString		# Set the displayStringPrev to the current string
 
 	def updateFrame(self, animationEnd):
 		self.animationFrame += 1
