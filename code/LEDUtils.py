@@ -81,7 +81,7 @@ class PingPongBoard:
 
 	def writeChar(self,col,row,char,textBool=True):
 		# This makes sure that all text is written in the slanted font despite any other font being set
-		if char.isdigit() == False and char != ':' or char != ';':
+		if char.isdigit() == False and char != ':' and char != ';':
 			font = slanted
 		else:
 			font = self.font
