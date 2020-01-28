@@ -186,7 +186,7 @@ class PingPongBoard:
 		self.timeElapsed = nowTime - self.startTime
 
 		# If the time elapsed is >= the time one frame should take for our set speed, do the things
-		if self.timeElapsed >= 1/self.animationSpeed:
+		if self.timeElapsed >= 1/self.animationSpeed and self.animationSpeed != 0:
 			#Indicate the display has changed
 			self.textOriginMoved = True
 
