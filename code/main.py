@@ -27,6 +27,7 @@ if __name__ == '__main__':
 
 		# Write the display string text state if the string is different than last loop
 		if PPB.displayString != PPB.displayStringPrev or PPB.textOriginMoved:
+			print "text different"
 			PPB.writeDisplayString()
 
 		# Update the actual ball color light
