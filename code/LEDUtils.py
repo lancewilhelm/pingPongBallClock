@@ -351,9 +351,8 @@ class PingPongBoard:
 		
 		if self.updateWeather:
 			response = requests.get(complete_url) 
+			self.weatherResponse = response.json()
 			self.updateWeather = False
-
-		self.weatherResponse = response.json()
 
 		if self.weatherResponse['cod'] != '404':
 			y = self.weatherResponse['main']
