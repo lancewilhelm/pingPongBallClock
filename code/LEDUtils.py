@@ -117,10 +117,10 @@ class PingPongBoard:
 			x = self.textOrigin[0] 
 			y = self.textOrigin[1]
 			for i in range(len(self.displayString)):
+				print self.displayString[i]
 				distanceToNext = self.writeChar(x,y,self.displayString[i])
 					
 				x += distanceToNext
-
 
 			# After we write a new string, reset/set booleans and set the prev variable to the current string
 			self.textOriginMoved = False						# We just addressed this change, so change it back to false
