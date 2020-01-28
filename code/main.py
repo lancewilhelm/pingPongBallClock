@@ -25,7 +25,7 @@ if __name__ == '__main__':
 		if PPB.animationSpeed != 0:
 			PPB.updateTextAnimation()
 
-		# Write the display string text state if it has differed from the previous string
+		# Write the display string text state if the string is different than last loop
 		if PPB.displayString != PPB.displayStringPrev or PPB.textOriginMoved:
 			PPB.writeDisplayString()
 

@@ -107,7 +107,7 @@ class PingPongBoard:
 			x += distanceToNext
 
 		# After we write a new string, reset the moved location boolean
-		self.textOriginMoved = False
+		self.displayChanged = True
 
 	def updateFrame(self, animationEnd):
 		self.animationFrame += 1
@@ -135,6 +135,10 @@ class PingPongBoard:
 		self.strip.show()
 
 	def updateBoardColors(self):
+		# If we don't need to update, return
+		if self.displayChanged == False:
+			return
+
 		# Write the BG. Will not overwrite text per the function
 		if self.bgColor[0] == "solid":
 			print "writing BG color..."
@@ -162,6 +166,9 @@ class PingPongBoard:
 						self.writeBallColor(x,y,color)
 			self.strip.show()
 
+		# Reset the display changed boolean now that it has been updated
+		self.displayChanged = False
+
 	def updateTextAnimation(self):
 		# Used to determine whether or not we have scrolled through the whole string
 		self.displayStringLength = len(PPB.displayString)*len(PPB.font[ord(' ')][0])
@@ -178,7 +185,10 @@ class PingPongBoard:
 		# If the time elapsed is >= the time one frame should take for our set speed, do the things
 		if self.timeElapsed >= 1/self.animationSpeed:
 			print self.timeElapsed
-			self.textOriginMoved = True
+
+			#Indicate the display has changed
+			self.displayChanged = True
+
 			# Move the text one space to the left
 			self.textOrigin[0] -= 1
 
