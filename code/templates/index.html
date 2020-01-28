@@ -125,7 +125,7 @@
 						STATIC
 					</button>
 					<P>SPEED INPUT (balls/s):</P>
-					<input id="speedInput" class="form-control form-control-lg" type="text" placeholder="5" min="0" required>	
+					<input id="speedInput" class="form-control form-control-lg" type="text" placeholder="5" min="0">	
 				</form>
 			</div>
 
@@ -167,6 +167,11 @@
 					<input type="checkbox" name="text" id="text" onclick="setContent('text')">Custom Text
 				</form>
 			</div>	
+			<div class="col-sm">
+				<h5>CUSTOM TEXT</h5>
+				<input id="textInput" class="form-control form-control-lg" type="text" placeholder="" min="0">
+				<button id="sendColorBtn" type="button" class="btn btn-purple" onclick="setCustomText()">SET CUSTOM TEXT</button>
+			</div>
 		</div>
 	</div>
 <script src="{{ url_for('static',filename='js/script.js') }}"></script>

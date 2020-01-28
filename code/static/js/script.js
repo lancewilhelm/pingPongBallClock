@@ -105,6 +105,15 @@ function setContent(content){
 	xhttp.send("content="+content+"&checked="+checked);
 }
 
+function setCustomText(){
+	origin = window.location.origin
+	var xhttp = new XMLHttpRequest();
+	var text = document.getElementById('textInput').value;
+	xhttp.open("POST", "/api/setcustomtext", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("text="+text);
+}
+
 function setTextAnimation(animation){
 	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();

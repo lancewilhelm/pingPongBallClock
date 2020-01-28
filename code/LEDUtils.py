@@ -327,8 +327,7 @@ class PingPongBoard:
 		self.displayString += dateStr + ' '
 
 	def text(self):
-		textStr = 'hello angelica'
-		textStr = textStr.upper()
+		textStr = self.customText.upper()
 
 		self.displayString += textStr + ' '
 # Initialize an instance of the LEDStrip class

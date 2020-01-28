@@ -93,3 +93,12 @@ def setContent():
 	PPB.textStateWipe()
 	return ""
 
+# Flask Set Custom Text API
+@app.route("/api/setcustomtext", methods=['POST'])
+def setContent():
+	# Read the values from the POST
+	text = str(request.form['text'])
+
+	PPB.customText = text
+	return ""
+
