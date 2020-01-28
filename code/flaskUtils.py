@@ -18,6 +18,7 @@ def setBGColor():
 	green = int(request.form['green'])
 	blue = int(request.form['blue'])
 	
+	PPB.displayChanged = True
 	# Change the bg color accordingly
 	if program == "solid":
 		PPB.bgColor = ["solid", Color(red,green,blue)]
@@ -34,6 +35,7 @@ def setTextColor():
 	green = int(request.form['green'])
 	blue = int(request.form['blue'])
 	
+	PPB.displayChanged = True
 	# Change the bg color accordingly
 	if program == "solid":
 		PPB.textColor = ["solid", Color(red,green,blue)]
@@ -47,6 +49,7 @@ def setFont():
 	# Read the values from the POST
 	font = request.form['font']
 	
+	PPB.displayChanged = True
 	# Assign the font variable in LED class
 	if font == "slanted":
 		PPB.font = slanted
@@ -72,8 +75,7 @@ def setTextAnimation():
 	if animation == "scrolling":
 		speed = float(request.form['speed'])
 		PPB.animationSpeed = speed
-
-	
+		
 	# Wipe the screen
 	PPB.textStateWipe()
 	return ""
