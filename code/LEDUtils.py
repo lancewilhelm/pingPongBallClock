@@ -106,8 +106,9 @@ class PingPongBoard:
 			distanceToNext = len(self.font[ord(PPB.displayString[i])][0]) + self.textSpacing
 			x += distanceToNext
 
-		# After we write a new string, reset the moved location boolean
+		# After we write a new string, reset the moved location boolean and set the prev variable to the current string
 		self.displayChanged = True
+		self.displayStringPrev = self.displayString
 
 	def updateFrame(self, animationEnd):
 		self.animationFrame += 1
