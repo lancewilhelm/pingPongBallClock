@@ -25,6 +25,8 @@ if __name__ == '__main__':
 				PPB.date()
 			elif x == 'text':
 				PPB.text()
+			elif x == 'weather':
+				PPB.weather()
 
 		# If the animation speed is not 0, then update the animation
 		if PPB.animationSpeed != 0:

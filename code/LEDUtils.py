@@ -42,10 +42,13 @@ class PingPongBoard:
 		self.displayStringLength = 0
 		self.customText = ''
 
-		self.content = ['time']
+		self.weatherLocation = '80925'
+		self.updateWeather = True
+		self.content = ['time','weather']
 
 		self.bgColor = ["solid", Color(0,0,255), True]
 
+		self.minsPrev = 99
 		self.displayChanged = True
 
 		# Set up the ball objects
@@ -311,6 +314,11 @@ class PingPongBoard:
 		# Concatenate the date string to the master string with a space termination
 		self.displayString += timeStr + ' '
 
+		# Check to see if the minute has changed this is to update the weather. 
+		if mins != self.minsPrev:
+			self.updateWeather = True
+			self.minsPrev = mins
+
 	def date(self):
 		# Get the current local time and parse it out to usable variables
 		t = time.localtime()
@@ -334,12 +342,29 @@ class PingPongBoard:
 		self.displayString += textStr + ' '
 
 	def weather(self):
-		apiKey = 68ba9f27bc6d081421c5d2707f019a9a
+		apiKey = '68ba9f27bc6d081421c5d2707f019a9a'
 
-		# base_url variable to store url 
+		# base_url variable to store url //
 		base_url = "http://api.openweathermap.org/data/2.5/weather?"
-
+		complete_url = base_url + "appid" + apiKey + "&q=" + self.weatherLocation
 		
+		if self.updateWeather:
+			response = requests.get(complete_url) 
+			self.updateWeather = False
+
+		x = response.json()
+
+		if x['cod'] != '404':
+			main = x['main']
+
+			current_temperature = main['temp']
+
+			weather_description = x['weather'][0]['description']
+
+			print current_temperature
+			print weather_description
+		else:
+			print 'City Not Found'
 
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
