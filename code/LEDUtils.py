@@ -38,6 +38,9 @@ class PingPongBoard:
 		self.displayString = ''
 		self.displayStringPrev = ''
 		self.displayStringLength = 0
+		self.customText = ''
+
+		self.content = ['time']
 
 		self.bgColor = ["solid", Color(0,0,255), True]
 
@@ -80,36 +83,48 @@ class PingPongBoard:
 			self.balls[row][col].text = text
 
 	def writeChar(self,col,row,char,textBool=True):
+		# This makes sure that all text is written in the slanted font despite any other font being set
+		if char.isdigit() == False and char != ':' and char != ';':
+			font = slanted
+		else:
+			font = self.font
+
+		# Determine the distance to the next character based on the current character and the spacing setting
+		if char.isspace():
+			distanceToNext = 4
+		else:
+			distanceToNext = len(font[ord(char)][0]) + self.textSpacing
+
 		# Do not write characters outside of the display area
 		if col <= -4 or col > 20:
-			return
+			return distanceToNext
 		if row < -5 or row >= 7:
-			return
+			return distanceToNext
 
-		# Convert the char to the ASCII value
-		char = ord(char)
-		for y in range(len(self.font[char])):
-			for x in range(len(self.font[char][-(y+1)])): #Using -y to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
-				if self.font[char][-(y+1)][x]:
+		for y in range(len(font[ord(char)])):
+			for x in range(len(font[ord(char)][-(y+1)])): #Using -y to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
+				if font[ord(char)][-(y+1)][x]:
 					self.writeBallTextState(col+x,row+y,textBool)
 				else:
 					self.writeBallTextState(col+x,row+y,False)	#write the text to false so that it will be overwritten
 		self.strip.show()
 
+		return distanceToNext
+
 	def updateDisplayString(self):
 		if self.displayString != self.displayStringPrev or self.textOriginMoved or self.fontChanged:
-			x = PPB.textOrigin[0] 
-			y = PPB.textOrigin[1]
-			for i in range(len(PPB.displayString)):
-				self.writeChar(x,y,PPB.displayString[i])
-				distanceToNext = len(self.font[ord(PPB.displayString[i])][0]) + self.textSpacing
+			x = self.textOrigin[0] 
+			y = self.textOrigin[1]
+			for i in range(len(self.displayString)):
+				distanceToNext = self.writeChar(x,y,self.displayString[i])
 				x += distanceToNext
 
 			# After we write a new string, reset/set booleans and set the prev variable to the current string
-			self.textOriginMoved = False					# We just addressed this change, so change it back to false
-			self.fontChanged = False						# We just addressed this change, so change it back to false
-			self.displayChanged = True						# We have written a new string, so the display has changed
-			self.displayStringPrev = self.displayString		# Set the displayStringPrev to the current string
+			self.textOriginMoved = False						# We just addressed this change, so change it back to false
+			self.fontChanged = False							# We just addressed this change, so change it back to false
+			self.displayChanged = True							# We have written a new string, so the display has changed
+			self.displayStringPrev = self.displayString			# Set the displayStringPrev to the current string
+			self.displayStringLength = x - self.textOrigin[0]	# This so happens to show up after we are done here. Useful for the animation scroll
 
 	def updateFrame(self, animationEnd):
 		self.animationFrame += 1
@@ -160,7 +175,10 @@ class PingPongBoard:
 			for y in range(self.numRows):
 				for x in range(self.numCols):
 					if self.balls[y][x].text == True:
-						self.writeBallColor(x,y,self.textColor[1])
+						if self.textColor[0] == 'animation':
+							return
+						else:
+							self.writeBallColor(x,y,self.textColor[1])
 			self.strip.show()
 
 		# Reset the display changed boolean now that it has been updated
@@ -168,7 +186,7 @@ class PingPongBoard:
 
 	def updateTextAnimation(self):
 		# Used to determine whether or not we have scrolled through the whole string
-		self.displayStringLength = len(PPB.displayString)*len(PPB.font[ord(' ')][0])
+		# self.displayStringLength = len(self.displayString)*len(self.font[ord(' ')][0])
 
 		# If start time has not been defined, do so
 		if self.startTime == 0:
@@ -180,7 +198,7 @@ class PingPongBoard:
 		self.timeElapsed = nowTime - self.startTime
 
 		# If the time elapsed is >= the time one frame should take for our set speed, do the things
-		if self.timeElapsed >= 1/self.animationSpeed:
+		if self.timeElapsed >= 1/self.animationSpeed and self.animationSpeed != 0:
 			#Indicate the display has changed
 			self.textOriginMoved = True
 
@@ -308,6 +326,10 @@ class PingPongBoard:
 		# Concatenate the date string to the master string with a space termination
 		self.displayString += dateStr + ' '
 
+	def text(self):
+		textStr = self.customText.upper()
+
+		self.displayString += textStr + ' '
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
 

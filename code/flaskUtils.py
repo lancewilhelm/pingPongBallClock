@@ -77,3 +77,28 @@ def setTextAnimation():
 	PPB.textStateWipe()
 	return ""
 
+# Flask Select Content API
+@app.route("/api/setcontent", methods=['POST'])
+def setContent():
+	# Read the values from the POST
+	content = str(request.form['content'])
+	checked = str(request.form['checked'])
+
+	if checked == 'true':
+		PPB.content.append(content)
+	else:
+		PPB.content.remove(content)
+
+	print PPB.content
+	PPB.textStateWipe()
+	return ""
+
+# Flask Set Custom Text API
+@app.route("/api/setcustomtext", methods=['POST'])
+def setCustomText():
+	# Read the values from the POST
+	text = str(request.form['text'])
+
+	PPB.customText = text
+	return ""
+

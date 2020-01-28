@@ -53,6 +53,17 @@ function setBGBlue(){
 	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
 }
 
+function setBGBlack(){
+	origin = window.location.origin
+	var xhttp = new XMLHttpRequest();
+	var red = 0;
+	var green = 0;
+	var blue = 0;
+	xhttp.open("POST", "/api/bgcolor", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
+}
+
 function setTextWhite(){
 	origin = window.location.origin
 
@@ -60,6 +71,18 @@ function setTextWhite(){
 	var red = 255;
 	var green = 255;
 	var blue = 255;
+	xhttp.open("POST", "/api/textcolor", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
+}
+
+function setTextBlack(){
+	origin = window.location.origin
+
+	var xhttp = new XMLHttpRequest();
+	var red = 0;
+	var green = 0;
+	var blue = 0;
 	xhttp.open("POST", "/api/textcolor", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
@@ -73,10 +96,32 @@ function setFont(font){
 	xhttp.send("font="+font);
 }
 
+function setContent(content){
+	origin = window.location.origin
+	var xhttp = new XMLHttpRequest();
+	var checked = document.getElementById(content).checked;
+	xhttp.open("POST", "/api/setcontent", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("content="+content+"&checked="+checked);
+}
+
+function setCustomText(){
+	origin = window.location.origin
+	var xhttp = new XMLHttpRequest();
+	var text = document.getElementById('textInput').value;
+	xhttp.open("POST", "/api/setcustomtext", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("text="+text);
+}
+
 function setTextAnimation(animation){
 	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	var speed = document.getElementById('speedInput').value;
+	if (speed == ''){
+		speed = 5;
+	}
+	console.log(speed);
 	xhttp.open("POST", "/api/textanimation", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("animation="+animation+"&speed="+speed);
