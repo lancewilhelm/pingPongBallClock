@@ -27,7 +27,7 @@ class PingPongBoard:
 		self.animationEnd = 1
 		self.startTime = 0
 		self.timeElapsed = 0
-		self.animationSpeed = 10
+		self.animationSpeed = 5
 
 		self.textColor = ["solid", Color(255,255,255)]
 		self.textColorChange = False
