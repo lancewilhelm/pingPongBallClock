@@ -45,7 +45,7 @@ class PingPongBoard:
 		self.weatherLocation = '80925'
 		self.updateWeather = True
 		self.weatherResponse = None
-		self.content = ['time','weather']
+		self.content = ['time']
 
 		self.bgColor = ["solid", Color(0,0,255), True]
 
@@ -361,8 +361,6 @@ class PingPongBoard:
 
 			weather_description = self.weatherResponse['weather'][0]['description']
 
-			print current_temperature
-			print weather_description
 		else:
 			print 'City Not Found'
 
