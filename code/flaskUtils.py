@@ -90,5 +90,6 @@ def setContent():
 		PPB.content.remove(content)
 
 	print PPB.content
+	PPB.textStateWipe()
 	return ""
 
