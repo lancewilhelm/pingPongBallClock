@@ -118,11 +118,11 @@ class PingPongBoard:
 
 
 			# After we write a new string, reset/set booleans and set the prev variable to the current string
-			self.textOriginMoved = False					# We just addressed this change, so change it back to false
-			self.fontChanged = False						# We just addressed this change, so change it back to false
-			self.displayChanged = True						# We have written a new string, so the display has changed
-			self.displayStringPrev = self.displayString		# Set the displayStringPrev to the current string
-			self.displayStringLength = x					# This so happens to show up after we are done here. Useful for the animation scroll
+			self.textOriginMoved = False						# We just addressed this change, so change it back to false
+			self.fontChanged = False							# We just addressed this change, so change it back to false
+			self.displayChanged = True							# We have written a new string, so the display has changed
+			self.displayStringPrev = self.displayString			# Set the displayStringPrev to the current string
+			self.displayStringLength = x - self.textOrigin[0]	# This so happens to show up after we are done here. Useful for the animation scroll
 
 	def updateFrame(self, animationEnd):
 		self.animationFrame += 1
