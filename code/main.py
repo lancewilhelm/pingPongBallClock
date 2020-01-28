@@ -26,8 +26,7 @@ if __name__ == '__main__':
 			PPB.updateTextAnimation()
 
 		# Write the display string text state if the string is different than last loop
-		if PPB.displayString != PPB.displayStringPrev or PPB.textOriginMoved:
-			PPB.writeDisplayString()
+		PPB.updateDisplayString()
 
 		# Update the actual ball color light
 		PPB.updateBoardColors()

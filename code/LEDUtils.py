@@ -98,17 +98,18 @@ class PingPongBoard:
 					self.writeBallTextState(col+x,row+y,False)	#write the text to false so that it will be overwritten
 		self.strip.show()
 
-	def writeDisplayString(self):
-		x = PPB.textOrigin[0] 
-		y = PPB.textOrigin[1]
-		for i in range(len(PPB.displayString)):
-			self.writeChar(x,y,PPB.displayString[i])
-			distanceToNext = len(self.font[ord(PPB.displayString[i])][0]) + self.textSpacing
-			x += distanceToNext
+	def updateDisplayString(self):
+		if self.displayString != self.displayStringPrev:
+			x = PPB.textOrigin[0] 
+			y = PPB.textOrigin[1]
+			for i in range(len(PPB.displayString)):
+				self.writeChar(x,y,PPB.displayString[i])
+				distanceToNext = len(self.font[ord(PPB.displayString[i])][0]) + self.textSpacing
+				x += distanceToNext
 
-		# After we write a new string, reset the moved location boolean and set the prev variable to the current string
-		self.displayChanged = True
-		self.displayStringPrev = self.displayString
+			# After we write a new string, reset the moved location boolean and set the prev variable to the current string
+			self.displayChanged = True
+			self.displayStringPrev = self.displayString
 
 	def updateFrame(self, animationEnd):
 		self.animationFrame += 1
