@@ -45,7 +45,7 @@ class PingPongBoard:
 		self.weatherLocation = '80925'
 		self.updateWeather = True
 		self.weatherResponse = None
-		self.content = ['time']
+		self.content = ['time','weather']
 
 		self.bgColor = ["solid", Color(0,0,255), True]
 
@@ -358,11 +358,17 @@ class PingPongBoard:
 			y = self.weatherResponse['main']
 
 			current_temperature = y['temp']
+			current_temperature = current_temperature * (9/5) - 459.67		# Convert to fahrenheit
 
 			weather_description = self.weatherResponse['weather'][0]['description']
 
+			weatherStr = current_temperature + 'F ' + weather_description
+
 		else:
-			print 'City Not Found'
+			weatherStr = 'City Not Found'
+
+		# Concatenate the weather string to the display string
+		self.displayString += weatherStr + ' '
 
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
