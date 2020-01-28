@@ -324,6 +324,13 @@ slanted[ord('Z')] = [
 	[1,1,0,0,0],
 	[1,1,1,1,0]
 ]
+slanted[ord('!')] = [
+	[1,0],
+	[1,0],
+	[1,0],
+	[0,0],
+	[1,0]
+]
 
 # Dig1ts Numeral Font ----------------------------
 digits = {}    #Define the slanted font dictionary
