@@ -34,6 +34,7 @@ class PingPongBoard:
 		self.font = digits
 		self.textSpacing = 0
 		self.textOrigin = [20,1]
+		self.textOriginMoved = False
 		self.displayString = ''
 		self.displayStringPrev = ''
 		self.displayStringLength = 0
@@ -97,12 +98,16 @@ class PingPongBoard:
 					self.writeBallTextState(col+x,row+y,False)	#write the text to false so that it will be overwritten
 		self.strip.show()
 
-	def writeString(self,col,row,string,textBool=True):
-		x = col # For the first character it is the col
-		for i in range(len(string)):
-			self.writeChar(x,row,string[i])
-			distanceToNext = len(self.font[ord(string[i])][0]) + self.textSpacing
+	def writeDisplayString(self):
+		x = PPB.textOrigin[0] 
+		y = PPB.textOrigin[1]
+		for i in range(len(PPB.displayString)):
+			self.writeChar(x,y,PPB.displayString[i])
+			distanceToNext = len(self.font[ord(PPB.displayString[i])][0]) + self.textSpacing
 			x += distanceToNext
+
+		# After we write a new string, reset the moved location boolean
+		self.textOriginMoved = False
 
 	def updateFrame(self, animationEnd):
 		self.animationFrame += 1
@@ -123,7 +128,7 @@ class PingPongBoard:
 					self.writeBallTextState(x,y,False)
 					self.writeBallColor(x,y,color)
 		else:
-			print "writing BG color..."
+			# print "writing BG color..."
 			for y in range(self.numRows):
 				for x in range(self.numCols):
 					if self.balls[y][x].text == False:
@@ -131,7 +136,7 @@ class PingPongBoard:
 		self.strip.show()
 
 	def updateTextColor(self):
-		print "writing TEXT color..."
+		# print "writing TEXT color..."
 		color = self.textColor[1]	# Capture the color here to prevent errors during color updating
 		# Check to see if we have a text color animation
 		if self.textColor[0] == "animation":
@@ -148,6 +153,9 @@ class PingPongBoard:
 			self.strip.show()
 
 	def updateTextAnimation(self):
+		# Used to determine whether or not we have scrolled through the whole string
+		self.displayStringLength = len(PPB.displayString)*len(PPB.font[ord(' ')][0])
+
 		# If start time has not been defined, do so
 		if self.startTime == 0:
 			self.startTime = time.time()
@@ -160,6 +168,7 @@ class PingPongBoard:
 		# If the time elapsed is >= the time one frame should take for our set speed, do the things
 		if self.timeElapsed >= 1/self.animationSpeed:
 			print self.timeElapsed
+			self.textOriginMoved = True
 			# Move the text one space to the left
 			self.textOrigin[0] -= 1
 
