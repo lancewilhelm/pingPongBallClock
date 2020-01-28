@@ -19,7 +19,9 @@ if __name__ == '__main__':
 
 		# Get the display string components
 		PPB.time()
-		PPB.date()
+		# PPB.date()
+		# PPB.text()
+
 
 		# If the animation speed is not 0, then update the animation
 		if PPB.animationSpeed != 0:

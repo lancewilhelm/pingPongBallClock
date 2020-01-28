@@ -80,6 +80,12 @@ class PingPongBoard:
 			self.balls[row][col].text = text
 
 	def writeChar(self,col,row,char,textBool=True):
+		# This makes sure that all text is written in the slanted font despite any other font being set
+		if char.isdigit() == False:
+			font = slanted
+		else:
+			font = self.font
+
 		# Do not write characters outside of the display area
 		if col <= -4 or col > 20:
 			return
@@ -88,9 +94,9 @@ class PingPongBoard:
 
 		# Convert the char to the ASCII value
 		char = ord(char)
-		for y in range(len(self.font[char])):
-			for x in range(len(self.font[char][-(y+1)])): #Using -y to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
-				if self.font[char][-(y+1)][x]:
+		for y in range(len(font[char])):
+			for x in range(len(font[char][-(y+1)])): #Using -y to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
+				if font[char][-(y+1)][x]:
 					self.writeBallTextState(col+x,row+y,textBool)
 				else:
 					self.writeBallTextState(col+x,row+y,False)	#write the text to false so that it will be overwritten
@@ -308,6 +314,10 @@ class PingPongBoard:
 		# Concatenate the date string to the master string with a space termination
 		self.displayString += dateStr + ' '
 
+	def text(self):
+		textStr = upper('lance')
+
+		self.displayString += textStr + ' '
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
 
