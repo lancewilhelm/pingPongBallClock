@@ -81,11 +81,9 @@ def setTextAnimation():
 @app.route("/api/setcontent", methods=['POST'])
 def setContent():
 	# Read the values from the POST
-	content = request.form['content']
+	content = str(request.form['content'])
 	checked = request.form['checked']
 
-	print content, checked
-	print type(content)
 	if checked:
 		PPB.content.append(content)
 	else:
