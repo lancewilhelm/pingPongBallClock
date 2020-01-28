@@ -354,6 +354,7 @@ class PingPongBoard:
 
 		x = response.json()
 
+		print x
 		if x['cod'] != '404':
 			y = x['main']
 
