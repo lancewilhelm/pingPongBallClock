@@ -368,7 +368,9 @@ class PingPongBoard:
 			weatherStr = 'City Not Found'
 
 		# Concatenate the weather string to the display string
+		weatherStr = weatherStr.upper() 	# Uppercase the string
 		print weatherStr
+
 		self.displayString += weatherStr + ' '
 
 # Initialize an instance of the LEDStrip class
