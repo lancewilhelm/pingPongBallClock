@@ -142,7 +142,7 @@ class PingPongBoard:
 
 		# Write the BG. Will not overwrite text per the function
 		if self.bgColor[0] == "solid":
-			print "writing BG color..."
+			# print "writing BG color..."	#debugging
 			self.colorFill(self.bgColor[1])
 		elif self.bgColor[0] == "animation":
 			if self.bgColor[1] == "rainbow":
@@ -151,7 +151,7 @@ class PingPongBoard:
 				self.rainbowCycle()
 
 		# Color the Text
-		print "writing TEXT color..."
+		# print "writing TEXT color..."		#debugging
 		color = self.textColor[1]	# Capture the color here to prevent errors during color updating
 		# Check to see if we have a text color animation
 		if self.textColor[0] == "animation":
