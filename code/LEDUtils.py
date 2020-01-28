@@ -44,6 +44,7 @@ class PingPongBoard:
 
 		self.weatherLocation = '80925'
 		self.updateWeather = True
+		self.weatherResponse = None
 		self.content = ['time','weather']
 
 		self.bgColor = ["solid", Color(0,0,255), True]
@@ -348,26 +349,23 @@ class PingPongBoard:
 		base_url = "http://api.openweathermap.org/data/2.5/weather?"
 		complete_url = base_url + "appid=" + apiKey + "&q=" + self.weatherLocation
 		
-		print self.updateWeather
 		if self.updateWeather:
 			response = requests.get(complete_url) 
 			self.updateWeather = False
 
-		if response != None:
-			x = response.json()
+		self.weatherResponse = response.json()
 
-			print x
-			if x['cod'] != '404':
-				y = x['main']
+		if self.weatherResponse['cod'] != '404':
+			y = self.weatherResponse['main']
 
-				current_temperature = y['temp']
+			current_temperature = y['temp']
 
-				weather_description = x['weather'][0]['description']
+			weather_description = self.weatherResponse['weather'][0]['description']
 
-				print current_temperature
-				print weather_description
-			else:
-				print 'City Not Found'
+			print current_temperature
+			print weather_description
+		else:
+			print 'City Not Found'
 
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
