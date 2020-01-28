@@ -40,6 +40,8 @@ class PingPongBoard:
 
 		self.bgColor = ["solid", Color(0,0,255), True]
 
+		self.displayChanged = True
+
 		#Establish variables that will be used for the clock
 		self.secsPrev = 99   #used for clock updating
 
@@ -145,33 +147,6 @@ class PingPongBoard:
 
 		# Color the Text
 		print "writing TEXT color..."
-		color = self.textColor[1]	# Capture the color here to prevent errors during color updating
-		# Check to see if we have a text color animation
-		if self.textColor[0] == "animation":
-			if color == "rainbow":
-				self.rainbowText()
-			elif color == "rainbowCycle":
-				self.rainbowCycleText()
-		# Else, check for solid notification
-		elif self.textColor[0] == 'solid':
-			for y in range(self.numRows):
-				for x in range(self.numCols):
-					if self.balls[y][x].text == True:
-						self.writeBallColor(x,y,color)
-			self.strip.show()
-
-	def updateBGColor(self):
-		# Color the BG
-		if self.bgColor[0] == "solid":
-			self.colorFill(self.bgColor[1])
-		elif self.bgColor[0] == "animation":
-			if self.bgColor[1] == "rainbow":
-				self.rainbow()
-			elif self.bgColor[1] == "rainbowCycle":
-				self.rainbowCycle()
-
-	def updateTextColor(self):
-		# print "writing TEXT color..."
 		color = self.textColor[1]	# Capture the color here to prevent errors during color updating
 		# Check to see if we have a text color animation
 		if self.textColor[0] == "animation":
