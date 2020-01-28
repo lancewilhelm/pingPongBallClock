@@ -18,6 +18,7 @@ def setBGColor():
 	green = int(request.form['green'])
 	blue = int(request.form['blue'])
 	
+	PPB.displayChanged = True
 	# Change the bg color accordingly
 	if program == "solid":
 		PPB.bgColor = ["solid", Color(red,green,blue)]
@@ -34,6 +35,7 @@ def setTextColor():
 	green = int(request.form['green'])
 	blue = int(request.form['blue'])
 	
+	PPB.displayChanged = True
 	# Change the bg color accordingly
 	if program == "solid":
 		PPB.textColor = ["solid", Color(red,green,blue)]
@@ -53,11 +55,9 @@ def setFont():
 	elif font == "digits":
 		PPB.font = digits
 
-	# Reset the background and variables to make the screen refresh completely on next loop iteration
-	PPB.colorFill(PPB.bgColor[1], True)		# True boolean to make sure that the whole screen wipes including text
-	PPB.secsPrev = 99
-	PPB.minsPrev = 99
-	PPB.hoursPrev = 99
+	PPB.fontChanged = True
+	PPB.updateDisplayString()
+
 	return ""
 
 # Flask Text Animation API
@@ -73,7 +73,6 @@ def setTextAnimation():
 		speed = float(request.form['speed'])
 		PPB.animationSpeed = speed
 
-	
 	# Wipe the screen
 	PPB.textStateWipe()
 	return ""

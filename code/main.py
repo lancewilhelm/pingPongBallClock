@@ -13,11 +13,21 @@ if __name__ == '__main__':
 	x.start()
 	
 	while(True):
-		PPB.updateBGColor()
-		PPB.clock()
 
+		# Reset the string at the beginning of each loop
+		PPB.displayString = ''
+
+		# Get the display string components
+		PPB.time()
+		PPB.date()
+
+		# If the animation speed is not 0, then update the animation
 		if PPB.animationSpeed != 0:
 			PPB.updateTextAnimation()
-			
-		PPB.updateTextColor()
+
+		# Write the display string text state if the string is different than last loop
+		PPB.updateDisplayString()
+
+		# Update the actual ball color light
+		PPB.updateBoardColors()
 	
