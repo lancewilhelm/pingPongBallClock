@@ -138,19 +138,15 @@ class PingPongBoard:
 		self.strip.show()
 
 	def updateBoardColors(self):
-		# If we don't need to update, return
-		if self.displayChanged == False:
-			return
-
 		# Write the BG. Will not overwrite text per the function
-		if self.bgColor[0] == "solid":
-			print "writing BG color..."	#debugging
-			self.colorFill(self.bgColor[1])
-		elif self.bgColor[0] == "animation":
+		if self.bgColor[0] == "animation":
 			if self.bgColor[1] == "rainbow":
 				self.rainbow()
 			elif self.bgColor[1] == "rainbowCycle":
 				self.rainbowCycle()
+		elif self.bgColor[0] == "solid" and self.displayChanged:
+			print "writing BG color..."	#debugging
+			self.colorFill(self.bgColor[1])
 
 		# Color the Text
 		print "writing TEXT color..."		#debugging
@@ -161,7 +157,7 @@ class PingPongBoard:
 			elif self.textColor[1] == "rainbowCycle":
 				self.rainbowCycleText()
 		# Else, check for solid notification
-		elif self.textColor[0] == 'solid':
+		elif self.textColor[0] == 'solid' and self.displayChanged:
 			for y in range(self.numRows):
 				for x in range(self.numCols):
 					if self.balls[y][x].text == True:
