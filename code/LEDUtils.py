@@ -114,6 +114,7 @@ class PingPongBoard:
 			for i in range(len(PPB.displayString)):
 				distanceToNext = self.writeChar(x,y,PPB.displayString[i])
 				# distanceToNext = len(font[ord(PPB.displayString[i])][0]) + self.textSpacing
+				print distanceToNext
 				x += distanceToNext
 
 			# After we write a new string, reset/set booleans and set the prev variable to the current string
