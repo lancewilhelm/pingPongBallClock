@@ -102,7 +102,7 @@ function setContent(content){
 	var checked = document.getElementById(content).checked;
 	xhttp.open("POST", "/api/setcontent", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("content="+content+"checked="+checked);
+	xhttp.send("content="+content+"&checked="+checked);
 }
 
 function setTextAnimation(animation){
