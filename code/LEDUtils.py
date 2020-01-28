@@ -32,7 +32,7 @@ class PingPongBoard:
 		self.textColor = ["solid", Color(255,255,255), False]
 		self.font = digits
 		self.textSpacing = 0
-		self.textOrigin = [20,1]
+		self.textOrigin = [1,1]
 		self.textOriginMoved = False
 		self.displayString = ''
 		self.displayStringPrev = ''
