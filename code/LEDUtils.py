@@ -99,17 +99,18 @@ class PingPongBoard:
 		self.strip.show()
 
 	def updateDisplayString(self):
-		if self.displayString != self.displayStringPrev:
-			x = PPB.textOrigin[0] 
-			y = PPB.textOrigin[1]
-			for i in range(len(PPB.displayString)):
-				self.writeChar(x,y,PPB.displayString[i])
-				distanceToNext = len(self.font[ord(PPB.displayString[i])][0]) + self.textSpacing
-				x += distanceToNext
+		if self.displayString != self.displayStringPrev or self.textOriginMoved:
+		x = PPB.textOrigin[0] 
+		y = PPB.textOrigin[1]
+		for i in range(len(PPB.displayString)):
+			self.writeChar(x,y,PPB.displayString[i])
+			distanceToNext = len(self.font[ord(PPB.displayString[i])][0]) + self.textSpacing
+			x += distanceToNext
 
-			# After we write a new string, reset the moved location boolean and set the prev variable to the current string
-			self.displayChanged = True
-			self.displayStringPrev = self.displayString
+		# After we write a new string, reset/set booleans and set the prev variable to the current string
+		self.textOriginMoved = False					# We just addressed this change, so change it back to false
+		self.displayChanged = True						# We have written a new string, so the display has changed
+		self.displayStringPrev = self.displayString		# Set the displayStringPrev to the current string
 
 	def updateFrame(self, animationEnd):
 		self.animationFrame += 1
@@ -188,7 +189,7 @@ class PingPongBoard:
 			print self.timeElapsed
 
 			#Indicate the display has changed
-			self.displayChanged = True
+			self.textOriginMoved = True
 
 			# Move the text one space to the left
 			self.textOrigin[0] -= 1
