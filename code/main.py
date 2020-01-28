@@ -17,9 +17,6 @@ if __name__ == '__main__':
 		# Reset the string at the beginning of each loop
 		PPB.displayString = ''
 
-		# Update the BG color if need be
-		PPB.updateBGColor()
-
 		# Get the display string components
 		PPB.time()
 		PPB.date()
@@ -33,5 +30,5 @@ if __name__ == '__main__':
 			PPB.writeDisplayString()
 
 		# Update the actual ball color light
-		PPB.updateTextColor()
+		PPB.updateBoardColors()
 	

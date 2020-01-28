@@ -29,8 +29,7 @@ class PingPongBoard:
 		self.timeElapsed = 0
 		self.animationSpeed = 10.0
 
-		self.textColor = ["solid", Color(255,255,255)]
-		self.textColorChange = False
+		self.textColor = ["solid", Color(255,255,255), False]
 		self.font = digits
 		self.textSpacing = 0
 		self.textOrigin = [20,1]
@@ -39,8 +38,7 @@ class PingPongBoard:
 		self.displayStringPrev = ''
 		self.displayStringLength = 0
 
-		self.bgColor = ["solid", Color(0,0,255)]
-		self.bgColorChange = False
+		self.bgColor = ["solid", Color(0,0,255), True]
 
 		#Establish variables that will be used for the clock
 		self.secsPrev = 99   #used for clock updating
@@ -128,12 +126,49 @@ class PingPongBoard:
 					self.writeBallTextState(x,y,False)
 					self.writeBallColor(x,y,color)
 		else:
-			# print "writing BG color..."
 			for y in range(self.numRows):
 				for x in range(self.numCols):
 					if self.balls[y][x].text == False:
 						self.writeBallColor(x,y,color)
 		self.strip.show()
+
+	def updateBoardColors(self):
+		# Write the BG. Will not overwrite text per the function
+		if self.bgColor[0] == "solid":
+			print "writing BG color..."
+			self.colorFill(self.bgColor[1])
+		elif self.bgColor[0] == "animation":
+			if self.bgColor[1] == "rainbow":
+				self.rainbow()
+			elif self.bgColor[1] == "rainbowCycle":
+				self.rainbowCycle()
+
+		# Color the Text
+		print "writing TEXT color..."
+		color = self.textColor[1]	# Capture the color here to prevent errors during color updating
+		# Check to see if we have a text color animation
+		if self.textColor[0] == "animation":
+			if color == "rainbow":
+				self.rainbowText()
+			elif color == "rainbowCycle":
+				self.rainbowCycleText()
+		# Else, check for solid notification
+		elif self.textColor[0] == 'solid':
+			for y in range(self.numRows):
+				for x in range(self.numCols):
+					if self.balls[y][x].text == True:
+						self.writeBallColor(x,y,color)
+			self.strip.show()
+
+	def updateBGColor(self):
+		# Color the BG
+		if self.bgColor[0] == "solid":
+			self.colorFill(self.bgColor[1])
+		elif self.bgColor[0] == "animation":
+			if self.bgColor[1] == "rainbow":
+				self.rainbow()
+			elif self.bgColor[1] == "rainbowCycle":
+				self.rainbowCycle()
 
 	def updateTextColor(self):
 		# print "writing TEXT color..."
@@ -178,16 +213,6 @@ class PingPongBoard:
 
 			# Set the start time to this time now
 			self.startTime = nowTime
-
-	def updateBGColor(self):
-		# Write the BG. Will not overwrite text per the function
-		if self.bgColor[0] == "solid":
-			self.colorFill(self.bgColor[1])
-		elif self.bgColor[0] == "animation":
-			if self.bgColor[1] == "rainbow":
-				self.rainbow()
-			elif self.bgColor[1] == "rainbowCycle":
-				self.rainbowCycle()
 
 	def wheel(self,pos):
 		# Generate rainbow colors across 0-255 positions.
