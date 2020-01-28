@@ -151,20 +151,19 @@ class PingPongBoard:
 				self.rainbowCycle()
 
 		# Color the Text
-		# print "writing TEXT color..."		#debugging
-		color = self.textColor[1]	# Capture the color here to prevent errors during color updating
+		print "writing TEXT color..."		#debugging
 		# Check to see if we have a text color animation
 		if self.textColor[0] == "animation":
-			if color == "rainbow":
+			if self.textColor[1] == "rainbow":
 				self.rainbowText()
-			elif color == "rainbowCycle":
+			elif self.textColor[1] == "rainbowCycle":
 				self.rainbowCycleText()
 		# Else, check for solid notification
 		elif self.textColor[0] == 'solid':
 			for y in range(self.numRows):
 				for x in range(self.numCols):
 					if self.balls[y][x].text == True:
-						self.writeBallColor(x,y,color)
+						self.writeBallColor(x,y,self.textColor[1])
 			self.strip.show()
 
 		# Reset the display changed boolean now that it has been updated
