@@ -130,7 +130,6 @@ class PingPongBoard:
 		self.strip.show()
 
 	def updateTextColor(self):
-		print "updating text"
 		color = self.textColor[1]	# Capture the color here to prevent errors during color updating
 		# Check to see if we have a text color animation
 		if self.textColor[0] == "animation":
@@ -147,6 +146,7 @@ class PingPongBoard:
 			self.strip.show()
 
 	def updateTextAnimation(self):
+		print self.animationSpeed
 		# If start time has not been defined, do so
 		if self.startTime == 0:
 			self.startTime = time.time()
