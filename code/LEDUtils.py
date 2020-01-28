@@ -108,12 +108,15 @@ class PingPongBoard:
 		return distanceToNext
 
 	def updateDisplayString(self):
+		print self.displayString
 		if self.displayString != self.displayStringPrev or self.textOriginMoved or self.fontChanged:
-			x = PPB.textOrigin[0] 
-			y = PPB.textOrigin[1]
-			for i in range(len(PPB.displayString)):
-				distanceToNext = self.writeChar(x,y,PPB.displayString[i])
-				# distanceToNext = len(font[ord(PPB.displayString[i])][0]) + self.textSpacing
+			x = self.textOrigin[0] 
+			y = self.textOrigin[1]
+			for i in range(len(self.displayString)):
+				print i
+				print self.displayString[i]
+				distanceToNext = self.writeChar(x,y,self.displayString[i])
+				# distanceToNext = len(font[ord(self.displayString[i])][0]) + self.textSpacing
 				print distanceToNext
 				x += distanceToNext
 
@@ -180,7 +183,7 @@ class PingPongBoard:
 
 	def updateTextAnimation(self):
 		# Used to determine whether or not we have scrolled through the whole string
-		self.displayStringLength = len(PPB.displayString)*len(PPB.font[ord(' ')][0])
+		self.displayStringLength = len(self.displayString)*len(self.font[ord(' ')][0])
 
 		# If start time has not been defined, do so
 		if self.startTime == 0:
