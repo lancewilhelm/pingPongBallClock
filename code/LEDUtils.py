@@ -284,12 +284,12 @@ class PingPongBoard:
 			hourStr = str(hours)
 
 		# Used to determine colon lit state
-		if secs % 2 == 0:
+		if secs % 2 == 1 and self.animationSpeed <= 5.0:
 			# Even seconds, concatenate the strings with a colon in the middle
-			timeStr = hourStr + ':' + minStr
+			timeStr = hourStr + ';' + minStr
 		else:
 			# Odd seconds, concatenate the strings with a semicolon(blank) in the middle
-			timeStr = hourStr + ';' + minStr 
+			timeStr = hourStr + ':' + minStr 
 
 		# Concatenate the date string to the master string with a space termination
 		self.displayString += timeStr + ' '
