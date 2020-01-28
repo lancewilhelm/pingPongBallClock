@@ -86,22 +86,21 @@ class PingPongBoard:
 		else:
 			font = self.font
 
-		print char
+		# Convert the char to the ASCII value
+		char = ord(char)
+
 		# Determine the distance to the next character based on the current character and the spacing setting
 		if char.isspace():
 			distanceToNext = 4
 		else:
 			distanceToNext = len(font[char][0]) + self.textSpacing
 
-		print distanceToNext
 		# Do not write characters outside of the display area
 		if col <= -4 or col > 20:
 			return distanceToNext
 		if row < -5 or row >= 7:
 			return distanceToNext
 
-		# Convert the char to the ASCII value
-		char = ord(char)
 		for y in range(len(font[char])):
 			for x in range(len(font[char][-(y+1)])): #Using -y to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
 				if font[char][-(y+1)][x]:
@@ -117,9 +116,7 @@ class PingPongBoard:
 			x = self.textOrigin[0] 
 			y = self.textOrigin[1]
 			for i in range(len(self.displayString)):
-				print self.displayString[i]
 				distanceToNext = self.writeChar(x,y,self.displayString[i])
-					
 				x += distanceToNext
 
 			# After we write a new string, reset/set booleans and set the prev variable to the current string
