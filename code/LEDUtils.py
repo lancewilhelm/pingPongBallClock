@@ -88,9 +88,9 @@ class PingPongBoard:
 
 		# Do not write characters outside of the display area
 		if col <= -4 or col > 20:
-			return
+			return 'done'
 		if row < -5 or row >= 7:
-			return
+			return 'done'
 
 		print char
 		# Convert the char to the ASCII value
@@ -116,7 +116,7 @@ class PingPongBoard:
 				print i
 				print self.displayString[i]
 				distanceToNext = self.writeChar(x,y,self.displayString[i])
-				if x != None:
+				if x != 'done':
 					x += distanceToNext
 				else:
 					break
