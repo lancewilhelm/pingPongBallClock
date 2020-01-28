@@ -95,7 +95,7 @@ def setContent():
 
 # Flask Set Custom Text API
 @app.route("/api/setcustomtext", methods=['POST'])
-def setContent():
+def setCustomText():
 	# Read the values from the POST
 	text = str(request.form['text'])
 
