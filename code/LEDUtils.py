@@ -103,12 +103,18 @@ class PingPongBoard:
 		self.strip.show()
 
 	def updateDisplayString(self):
+		# This makes sure that we get the right font to get the spacing correct
+		if char.isdigit() == False and char != ':' and char != ';':
+			font = slanted
+		else:
+			font = self.font
+
 		if self.displayString != self.displayStringPrev or self.textOriginMoved or self.fontChanged:
 			x = PPB.textOrigin[0] 
 			y = PPB.textOrigin[1]
 			for i in range(len(PPB.displayString)):
 				self.writeChar(x,y,PPB.displayString[i])
-				distanceToNext = len(self.font[ord(PPB.displayString[i])][0]) + self.textSpacing
+				distanceToNext = len(font[ord(PPB.displayString[i])][0]) + self.textSpacing
 				x += distanceToNext
 
 			# After we write a new string, reset/set booleans and set the prev variable to the current string
