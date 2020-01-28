@@ -352,20 +352,21 @@ class PingPongBoard:
 			response = requests.get(complete_url) 
 			self.updateWeather = False
 
-		x = response.json()
+		if response != None:
+			x = response.json()
 
-		print x
-		if x['cod'] != '404':
-			y = x['main']
+			print x
+			if x['cod'] != '404':
+				y = x['main']
 
-			current_temperature = y['temp']
+				current_temperature = y['temp']
 
-			weather_description = x['weather'][0]['description']
+				weather_description = x['weather'][0]['description']
 
-			print current_temperature
-			print weather_description
-		else:
-			print 'City Not Found'
+				print current_temperature
+				print weather_description
+			else:
+				print 'City Not Found'
 
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
