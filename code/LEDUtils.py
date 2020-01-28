@@ -123,6 +123,7 @@ class PingPongBoard:
 					self.writeBallTextState(x,y,False)
 					self.writeBallColor(x,y,color)
 		else:
+			print "writing BG color..."
 			for y in range(self.numRows):
 				for x in range(self.numCols):
 					if self.balls[y][x].text == False:
@@ -130,6 +131,7 @@ class PingPongBoard:
 		self.strip.show()
 
 	def updateTextColor(self):
+		print "writing TEXT color..."
 		color = self.textColor[1]	# Capture the color here to prevent errors during color updating
 		# Check to see if we have a text color animation
 		if self.textColor[0] == "animation":
