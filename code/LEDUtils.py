@@ -27,20 +27,21 @@ class PingPongBoard:
 		self.animationEnd = 1
 		self.startTime = 0
 		self.timeElapsed = 0
-		self.animationSpeed = 10
+		self.animationSpeed = 0									 # Balls/s for animations. Needs to be a float (.0). Static default
 
-		self.textColor = ["solid", Color(255,255,255)]
-		self.textColorChange = False
+		self.textColor = ["solid", Color(255,255,255), False]
 		self.font = digits
+		self.fontChanged = False
 		self.textSpacing = 0
-		self.textOrigin = [20,1]
-		self.stringLength = 0
+		self.textOrigin = [1,1]
+		self.textOriginMoved = False
+		self.displayString = ''
+		self.displayStringPrev = ''
+		self.displayStringLength = 0
 
-		self.bgColor = ["solid", Color(0,0,255)]
-		self.bgColorChange = False
+		self.bgColor = ["solid", Color(0,0,255), True]
 
-		#Establish variables that will be used for the clock
-		self.secsPrev = 99   #used for clock updating
+		self.displayChanged = True
 
 		# Set up the ball objects
 		self.balls = [
@@ -79,6 +80,12 @@ class PingPongBoard:
 			self.balls[row][col].text = text
 
 	def writeChar(self,col,row,char,textBool=True):
+		# Do not write characters outside of the display area
+		if col <= -4 or col > 20:
+			return
+		if row < -5 or row >= 7:
+			return
+
 		# Convert the char to the ASCII value
 		char = ord(char)
 		for y in range(len(self.font[char])):
@@ -89,16 +96,20 @@ class PingPongBoard:
 					self.writeBallTextState(col+x,row+y,False)	#write the text to false so that it will be overwritten
 		self.strip.show()
 
-	def writeString(self,col,row,string,textBool=True):
-		x = col # For the first character it is the col
-		for i in range(len(string)):
-			self.writeChar(x,row,string[i])
-			distanceToNext = len(self.font[ord(string[i])][0]) + self.textSpacing
-			x += distanceToNext
+	def updateDisplayString(self):
+		if self.displayString != self.displayStringPrev or self.textOriginMoved or self.fontChanged:
+			x = PPB.textOrigin[0] 
+			y = PPB.textOrigin[1]
+			for i in range(len(PPB.displayString)):
+				self.writeChar(x,y,PPB.displayString[i])
+				distanceToNext = len(self.font[ord(PPB.displayString[i])][0]) + self.textSpacing
+				x += distanceToNext
 
-		# If we are in a scroll animation, added a blank on the end to erase trailing bulbs
-		if self.animationSpeed != 0:
-			self.writeChar(x,row,' ')
+			# After we write a new string, reset/set booleans and set the prev variable to the current string
+			self.textOriginMoved = False					# We just addressed this change, so change it back to false
+			self.fontChanged = False						# We just addressed this change, so change it back to false
+			self.displayChanged = True						# We have written a new string, so the display has changed
+			self.displayStringPrev = self.displayString		# Set the displayStringPrev to the current string
 
 	def updateFrame(self, animationEnd):
 		self.animationFrame += 1
@@ -125,23 +136,40 @@ class PingPongBoard:
 						self.writeBallColor(x,y,color)
 		self.strip.show()
 
-	def updateTextColor(self):
-		color = self.textColor[1]	# Capture the color here to prevent errors during color updating
+	def updateBoardColors(self):
+		# Write the BG. Will not overwrite text per the function
+		if self.bgColor[0] == "animation":
+			if self.bgColor[1] == "rainbow":
+				self.rainbow()
+			elif self.bgColor[1] == "rainbowCycle":
+				self.rainbowCycle()
+		elif self.bgColor[0] == "solid" and self.displayChanged:
+			# print "writing BG color..."	#debugging
+			self.colorFill(self.bgColor[1])
+
+		# Color the Text
 		# Check to see if we have a text color animation
 		if self.textColor[0] == "animation":
-			if color == "rainbow":
+			if self.textColor[1] == "rainbow":
 				self.rainbowText()
-			elif color == "rainbowCycle":
+			elif self.textColor[1] == "rainbowCycle":
 				self.rainbowCycleText()
 		# Else, check for solid notification
-		elif self.textColor[0] == 'solid':
+		elif self.textColor[0] == 'solid' and self.displayChanged:
+			# print "writing TEXT color..."		#debugging
 			for y in range(self.numRows):
 				for x in range(self.numCols):
 					if self.balls[y][x].text == True:
-						self.writeBallColor(x,y,color)
+						self.writeBallColor(x,y,self.textColor[1])
 			self.strip.show()
 
+		# Reset the display changed boolean now that it has been updated
+		self.displayChanged = False
+
 	def updateTextAnimation(self):
+		# Used to determine whether or not we have scrolled through the whole string
+		self.displayStringLength = len(PPB.displayString)*len(PPB.font[ord(' ')][0])
+
 		# If start time has not been defined, do so
 		if self.startTime == 0:
 			self.startTime = time.time()
@@ -153,25 +181,18 @@ class PingPongBoard:
 
 		# If the time elapsed is >= the time one frame should take for our set speed, do the things
 		if self.timeElapsed >= 1/self.animationSpeed:
+			#Indicate the display has changed
+			self.textOriginMoved = True
+
 			# Move the text one space to the left
 			self.textOrigin[0] -= 1
 
 			# Reset the x text origin to 20 if it gets through the screen
-			if self.textOrigin[0] < -1 * self.stringLength:
+			if self.textOrigin[0] < -1 * self.displayStringLength:
 				self.textOrigin[0] = 20
 
 			# Set the start time to this time now
 			self.startTime = nowTime
-
-	def updateBGColor(self):
-		# Write the BG. Will not overwrite text per the function
-		if self.bgColor[0] == "solid":
-			self.colorFill(self.bgColor[1])
-		elif self.bgColor[0] == "animation":
-			if self.bgColor[1] == "rainbow":
-				self.rainbow()
-			elif self.bgColor[1] == "rainbowCycle":
-				self.rainbowCycle()
 
 	def wheel(self,pos):
 		# Generate rainbow colors across 0-255 positions.
@@ -232,19 +253,12 @@ class PingPongBoard:
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
-	def clock(self):
+	def time(self):
 		# Get the current local time and parse it out to usable variables
 		t = time.localtime()
 		hours = t.tm_hour
 		mins = t.tm_min
 		secs = t.tm_sec
-		mon = t.tm_mon
-		day = t.tm_mday
-		year = t.tm_year
-
-		monStr = str(mon)
-		dayStr = str(day)
-		yearStr = str(year)
 
 		# Convert 24h time to 12h time
 		if hours > 12:
@@ -261,27 +275,38 @@ class PingPongBoard:
 			minStr = str(mins)
 
 		# Create the hour string
-		if hours < 10:
+		if hours < 10 and self.animationSpeed == 0:
 			hourStr = ' ' + str(hours)
 		else:
 			hourStr = str(hours)
 
 		# Used to determine colon lit state
-		if secs % 2 == 0:
+		if secs % 2 == 1 and self.animationSpeed <= 5.0:
 			# Even seconds, concatenate the strings with a colon in the middle
-			timeStr = hourStr + ':' + minStr + ' ' + monStr + '-' + dayStr + '-' + yearStr
+			timeStr = hourStr + ';' + minStr
 		else:
 			# Odd seconds, concatenate the strings with a semicolon(blank) in the middle
-			timeStr = hourStr + ';' + minStr + ' ' + monStr + '-' + dayStr + '-' + yearStr
+			timeStr = hourStr + ':' + minStr 
 
-		# Check to see if the minute has changed. If it has, write the the new time
-		# if secs != self.secsPrev:    
-		# Write the string
-		self.stringLength = len(timeStr)*len(self.font[ord(' ')][0])			# Used to determine when a full string has been scrolled through
-		self.writeString(self.textOrigin[0],self.textOrigin[1],timeStr)
+		# Concatenate the date string to the master string with a space termination
+		self.displayString += timeStr + ' '
 
-		# Set seconds to previous seconds
-		# self.secsPrev = secs
+	def date(self):
+		# Get the current local time and parse it out to usable variables
+		t = time.localtime()
+		mon = t.tm_mon
+		day = t.tm_mday
+		year = t.tm_year
+
+		monStr = str(mon)
+		dayStr = str(day)
+		yearStr = str(year)
+
+		# Write the date string
+		dateStr = monStr + '-' + dayStr + '-' + yearStr[-2:]
+		
+		# Concatenate the date string to the master string with a space termination
+		self.displayString += dateStr + ' '
 
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
