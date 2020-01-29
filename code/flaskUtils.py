@@ -112,3 +112,16 @@ def setWeather():
 	PPB.updateWeather = True
 	return ""
 
+# Flask Settings API
+@app.route("/api/settings", methods=['POST'])
+def updateSettings():
+	# Read the values from the POST
+	action = str(request.form['action'])
+
+	if action == 'save':
+		PPB.dumpSettings()
+	elif action == 'load':
+		PPB.loadSettings()
+		
+	return ""
+

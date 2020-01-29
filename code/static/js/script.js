@@ -126,6 +126,14 @@ function setCustomText(){
 	xhttp.send("text="+text);
 }
 
+function settings(action){
+	origin = window.location.origin
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("POST", "/api/settings", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("action="+action);
+}
+
 function setTextAnimation(animation){
 	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();

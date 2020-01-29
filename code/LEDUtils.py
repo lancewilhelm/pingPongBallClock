@@ -378,24 +378,46 @@ class PingPongBoard:
 		self.displayString += weatherStr + ' '
 
 	def dumpSettings(self):
-		self.animationSpeed = 0									 # Balls/s for animations. Needs to be a float (.0). Static default
+		# Create a settings dictionary
+		settings = {
+			'animationSpeed' : self.animationSpeed,									 # Balls/s for animations. Needs to be a float (.0). Static default
+			'textColor' : self.textColor,
+			'font' : self.font,
+			'textSpacing' : self.textSpacing,
+			'textOrigin' : self.textOrigin,
+			'textOriginMoved' : False,
+			'customText' : self.customText,
+			'weatherLocation' : self.weatherLocation,
+			'updateWeather' : True,
+			'tempUnits' : self.tempUnits,
+			'content' : self.content,
+			'bgColor' : self.bgColor,
+			'displayChanged' : True
+		}
 
-		self.textColor = ["solid", Color(255,255,255), False]
-		self.font = digits
-		self.textSpacing = 0
-		self.textOrigin = [1,1]
-		self.textOriginMoved = True
-		self.customText = ''
+		# Dump the settings to settings.txt
+		with open('settings.txt', 'w') as filehandle:
+			json.dump(settings, filehandle)
 
-		self.weatherLocation = '80925'
-		self.updateWeather = True
-		self.tempUnits = 'f'
-		self.content = ['time']
-
-		self.bgColor = ["solid", Color(0,0,255), True]
-
-		self.minsPrev = 99
-		self.displayChanged = True
+	def loadSettings(self):
+		# Get the settings dictionary from settings.txt
+		with open('settings.txt', 'r') as filehandle:
+			settings = json.load(filehandle)
+		
+		# Set variables from the settings 
+		self.animationSpeed = settings['animationSpeed']									 # Balls/s for animations. Needs to be a float (.0). Static default
+		self.textColor = settings['textColor']
+		self.font = settings['font']
+		self.textSpacing = settings['textSpacing']
+		self.textOrigin = settings['textOrigin']
+		self.textOriginMoved = settings['textOriginMoved']
+		self.customText = settings['customText']
+		self.weatherLocation = settings['weatherLocation']
+		self.updateWeather = settings['updateWeather']
+		self.tempUnits = settings['tempUnits']
+		self.content = settings['content']
+		self.bgColor = settings['bgColor']
+		self.displayChanged = settings['displayChanged']
 
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
