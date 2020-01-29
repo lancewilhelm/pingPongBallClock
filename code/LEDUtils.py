@@ -358,8 +358,9 @@ class PingPongBoard:
 			y = self.weatherResponse['main']
 
 			current_temperature = float(y['temp'])
+			print current_temperature
 			current_temperature = str(round(current_temperature * (9/5) - 459.67))		# Convert to fahrenheit
-
+			print current_temperature
 			weather_description = self.weatherResponse['weather'][0]['description']
 
 			weatherStr = current_temperature + 'F ' + weather_description
