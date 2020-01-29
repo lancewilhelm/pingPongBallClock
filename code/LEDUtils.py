@@ -24,29 +24,20 @@ class PingPongBoard:
 		self.animationEnd = 1
 		self.startTime = 0
 		self.timeElapsed = 0
-		self.animationSpeed = 0									 # Balls/s for animations. Needs to be a float (.0). Static default
 
-		self.textColor = ["solid", Color(255,255,255), False]
 		self.font = digits
 		self.fontChanged = False
-		self.textSpacing = 0
-		self.textOrigin = [1,1]
 		self.textOriginMoved = False
 		self.displayString = ''
 		self.displayStringPrev = ''
 		self.displayStringLength = 0
-		self.customText = ''
 
-		self.weatherLocation = '80925'
-		self.updateWeather = True
 		self.weatherResponse = None
-		self.tempUnits = 'f'
-		self.content = ['time']
 
-		self.bgColor = ["solid", Color(0,0,255), True]
+		self.minsPrev = None
 
-		self.minsPrev = 99
-		self.displayChanged = True
+		# Load settings that are saved to a file 
+		self.loadSettings()
 
 		# Set up the ball objects
 		self.balls = [
@@ -376,6 +367,51 @@ class PingPongBoard:
 		weatherStr = weatherStr.upper() 	# Uppercase the string
 
 		self.displayString += weatherStr + ' '
+
+	def dumpSettings(self):
+		# Create a settings dictionary
+		settings = {
+			'animationSpeed' : self.animationSpeed,									 # Balls/s for animations. Needs to be a float (.0). Static default
+			'textColor' : self.textColor,
+			'fontName' : self.fontName,
+			'textSpacing' : self.textSpacing,
+			'customText' : self.customText,
+			'weatherLocation' : self.weatherLocation,
+			'tempUnits' : self.tempUnits,
+			'content' : self.content,
+			'bgColor' : self.bgColor,
+		}
+
+		# Dump the settings to settings.txt
+		with open('settings.txt', 'w') as filehandle:
+			json.dump(settings, filehandle)
+
+	def loadSettings(self):
+		# Get the settings dictionary from settings.txt
+		with open('settings.txt', 'r') as filehandle:
+			settings = json.load(filehandle)
+		
+		# Set variables from the settings 
+		self.animationSpeed = settings['animationSpeed']									 # Balls/s for animations. Needs to be a float (.0). Static default
+		self.textColor = settings['textColor']
+		self.fontName = settings['fontName']
+		self.textSpacing = settings['textSpacing']
+		self.customText = settings['customText']
+		self.weatherLocation = settings['weatherLocation']
+		self.tempUnits = settings['tempUnits']
+		self.content = settings['content']
+		self.bgColor = settings['bgColor']
+
+		# Reset the origin to [1,1]
+		self.displayChanged = True
+		self.updateWeather = True
+		self.textOrigin = [1,1]
+
+		# Address possible font change
+		if self.fontName == 'slanted':
+			self.font = slanted
+		elif self.fontName == 'digits':
+			self.font = digits
 
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
