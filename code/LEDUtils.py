@@ -362,7 +362,7 @@ class PingPongBoard:
 			current_temperature = str(int(round(current_temperature * (9.0/5) - 459.67)))		# Convert to fahrenheit
 			weather_description = self.weatherResponse['weather'][0]['description']
 
-			weatherStr = current_temperature + 'F ' + weather_description
+			weatherStr = current_temperature + ' F ' + weather_description
 
 		else:
 			weatherStr = 'City Not Found'
