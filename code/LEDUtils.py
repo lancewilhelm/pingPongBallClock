@@ -356,7 +356,7 @@ class PingPongBoard:
 			current_temperature = float(y['temp'])
 
 			if self.tempUnits == 'k':
-				current_temperature = str(current_temperature)
+				current_temperature = str(int(round(current_temperature)))
 				unit = 'K '
 			elif self.tempUnits == 'c':
 				current_temperature = str(int(round(current_temperature - 273.15)))
