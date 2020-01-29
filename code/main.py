@@ -8,7 +8,7 @@ from neopixel import *
 
 if __name__ == '__main__':
 	# Start the flask server
-	x = threading.Thread(target=app.run, kwargs=dict(host='0.0.0.0',port=80))
+	x = threading.Thread(target=app.run, kwargs=dict(host='0.0.0.0',port=5000))
 	x.daemon = True
 	x.start()
 	
@@ -25,6 +25,8 @@ if __name__ == '__main__':
 				PPB.date()
 			elif x == 'text':
 				PPB.text()
+			elif x == 'weather':
+				PPB.weather()
 
 		# If the animation speed is not 0, then update the animation
 		if PPB.animationSpeed != 0:

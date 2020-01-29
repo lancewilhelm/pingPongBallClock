@@ -66,7 +66,6 @@ function setBGBlack(){
 
 function setTextWhite(){
 	origin = window.location.origin
-
 	var xhttp = new XMLHttpRequest();
 	var red = 255;
 	var green = 255;
@@ -78,7 +77,6 @@ function setTextWhite(){
 
 function setTextBlack(){
 	origin = window.location.origin
-
 	var xhttp = new XMLHttpRequest();
 	var red = 0;
 	var green = 0;
@@ -105,6 +103,20 @@ function setContent(content){
 	xhttp.send("content="+content+"&checked="+checked);
 }
 
+function setWeather(){
+	origin = window.location.origin
+	var xhttp = new XMLHttpRequest();
+	var unit = document.getElementById("tempUnit").value;
+	var zip = document.getElementById("zipInput").value;
+	if (zip == ''){
+		zip = '80925';
+		
+	}
+	xhttp.open("POST", "/api/weather", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("unit="+unit+"&zip="+zip);
+}
+
 function setCustomText(){
 	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
@@ -125,29 +137,6 @@ function setTextAnimation(animation){
 	xhttp.open("POST", "/api/textanimation", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("animation="+animation+"&speed="+speed);
-}
-
-function sendElementCommand(command){
-	origin = window.location.origin
-	var xhttp = new XMLHttpRequest();
-	var branch = document.getElementById('branchInput').value;
-	if(command == "update"){
-		if(branch==""){
-			updateModal.style.display = "none";
-			branchAlertModal.style.display = "block";
-		}
-		else{
-			xhttp.open("POST", "/api/system", true);
-			xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-			xhttp.send("command="+command+"&branch="+branch);
-		}
-	}
-	else {
-
-		xhttp.open("POST", "/api/system", true);
-		xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		xhttp.send("command="+command+"&branch="+branch);
-	}
 }
 
 var responseTextArray = [];

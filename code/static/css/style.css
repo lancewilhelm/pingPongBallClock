@@ -255,3 +255,8 @@ p {
 	margin: 0px;
 	margin-top: 10px;
 }
+
+#zipInput {
+	width: 100px;
+	display: inline;
+}

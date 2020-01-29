@@ -1,17 +1,14 @@
-# NeoPixel library strandtest example
-# Author: Tony DiCola (tony@tonydicola.com)
-#
-# Direct port of the Arduino NeoPixel library strandtest example.  Showcases
-# various animations on a strip of NeoPixels.
+import argparse
+import json
+import math
+import signal
+import sys
 import time
 
+import requests
 from neopixel import *
 from Utils import *
 
-import argparse
-import signal
-import sys
-import math
 
 class PingPongBoard:
 	def __init__(self):
@@ -40,10 +37,15 @@ class PingPongBoard:
 		self.displayStringLength = 0
 		self.customText = ''
 
+		self.weatherLocation = '80925'
+		self.updateWeather = True
+		self.weatherResponse = None
+		self.tempUnits = 'f'
 		self.content = ['time']
 
 		self.bgColor = ["solid", Color(0,0,255), True]
 
+		self.minsPrev = 99
 		self.displayChanged = True
 
 		# Set up the ball objects
@@ -309,6 +311,11 @@ class PingPongBoard:
 		# Concatenate the date string to the master string with a space termination
 		self.displayString += timeStr + ' '
 
+		# Check to see if the minute has changed this is to update the weather. 
+		if mins != self.minsPrev:
+			self.updateWeather = True
+			self.minsPrev = mins
+
 	def date(self):
 		# Get the current local time and parse it out to usable variables
 		t = time.localtime()
@@ -330,6 +337,45 @@ class PingPongBoard:
 		textStr = self.customText.upper()
 
 		self.displayString += textStr + ' '
+
+	def weather(self):
+		apiKey = '68ba9f27bc6d081421c5d2707f019a9a'
+
+		# base_url variable to store url //
+		base_url = "http://api.openweathermap.org/data/2.5/weather?"
+		complete_url = base_url + "appid=" + apiKey + "&zip=" + self.weatherLocation
+		
+		if self.updateWeather:
+			response = requests.get(complete_url) 
+			self.weatherResponse = response.json()
+			self.updateWeather = False
+
+		if self.weatherResponse['cod'] != '404':
+			y = self.weatherResponse['main']
+
+			current_temperature = float(y['temp'])
+
+			if self.tempUnits == 'k':
+				current_temperature = str(int(round(current_temperature)))
+				unit = ' K '
+			elif self.tempUnits == 'c':
+				current_temperature = str(int(round(current_temperature - 273.15)))
+				unit = '`C '
+			elif self.tempUnits == 'f':
+				current_temperature = str(int(round(current_temperature * (9.0/5) - 459.67)))	
+				unit = '`F '	# Convert to fahrenheit
+
+			weather_description = self.weatherResponse['weather'][0]['description']
+
+			weatherStr = current_temperature + unit + weather_description
+
+		else:
+			weatherStr = 'City Not Found'
+
+		# Concatenate the weather string to the display string
+		weatherStr = weatherStr.upper() 	# Uppercase the string
+
+		self.displayString += weatherStr + ' '
+
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
-
