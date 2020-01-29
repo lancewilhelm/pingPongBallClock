@@ -40,7 +40,7 @@ class PingPongBoard:
 		self.weatherLocation = '80925'
 		self.updateWeather = True
 		self.weatherResponse = None
-		self.tempUnits = 'f'
+		self.tempUnits = 'c'
 		self.content = ['time','weather']
 
 		self.bgColor = ["solid", Color(0,0,255), True]
@@ -364,7 +364,7 @@ class PingPongBoard:
 			elif self.tempUnits == 'f':
 				current_temperature = str(int(round(current_temperature * (9.0/5) - 459.67)))	
 				unit = '`F '	# Convert to fahrenheit
-				
+
 			weather_description = self.weatherResponse['weather'][0]['description']
 
 			weatherStr = current_temperature + unit + weather_description
