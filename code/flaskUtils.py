@@ -85,9 +85,9 @@ def setContent():
 	content = str(request.form['content'])
 	checked = str(request.form['checked'])
 
-	if checked == 'true':
+	if checked == 'true' and content in PPB.content == False:
 		PPB.content.append(content)
-	else:
+	elif checked == 'false' and content in PPB.content == True:
 		PPB.content.remove(content)
 
 	print PPB.content
