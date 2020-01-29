@@ -42,7 +42,6 @@ buffer = [                          # This is tricky and must be defined this wa
 # -------------------------------------------------
 # Fonts
 #--------------------------------------------------
-
 # Slanted Numeral Font ----------------------------
 slanted = {}    #Define the slanted font dictionary
 
