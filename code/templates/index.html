@@ -164,6 +164,14 @@
 				<form>
 					<input type="checkbox" name="time" id="time" onclick="setContent('time')" checked>Time<br>
 					<input type="checkbox" name="date" id="date" onclick="setContent('date')">Date<br>
+					<input type="checkbox" name="weather" id="weather" onclick="setContent('weather')">Weather  
+					<select id="tempUnit">
+						<option value="f">F</option>
+						<option value="c">C</option>
+						<option value="k">K</option>
+					</select>
+					<input id="zipInput" class="form-control form-control-sm" type="text" placeholder="zip code" min="0">
+					<button id="updateWeatherBtn" type="button" class="btn btn-purple" onclick="setWeather()">UPDATE</button><br>
 					<input type="checkbox" name="text" id="text" onclick="setContent('text')">Custom Text
 				</form>
 			</div>	

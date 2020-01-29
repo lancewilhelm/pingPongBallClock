@@ -102,3 +102,13 @@ def setCustomText():
 	PPB.customText = text
 	return ""
 
+# Flask Set Custom Text API
+@app.route("/api/weather", methods=['POST'])
+def setWeather():
+	# Read the values from the POST
+	PPB.tempUnits = str(request.form['unit'])
+	PPB.weatherLocation = str(request.form['zip'])
+
+	PPB.updateWeather = True
+	return ""
+
