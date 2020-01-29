@@ -12,6 +12,8 @@ if __name__ == '__main__':
 	x.daemon = True
 	x.start()
 	
+	print PPB.settings
+	
 	while(True):
 
 		# Reset the string at the beginning of each loop
