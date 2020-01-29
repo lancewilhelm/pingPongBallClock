@@ -16,39 +16,37 @@ class PingPongBoard:
 		self.strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
 		self.strip.begin()
 
-		settings = dict(
-			self.numBalls = 128,
-			self.numRows = 7,
-			self.numCols = 20,
+		self.numBalls = 128
+		self.numRows = 7
+		self.numCols = 20
 
-			self.animationFrame = 0,
-			self.animationEnd = 1,
-			self.startTime = 0,
-			self.timeElapsed = 0,
-			self.animationSpeed = 0,									 # Balls/s for animations. Needs to be a float (.0). Static default
+		self.animationFrame = 0
+		self.animationEnd = 1
+		self.startTime = 0
+		self.timeElapsed = 0
+		self.animationSpeed = 0									 # Balls/s for animations. Needs to be a float (.0). Static default
 
-			self.textColor = ["solid", Color(255,255,255), False],
-			self.font = digits,
-			self.fontChanged = False,
-			self.textSpacing = 0,
-			self.textOrigin = [1,1],
-			self.textOriginMoved = False,
-			self.displayString = '',
-			self.displayStringPrev = '',
-			self.displayStringLength = 0,
-			self.customText = '',
+		self.textColor = ["solid", Color(255,255,255), False]
+		self.font = digits
+		self.fontChanged = False
+		self.textSpacing = 0
+		self.textOrigin = [1,1]
+		self.textOriginMoved = False
+		self.displayString = ''
+		self.displayStringPrev = ''
+		self.displayStringLength = 0
+		self.customText = ''
 
-			self.weatherLocation = '80925',
-			self.updateWeather = True,
-			self.weatherResponse = None,
-			self.tempUnits = 'f',
-			self.content = ['time'],
+		self.weatherLocation = '80925'
+		self.updateWeather = True
+		self.weatherResponse = None
+		self.tempUnits = 'f'
+		self.content = ['time']
 
-			self.bgColor = ["solid", Color(0,0,255), True],
+		self.bgColor = ["solid", Color(0,0,255), True]
 
-			self.minsPrev = 99,
-			self.displayChanged = True,
-		)
+		self.minsPrev = 99
+		self.displayChanged = True
 
 		# Set up the ball objects
 		self.balls = [
