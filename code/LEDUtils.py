@@ -414,8 +414,8 @@ class PingPongBoard:
 			self.font = digits
 
 		# Fix unicode content list
-		for i in self.content:
-			self.content[int(i)] = str(self.content[int(i)])
+		for i in range(len(self.content)):
+			self.content[i] = str(self.content[i])
 
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
