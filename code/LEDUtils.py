@@ -357,7 +357,7 @@ class PingPongBoard:
 		if self.weatherResponse['cod'] != '404':
 			y = self.weatherResponse['main']
 
-			current_temperature = y['temp']
+			current_temperature = float(y['temp'])
 			current_temperature = str(round(current_temperature * (9/5) - 459.67))		# Convert to fahrenheit
 
 			weather_description = self.weatherResponse['weather'][0]['description']
