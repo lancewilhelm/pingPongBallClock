@@ -46,7 +46,7 @@ class PingPongBoard:
 
 		self.bgColor = ["solid", Color(0,0,255), True]
 
-		self.minsPrev = 99
+		self.minsPrev = None
 		self.displayChanged = True
 
 		# Set up the ball objects
@@ -410,7 +410,6 @@ class PingPongBoard:
 		self.textColor = settings['textColor']
 		self.fontName = settings['fontName']
 		self.textSpacing = settings['textSpacing']
-		self.textOrigin = settings['textOrigin']
 		self.textOriginMoved = settings['textOriginMoved']
 		self.customText = settings['customText']
 		self.weatherLocation = settings['weatherLocation']
@@ -420,11 +419,14 @@ class PingPongBoard:
 		self.bgColor = settings['bgColor']
 		self.displayChanged = settings['displayChanged']
 
+		# Reset the origin to [1,1]
+		self.textOrigin = [1,1]
+
 		# Address possible font change
 		if self.fontName == 'slanted':
 			self.font = slanted
 		elif self.fontName == 'digits':
 			self.font = digits
-			
+
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
