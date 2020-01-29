@@ -383,12 +383,12 @@ class PingPongBoard:
 		}
 
 		# Dump the settings to settings.txt
-		with open('settings.txt', 'w') as filehandle:
+		with open('/home/pi/pingPongBallClock/code/settings.txt', 'w') as filehandle:
 			json.dump(settings, filehandle)
 
 	def loadSettings(self):
 		# Get the settings dictionary from settings.txt
-		with open('settings.txt', 'r') as filehandle:
+		with open('/home/pi/pingPongBallClock/code/settings.txt', 'r') as filehandle:
 			settings = json.load(filehandle)
 		
 		# Set variables from the settings 
