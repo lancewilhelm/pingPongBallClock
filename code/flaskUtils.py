@@ -55,6 +55,7 @@ def setFont():
 	elif font == "digits":
 		PPB.font = digits
 
+	PPB.fontName = font
 	PPB.fontChanged = True
 	PPB.updateDisplayString()
 
@@ -122,6 +123,6 @@ def updateSettings():
 		PPB.dumpSettings()
 	elif action == 'load':
 		PPB.loadSettings()
-		
+
 	return ""
 

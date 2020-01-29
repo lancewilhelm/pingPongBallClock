@@ -28,6 +28,7 @@ class PingPongBoard:
 
 		self.textColor = ["solid", Color(255,255,255), False]
 		self.font = digits
+		self.fontName = 'digits'
 		self.fontChanged = False
 		self.textSpacing = 0
 		self.textOrigin = [1,1]
@@ -382,7 +383,7 @@ class PingPongBoard:
 		settings = {
 			'animationSpeed' : self.animationSpeed,									 # Balls/s for animations. Needs to be a float (.0). Static default
 			'textColor' : self.textColor,
-			'font' : self.font,
+			'fontName' : self.fontName,
 			'textSpacing' : self.textSpacing,
 			'textOrigin' : self.textOrigin,
 			'textOriginMoved' : False,
@@ -407,7 +408,7 @@ class PingPongBoard:
 		# Set variables from the settings 
 		self.animationSpeed = settings['animationSpeed']									 # Balls/s for animations. Needs to be a float (.0). Static default
 		self.textColor = settings['textColor']
-		self.font = settings['font']
+		self.fontName = settings['fontName']
 		self.textSpacing = settings['textSpacing']
 		self.textOrigin = settings['textOrigin']
 		self.textOriginMoved = settings['textOriginMoved']
@@ -419,5 +420,11 @@ class PingPongBoard:
 		self.bgColor = settings['bgColor']
 		self.displayChanged = settings['displayChanged']
 
+		# Address possible font change
+		if self.fontName == 'slanted':
+			self.font = slanted
+		elif self.fontName == 'digits':
+			self.font = digits
+			
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
