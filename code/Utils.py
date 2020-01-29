@@ -1,3 +1,5 @@
+# -*- coding: latin-1 -*-
+
 from neopixel import *
 
 # LED strip configuration:

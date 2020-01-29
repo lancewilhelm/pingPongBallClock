@@ -1,3 +1,5 @@
+# -*- coding: latin-1 -*-
+
 from flask import Flask, request, render_template
 from LEDUtils import *
 
