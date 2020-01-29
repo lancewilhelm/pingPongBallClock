@@ -24,34 +24,21 @@ class PingPongBoard:
 		self.animationEnd = 1
 		self.startTime = 0
 		self.timeElapsed = 0
-		self.animationSpeed = 0									 # Balls/s for animations. Needs to be a float (.0). Static default
 
-		self.textColor = ["solid", Color(255,255,255), False]
 		self.font = digits
-		self.fontName = 'digits'
 		self.fontChanged = False
-		self.textSpacing = 0
-		self.textOrigin = [1,1]
 		self.textOriginMoved = False
 		self.displayString = ''
 		self.displayStringPrev = ''
 		self.displayStringLength = 0
-		self.customText = ''
 
-		self.weatherLocation = '80925'
-		self.updateWeather = True
 		self.weatherResponse = None
-		self.tempUnits = 'f'
-		self.content = ['time']
-
-		self.bgColor = ["solid", Color(0,0,255), True]
 
 		self.minsPrev = None
-		self.displayChanged = True
 
 		# Load settings that are saved to a file 
 		self.loadSettings()
-		
+
 		# Set up the ball objects
 		self.balls = [
 			[0] * self.numCols,
@@ -388,15 +375,11 @@ class PingPongBoard:
 			'textColor' : self.textColor,
 			'fontName' : self.fontName,
 			'textSpacing' : self.textSpacing,
-			'textOrigin' : self.textOrigin,
-			'textOriginMoved' : False,
 			'customText' : self.customText,
 			'weatherLocation' : self.weatherLocation,
-			'updateWeather' : True,
 			'tempUnits' : self.tempUnits,
 			'content' : self.content,
 			'bgColor' : self.bgColor,
-			'displayChanged' : True
 		}
 
 		# Dump the settings to settings.txt
@@ -413,16 +396,15 @@ class PingPongBoard:
 		self.textColor = settings['textColor']
 		self.fontName = settings['fontName']
 		self.textSpacing = settings['textSpacing']
-		self.textOriginMoved = settings['textOriginMoved']
 		self.customText = settings['customText']
 		self.weatherLocation = settings['weatherLocation']
-		self.updateWeather = settings['updateWeather']
 		self.tempUnits = settings['tempUnits']
 		self.content = settings['content']
 		self.bgColor = settings['bgColor']
-		self.displayChanged = settings['displayChanged']
 
 		# Reset the origin to [1,1]
+		self.displayChanged = True
+		self.updateWeather = True
 		self.textOrigin = [1,1]
 
 		# Address possible font change
