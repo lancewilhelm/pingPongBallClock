@@ -40,6 +40,7 @@ class PingPongBoard:
 		self.weatherLocation = '80925'
 		self.updateWeather = True
 		self.weatherResponse = None
+		self.tempUnits = 'f'
 		self.content = ['time','weather']
 
 		self.bgColor = ["solid", Color(0,0,255), True]
@@ -353,10 +354,20 @@ class PingPongBoard:
 			y = self.weatherResponse['main']
 
 			current_temperature = float(y['temp'])
-			current_temperature = str(int(round(current_temperature * (9.0/5) - 459.67)))		# Convert to fahrenheit
+
+			if self.tempUnits == 'k':
+				current_temperature = str(current_temperature)
+				unit = 'K '
+			elif self.tempUnits == 'c':
+				current_temperature = str(int(round(current_temperature - 273.15)))
+				unit = '`C '
+			elif self.tempUnits == 'f':
+				current_temperature = str(int(round(current_temperature * (9.0/5) - 459.67)))	
+				unit = '`F '	# Convert to fahrenheit
+				
 			weather_description = self.weatherResponse['weather'][0]['description']
 
-			weatherStr = current_temperature + '`F ' + weather_description
+			weatherStr = current_temperature + unit + weather_description
 
 		else:
 			weatherStr = 'City Not Found'
