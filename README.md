@@ -38,7 +38,7 @@ The functions that drive almost every single part of the lighting and logic and 
 
 The [flaskUtils](code/flaskUtils.py) contains all of the api views that respond to POST and GET requests from the web app.
 
-Other things that serve the web app are found in [templates](code/temlates/), [static](code/static/)
+Other things that serve the web app are found in [templates](code/templates/), [static](code/static/)
 
 ---
 
