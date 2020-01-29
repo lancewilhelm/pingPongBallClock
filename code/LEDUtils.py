@@ -337,7 +337,10 @@ class PingPongBoard:
 		complete_url = base_url + "appid=" + apiKey + "&zip=" + self.weatherLocation
 		
 		if self.updateWeather:
-			response = requests.get(complete_url) 
+			try:
+				response = requests.get(complete_url)
+			except:
+				return
 			self.weatherResponse = response.json()
 			self.updateWeather = False
 
