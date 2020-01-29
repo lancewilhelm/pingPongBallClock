@@ -42,6 +42,8 @@ Other things that serve the web app are found in [templates](code/templates/), [
 
 ---
 
-## Usage
+# Usage
+
+**Instalation instructions coming soon**
 
 Please fork/clone this repo and make it your own. I would love to see some pull requests. This is a just a side hobby of mine so it may take me some time to get around to reviewing and merging. Also, FYI, not a developer IRL. This is just what I do for fun. Learning as I go. Feel free to contact me! 
