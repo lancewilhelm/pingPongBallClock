@@ -1,5 +1,3 @@
-# -*- coding: latin-1 -*-
-
 from neopixel import *
 
 # LED strip configuration:
@@ -340,7 +338,7 @@ slanted[ord('.')] = [
 	[0,0],
 	[1,0]
 ]
-slanted[ord('°')] = [
+slanted[ord('`')] = [
 	[1,1,0],
 	[1,1,0],
 	[0,0,0],
