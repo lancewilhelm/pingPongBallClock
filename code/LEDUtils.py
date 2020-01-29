@@ -49,6 +49,9 @@ class PingPongBoard:
 		self.minsPrev = None
 		self.displayChanged = True
 
+		# Load settings that are saved to a file 
+		self.loadSettings()
+		
 		# Set up the ball objects
 		self.balls = [
 			[0] * self.numCols,
