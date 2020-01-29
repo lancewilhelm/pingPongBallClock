@@ -415,7 +415,7 @@ class PingPongBoard:
 
 		# Fix unicode content list
 		for i in self.content:
-			self.content[i] = str(self.content[i])
-			
+			self.content[int(i)] = str(self.content[int(i)])
+
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
