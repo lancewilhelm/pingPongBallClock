@@ -41,7 +41,7 @@ class PingPongBoard:
 		self.updateWeather = True
 		self.weatherResponse = None
 		self.tempUnits = 'f'
-		self.content = ['time','weather']
+		self.content = ['time']
 
 		self.bgColor = ["solid", Color(0,0,255), True]
 
