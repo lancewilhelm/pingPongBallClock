@@ -277,7 +277,7 @@ class PingPongBoard:
 
 		brightnessFactor = math.sin(j*(math.pi/100))
 
-		self.breathColor *= brightnessFactor
+		self.breathColor = [int(i*brightnessFactor) for i in self.breathColor]
 
 		self.colorFill(Color(self.breathColor[0],self.breathColor[1],self.breathColor[2]))
 
