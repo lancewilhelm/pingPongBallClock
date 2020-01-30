@@ -4,6 +4,7 @@ import math
 import signal
 import sys
 import time
+import random
 
 import requests
 from neopixel import *
@@ -24,6 +25,7 @@ class PingPongBoard:
 		self.animationEnd = 1
 		self.startTime = 0
 		self.timeElapsed = 0
+		self.breathColor = None
 
 		self.font = digits
 		self.fontChanged = False
@@ -151,6 +153,8 @@ class PingPongBoard:
 				self.rainbow()
 			elif self.bgColor[1] == "rainbowCycle":
 				self.rainbowCycle()
+			elif self.bgColor[1] == "breathing":
+				self.breathing()
 		elif self.bgColor[0] == "solid" and self.displayChanged:
 			# print "writing BG color..."	#debugging
 			self.colorFill(self.bgColor[1])
@@ -263,6 +267,19 @@ class PingPongBoard:
 					self.writeBallColor(x,y,self.wheel((((i*2)/(self.numBalls*2))+j) & 255))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
+
+	def breathing(self,wait_ms=20):
+		# Cycle in and out of random colors from colorList
+		j = self.updateFrame(100)
+
+		if j == 0 or self.breathColor == None:
+			self.breathColor = random.choice(colorListRGB)
+
+		brightnessFactor = math.sin(j*(math.pi/100))
+
+		self.breathColor *= brightnessFactor
+
+		self.colorFill(Color(self.breathColor[0],self.breathColor[1],self.breathColor[2]))
 
 	def time(self):
 		# Get the current local time and parse it out to usable variables

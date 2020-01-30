@@ -21,7 +21,7 @@ ledAddresses = [
 [9,10,23,24,37,38,51,52,65,66,79,80,93,94,107,108,121,999,999,999]      #6
 ]
 
-colorList = [
+colorListColor = [
 	Color(255,0,0),		# Red
 	Color(255,255,0),	# Yellow
 	Color(255,0,255),	# Pink
@@ -33,6 +33,20 @@ colorList = [
 	Color(50,0,255),	# Purple
 	Color(255,125,0),	# Orange
 	Color(255,0,50)		# Hot Pink
+]
+
+colorListRGB = [
+	[255,0,0],		# Red
+	[255,255,0],	# Yellow
+	[255,0,255],	# Pink
+	[0,255,255],	# Teal
+	[0,255,0],		# Green
+	[0,0,255],		# Blue
+	[125,0,255],	# Fuscia
+	[200,255,0],	# Optic Yellow
+	[50,0,255],	# Purple
+	[255,125,0],	# Orange
+	[255,0,50]		# Hot Pink
 ]
 class Ball:
 	def __init__(self, location):   #location is a list of two variables, [row, col]
