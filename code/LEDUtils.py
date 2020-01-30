@@ -407,7 +407,7 @@ class PingPongBoard:
 			'weatherLocation' : self.weatherLocation,
 			'tempUnits' : self.tempUnits,
 			'content' : self.content,
-			'bgColor' : self.bgColors,
+			'bgColor' : self.bgColor,
 			'brightness' : self.brightness
 		}
 
