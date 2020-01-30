@@ -122,7 +122,7 @@ def updateSettings():
 	if action == 'save':
 		PPB.dumpSettings()
 	elif action == 'load':
-		PPB.loadSettings()
+		PPB.loadSettings(False)
 
 	return ""
 

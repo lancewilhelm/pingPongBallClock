@@ -415,7 +415,7 @@ class PingPongBoard:
 		with open('/home/pi/pingPongBallClock/code/settings.txt', 'w') as filehandle:
 			json.dump(settings, filehandle)
 
-	def loadSettings(self):
+	def loadSettings(self,bootup=True):
 		# Get the settings dictionary from settings.txt
 		with open('/home/pi/pingPongBallClock/code/settings.txt', 'r') as filehandle:
 			settings = json.load(filehandle)
@@ -446,6 +446,10 @@ class PingPongBoard:
 		# Fix unicode content list
 		for i in range(len(self.content)):
 			self.content[i] = str(self.content[i])
+
+		# Set brightness if we are not in bootup
+		if bootup == False:
+			self.strip.setBrightness(self.brightness)
 
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
