@@ -4,6 +4,7 @@ import math
 import signal
 import sys
 import time
+import random
 
 import requests
 from neopixel import *
@@ -12,10 +13,6 @@ from Utils import *
 
 class PingPongBoard:
 	def __init__(self):
-		# Intialize the library (must be called once before other functions).
-		self.strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
-		self.strip.begin()
-
 		self.numBalls = 128
 		self.numRows = 7
 		self.numCols = 20
@@ -24,6 +21,7 @@ class PingPongBoard:
 		self.animationEnd = 1
 		self.startTime = 0
 		self.timeElapsed = 0
+		self.breathColor = None
 
 		self.font = digits
 		self.fontChanged = False
@@ -50,6 +48,10 @@ class PingPongBoard:
 			[0] * self.numCols,
 			]
 		self.setupBalls()
+
+		# Intialize the library
+		self.strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, self.brightness, LED_CHANNEL, LED_STRIP)
+		self.strip.begin()
 
 	def setupBalls(self):
 		for y in range(self.numRows):
@@ -131,12 +133,17 @@ class PingPongBoard:
 			for x in range(self.numCols):
 				self.writeBallTextState(x,y,False)
 
-	def colorFill(self,color,fullwipe=False):
+	def colorFill(self,color,fullwipe=False,textOnly=False):
 		if fullwipe:
 			for y in range(self.numRows):
 				for x in range(self.numCols):
 					self.writeBallTextState(x,y,False)
 					self.writeBallColor(x,y,color)
+		elif textOnly:
+			for y in range(self.numRows):
+				for x in range(self.numCols):
+					if self.balls[y][x].text == True:
+						self.writeBallColor(x,y,color)
 		else:
 			for y in range(self.numRows):
 				for x in range(self.numCols):
@@ -151,6 +158,8 @@ class PingPongBoard:
 				self.rainbow()
 			elif self.bgColor[1] == "rainbowCycle":
 				self.rainbowCycle()
+			elif self.bgColor[1] == "breathing":
+				self.breathing(False)
 		elif self.bgColor[0] == "solid" and self.displayChanged:
 			# print "writing BG color..."	#debugging
 			self.colorFill(self.bgColor[1])
@@ -162,6 +171,8 @@ class PingPongBoard:
 				self.rainbowText()
 			elif self.textColor[1] == "rainbowCycle":
 				self.rainbowCycleText()
+			elif self.textColor[1] == "breathing":
+				self.breathing(True)
 		# Else, check for solid notification
 		elif self.textColor[0] == 'solid' and self.displayChanged:
 			# print "writing TEXT color..."		#debugging
@@ -262,6 +273,20 @@ class PingPongBoard:
 				if self.balls[y][x].text == True:
 					self.writeBallColor(x,y,self.wheel((((i*2)/(self.numBalls*2))+j) & 255))
 		self.strip.show()
+		time.sleep(wait_ms/1000.0)
+
+	def breathing(self,text=False,wait_ms=20):
+		# Cycle in and out of random colors from colorList
+		j = self.updateFrame(100)
+
+		if j == 0 or self.breathColor == None:
+			self.breathColor = random.choice(colorListRGB)
+
+		brightnessFactor = math.sin(j*(math.pi/100))
+
+		self.breathColorModified = [int(i*brightnessFactor) for i in self.breathColor]
+
+		self.colorFill(Color(self.breathColorModified[0],self.breathColorModified[1],self.breathColorModified[2]),False,text)
 		time.sleep(wait_ms/1000.0)
 
 	def time(self):
@@ -383,13 +408,14 @@ class PingPongBoard:
 			'tempUnits' : self.tempUnits,
 			'content' : self.content,
 			'bgColor' : self.bgColor,
+			'brightness' : self.brightness
 		}
 
 		# Dump the settings to settings.txt
 		with open('/home/pi/pingPongBallClock/code/settings.txt', 'w') as filehandle:
 			json.dump(settings, filehandle)
 
-	def loadSettings(self):
+	def loadSettings(self,bootup=True):
 		# Get the settings dictionary from settings.txt
 		with open('/home/pi/pingPongBallClock/code/settings.txt', 'r') as filehandle:
 			settings = json.load(filehandle)
@@ -404,6 +430,7 @@ class PingPongBoard:
 		self.tempUnits = settings['tempUnits']
 		self.content = settings['content']
 		self.bgColor = settings['bgColor']
+		self.brightness = settings['brightness']
 
 		# Reset the origin to [1,1]
 		self.displayChanged = True
@@ -419,6 +446,10 @@ class PingPongBoard:
 		# Fix unicode content list
 		for i in range(len(self.content)):
 			self.content[i] = str(self.content[i])
+
+		# Set brightness if we are not in bootup
+		if bootup == False:
+			self.strip.setBrightness(self.brightness)
 
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()

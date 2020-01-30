@@ -122,7 +122,17 @@ def updateSettings():
 	if action == 'save':
 		PPB.dumpSettings()
 	elif action == 'load':
-		PPB.loadSettings()
+		PPB.loadSettings(False)
+
+	return ""
+
+# Flask Set Brightness API
+@app.route("/api/brightness", methods=['POST'])
+def setBrightness():
+	# Read the values from the POST
+	brightness = int(request.form['brightness'])
+
+	PPB.strip.setBrightness(brightness)
 
 	return ""
 

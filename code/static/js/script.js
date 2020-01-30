@@ -126,6 +126,15 @@ function setCustomText(){
 	xhttp.send("text="+text);
 }
 
+function setBrightness(){
+	origin = window.location.origin
+	var xhttp = new XMLHttpRequest();
+	var brightness = document.getElementById('brightnessSlider').value;
+	xhttp.open("POST", "/api/brightness", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("brightness="+brightness);
+}
+
 function settings(action){
 	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();

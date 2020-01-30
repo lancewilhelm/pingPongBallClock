@@ -47,6 +47,7 @@
 					<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 						<button class="dropdown-item text-center" type="button" onclick="setCustomBGColor('rainbow')">RAINBOW</button>
 						<button class="dropdown-item text-center" type="button" onclick="setCustomBGColor('rainbowCycle')">RAINBOW CYCLE</button>
+						<button class="dropdown-item text-center" type="button" onclick="setCustomBGColor('breathing')">BREATHING</button>
 					</div>
 				</div>
 			</div>
@@ -112,6 +113,7 @@
 					<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
 						<button class="dropdown-item text-center" type="button" onclick="setCustomTextColor('rainbow')">RAINBOW</button>
 						<button class="dropdown-item text-center" type="button" onclick="setCustomTextColor('rainbowCycle')">RAINBOW CYCLE</button>
+						<button class="dropdown-item text-center" type="button" onclick="setCustomTextColor('breathing')">BREATHING</button>
 					</div>
 				</div>
 			</div>
@@ -191,6 +193,15 @@
 				<h4>SETTINGS</h4>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-sm">
+				<h5>SET BRIGHTNESS:</h5>
+				0 <input class="brightness-slider brightness-slider" type="range" id="brightnessSlider" value="125" max="255" onclick="setBrightness()"/> 100
+			</div>
+		</div>
+
+		<hr class="minor">
+
 		<div class="row">
 			<div class="col-sm">
 				<h5>SAVE STATE SETTINGS (used for bootup)</h5>

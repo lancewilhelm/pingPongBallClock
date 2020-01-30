@@ -1,11 +1,12 @@
 from neopixel import *
 
+# CONGIFURE YOUR STRIP HERE!
 # LED strip configuration:
 LED_PIN        = 18      # GPIO pin connected to the pixels (18 uses PWM!).
 LED_COUNT      = 256
 LED_FREQ_HZ    = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_DMA        = 10       # DMA channel to use for generating signal (try 5)
-LED_BRIGHTNESS = 125     # Set to 0 for darkest and 255 for brightest
+# LED_BRIGHTNESS = 125     # Set to 0 for darkest and 255 for brightest
 LED_INVERT     = False   # True to invert the signal (when using NPN transistor level shift)
 LED_CHANNEL    = 0       # set to '1' for GPIOs 13, 19, 41, 45 or 53
 LED_STRIP      = ws.WS2811_STRIP_GRB   # Strip type and colour ordering
@@ -21,6 +22,33 @@ ledAddresses = [
 [9,10,23,24,37,38,51,52,65,66,79,80,93,94,107,108,121,999,999,999]      #6
 ]
 
+colorListColor = [
+	Color(255,0,0),		# Red
+	Color(255,255,0),	# Yellow
+	Color(255,0,255),	# Pink
+	Color(0,255,255),	# Teal
+	Color(0,255,0),		# Green
+	Color(0,0,255),		# Blue
+	Color(125,0,255),	# Fuscia
+	Color(200,255,0),	# Optic Yellow
+	Color(50,0,255),	# Purple
+	Color(255,125,0),	# Orange
+	Color(255,0,50)		# Hot Pink
+]
+
+colorListRGB = [
+	[255,0,0],		# Red
+	[255,255,0],	# Yellow
+	[255,0,255],	# Pink
+	[0,255,255],	# Teal
+	[0,255,0],		# Green
+	[0,0,255],		# Blue
+	[125,0,255],	# Fuscia
+	[200,255,0],	# Optic Yellow
+	[50,0,255],	# Purple
+	[255,125,0],	# Orange
+	[255,0,50]		# Hot Pink
+]
 class Ball:
 	def __init__(self, location):   #location is a list of two variables, [row, col]
 		self.location = location    #[row,col]
