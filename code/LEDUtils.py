@@ -144,7 +144,7 @@ class PingPongBoard:
 				for x in range(self.numCols):
 					if self.balls[y][x].text == True:
 						self.writeBallColor(x,y,color)
-		elif:
+		else:
 			for y in range(self.numRows):
 				for x in range(self.numCols):
 					if self.balls[y][x].text == False:
