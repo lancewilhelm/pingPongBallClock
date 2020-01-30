@@ -133,7 +133,7 @@ class PingPongBoard:
 			for x in range(self.numCols):
 				self.writeBallTextState(x,y,False)
 
-	def colorFill(self,color,fullwipe=False):
+	def colorFill(self,color,fullwipe=False,textOnly=False):
 		if fullwipe:
 			for y in range(self.numRows):
 				for x in range(self.numCols):
@@ -154,7 +154,7 @@ class PingPongBoard:
 			elif self.bgColor[1] == "rainbowCycle":
 				self.rainbowCycle()
 			elif self.bgColor[1] == "breathing":
-				self.breathing()
+				self.breathing(False)
 		elif self.bgColor[0] == "solid" and self.displayChanged:
 			# print "writing BG color..."	#debugging
 			self.colorFill(self.bgColor[1])
@@ -166,6 +166,8 @@ class PingPongBoard:
 				self.rainbowText()
 			elif self.textColor[1] == "rainbowCycle":
 				self.rainbowCycleText()
+			elif self.textColor[1] == "breathing":
+				self.breathing(True)
 		# Else, check for solid notification
 		elif self.textColor[0] == 'solid' and self.displayChanged:
 			# print "writing TEXT color..."		#debugging
@@ -268,7 +270,7 @@ class PingPongBoard:
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
-	def breathing(self,wait_ms=20):
+	def breathing(self,text=False,wait_ms=20):
 		# Cycle in and out of random colors from colorList
 		j = self.updateFrame(100)
 
@@ -279,7 +281,7 @@ class PingPongBoard:
 
 		self.breathColorModified = [int(i*brightnessFactor) for i in self.breathColor]
 
-		self.colorFill(Color(self.breathColorModified[0],self.breathColorModified[1],self.breathColorModified[2]))
+		self.colorFill(Color(self.breathColorModified[0],self.breathColorModified[1],self.breathColorModified[2]),False,text)
 		time.sleep(wait_ms/1000.0)
 
 	def time(self):
