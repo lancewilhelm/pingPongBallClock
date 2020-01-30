@@ -42,7 +42,13 @@ Other things that serve the web app are found in [templates](code/templates/), [
 
 ---
 
-# Usage
+## Build
+
+You should be able to build this by running `sudo setup.sh` from the code directory
+
+If this doesn't work, then just run through the lines in the setup files to install all of the necessary modules and packages.
+
+## Usage
 
 **Instalation instructions coming soon**
 
