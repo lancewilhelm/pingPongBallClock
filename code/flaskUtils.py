@@ -126,3 +126,13 @@ def updateSettings():
 
 	return ""
 
+# Flask Set Brightness API
+@app.route("/api/brightness", methods=['POST'])
+def updateSettings():
+	# Read the values from the POST
+	brightness = int(request.form['brightness'])
+
+	PPB.strip.setBrightness(brightness)
+
+	return ""
+
