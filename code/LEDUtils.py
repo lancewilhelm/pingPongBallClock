@@ -277,10 +277,9 @@ class PingPongBoard:
 
 		brightnessFactor = math.sin(j*(math.pi/100))
 
-		print self.breathColor
-		self.breathColor = [int(i*brightnessFactor) for i in self.breathColor]
-		print self.breathColor
-		self.colorFill(Color(self.breathColor[0],self.breathColor[1],self.breathColor[2]))
+		self.breathColorModified = [int(i*brightnessFactor) for i in self.breathColor]
+		print.breathColorModified
+		self.colorFill(Color(self.breathColorModified[0],self.breathColorModified[1],self.breathColorModified[2]))
 
 	def time(self):
 		# Get the current local time and parse it out to usable variables
