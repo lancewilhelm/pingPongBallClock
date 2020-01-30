@@ -1,1 +1,1 @@
-{"content": ["time", "weather"], "bgColor": ["animation", "breathing"], "fontName": "slanted", "animationSpeed": 7.5, "weatherLocation": "80925", "textSpacing": 0, "tempUnits": "f", "textColor": ["animation", "rainbowCycle"], "customText": ""}
+{"content": ["time"], "bgColor": ["animation", "breathing"], "fontName": "slanted", "animationSpeed": 0, "weatherLocation": "80925", "textSpacing": 0, "tempUnits": "f", "textColor": ["animation", "rainbowCycle"], "customText": "", "brightness": "125"}

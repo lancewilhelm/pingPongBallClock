@@ -13,10 +13,6 @@ from Utils import *
 
 class PingPongBoard:
 	def __init__(self):
-		# Intialize the library (must be called once before other functions).
-		self.strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
-		self.strip.begin()
-
 		self.numBalls = 128
 		self.numRows = 7
 		self.numCols = 20
@@ -52,6 +48,10 @@ class PingPongBoard:
 			[0] * self.numCols,
 			]
 		self.setupBalls()
+
+		# Intialize the library
+		self.strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, self.brightness, LED_CHANNEL, LED_STRIP)
+		self.strip.begin()
 
 	def setupBalls(self):
 		for y in range(self.numRows):
@@ -407,7 +407,8 @@ class PingPongBoard:
 			'weatherLocation' : self.weatherLocation,
 			'tempUnits' : self.tempUnits,
 			'content' : self.content,
-			'bgColor' : self.bgColor,
+			'bgColor' : self.bgColors,
+			'brightness' : self.brightness
 		}
 
 		# Dump the settings to settings.txt
@@ -429,6 +430,7 @@ class PingPongBoard:
 		self.tempUnits = settings['tempUnits']
 		self.content = settings['content']
 		self.bgColor = settings['bgColor']
+		self.brightness = settings['brightness']
 
 		# Reset the origin to [1,1]
 		self.displayChanged = True
