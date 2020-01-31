@@ -13,9 +13,9 @@ from Utils import *
 
 class PingPongBoard:
 	def __init__(self):
-		self.numBalls = 128
-		self.numRows = 7
-		self.numCols = 20
+		self.numBalls = NUM_BALLS
+		self.numRows = NUM_ROWS
+		self.numCols = NUM_COLS
 
 		self.animationFrame = 0
 		self.animationEnd = 1
@@ -23,7 +23,6 @@ class PingPongBoard:
 		self.timeElapsed = 0
 		self.breathColor = None
 
-		self.font = digits
 		self.fontChanged = False
 		self.textOriginMoved = False
 		self.displayString = ''
@@ -65,7 +64,7 @@ class PingPongBoard:
 
 		# If the color is different than what the buffer has stored, write it and show it
 		if self.balls[row][col].color != color:
-			self.strip.setPixelColor((self.balls[row][col].ledNum)*2,color)
+			self.strip.setPixelColor((self.balls[row][col].ledNum)*PIXEL_RATIO,color)
 			self.balls[row][col].color = color
 
 	def writeBallTextState(self,col,row,text):
@@ -229,49 +228,49 @@ class PingPongBoard:
 
 	def rainbow(self,wait_ms=20):
 		# Draw rainbow that fades across all pixels at once.
-		j = self.updateFrame(256)
+		j = self.updateFrame(LED_COUNT)
 
 		for x in range(self.numCols):
 			for y in range(self.numRows):
 				i = x*self.numRows + y
 				if self.balls[y][x].text == False:
-					self.writeBallColor(x,y,self.wheel(((i*2)+j) & 255))
+					self.writeBallColor(x,y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
 	def rainbowText(self,wait_ms=20):
 		# Draw rainbow that fades across all pixels at once.
-		j = self.updateFrame(256)
+		j = self.updateFrame(LED_COUNT)
 
 		for x in range(self.numCols):
 			for y in range(self.numRows):
 				i = x*self.numRows + y
 				if self.balls[y][x].text == True:
-					self.writeBallColor(x,y,self.wheel(((i*2)+j) & 255))
+					self.writeBallColor(x,y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
 	def rainbowCycle(self,wait_ms=20):
 		# Draw rainbow that uniformly distributes itself across all pixels.
-		j = self.updateFrame(256)
+		j = self.updateFrame(LED_COUNT)
 
 		for x in range(self.numCols):
 			for y in range(self.numRows):
 				i = x*self.numRows + y
 				if self.balls[y][x].text == False:
-					self.writeBallColor(x,y,self.wheel((((i*2)/(self.numBalls*2))+j) & 255))
+					self.writeBallColor(x,y,self.wheel((((i*PIXEL_RATIO)/(self.numBalls*PIXEL_RATIO))+j) & 255))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
 	def rainbowCycleText(self,wait_ms=20):
 		# Draw rainbow that uniformly distributes itself across all pixels.
-		j = self.updateFrame(256)
+		j = self.updateFrame(LED_COUNT)
 
 		for x in range(self.numCols):
 			for y in range(self.numRows):
 				i = x*self.numRows + y
 				if self.balls[y][x].text == True:
-					self.writeBallColor(x,y,self.wheel((((i*2)/(self.numBalls*2))+j) & 255))
+					self.writeBallColor(x,y,self.wheel((((i*PIXEL_RATIO)/(self.numBalls*PIXEL_RATIO))+j) & 255))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
