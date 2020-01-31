@@ -136,3 +136,13 @@ def setBrightness():
 
 	return ""
 
+# Flask Set Brightness API
+@app.route("/api/timeformat", methods=['POST'])
+def setTimeFormat():
+	# Read the values from the POST
+	timeFormat = str(request.form['timeFormat'])
+
+	PPB.timeFormat = timeFormat
+
+	return ""
+

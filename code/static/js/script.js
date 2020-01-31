@@ -103,6 +103,15 @@ function setContent(content){
 	xhttp.send("content="+content+"&checked="+checked);
 }
 
+function configureTime(){
+	origin = window.location.origin
+	var xhttp = new XMLHttpRequest();
+	var timeFormat = document.getElementById("timeFormat").value;
+	xhttp.open("POST", "/api/setcontent", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("timeFormat="+timeFormat);
+}
+
 function setWeather(){
 	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
@@ -200,3 +209,84 @@ function setTextRgb () {
 	document.querySelector('.text-color-preview').style.background = color;
 }
 	setTextRgb();
+
+// Time Modal
+// Get the modal
+var timemodal = document.getElementById("timeModal");
+
+// Get the button that opens the modal
+var timebtn = document.getElementById("configureTimeBtn");
+
+// Get the <span> element that closes the modal
+var timespan = document.getElementById("timeclose");
+
+// When the user clicks on the button, open the modal
+timebtn.onclick = function() {
+	timemodal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+timespan.onclick = function() {
+	timemodal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+	if (event.target == timemodal) {
+		timemodal.style.display = "none";
+	}
+}
+
+// Weather Modal
+// Get the modal
+var weathermodal = document.getElementById("weatherModal");
+
+// Get the button that opens the modal
+var weatherbtn = document.getElementById("configureWeatherBtn");
+
+// Get the <span> element that closes the modal
+var weatherspan = document.getElementById("weatherclose");
+
+// When the user clicks on the button, open the modal
+weatherbtn.onclick = function() {
+	weathermodal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+weatherspan.onclick = function() {
+	weathermodal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+	if (event.target == weathermodal) {
+		weathermodal.style.display = "none";
+	}
+}
+
+// Custom Text Modal
+// Get the modal
+var textmodal = document.getElementById("customTextModal");
+
+// Get the button that opens the modal
+var textbtn = document.getElementById("configureTextBtn");
+
+// Get the <span> element that closes the modal
+var textspan = document.getElementById("textclose");
+
+// When the user clicks on the button, open the modal
+textbtn.onclick = function() {
+	textmodal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+textspan.onclick = function() {
+	textmodal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+	if (event.target == textmodal) {
+		textmodal.style.display = "none";
+	}
+}

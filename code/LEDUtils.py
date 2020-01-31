@@ -296,13 +296,15 @@ class PingPongBoard:
 		mins = t.tm_min
 		secs = t.tm_sec
 
-		# Convert 24h time to 12h time
-		if hours > 12:
-			hours -= 12
+		# If the time format calls for 12 hour, convert the time
+		if self.timeFormat == '12h':
+			# Convert 24h time to 12h time
+			if hours > 12:
+				hours -= 12
 
-		# If it is midnight, change the clock to 12
-		if hours == 0:
-			hours = 12
+			# If it is midnight, change the clock to 12
+			if hours == 0:
+				hours = 12
 
 		# Create the minute string
 		if mins < 10:
@@ -408,7 +410,8 @@ class PingPongBoard:
 			'tempUnits' : self.tempUnits,
 			'content' : self.content,
 			'bgColor' : self.bgColor,
-			'brightness' : self.brightness
+			'brightness' : self.brightness,
+			'timeFormat' : self.timeFormat
 		}
 
 		# Dump the settings to settings.txt
@@ -431,6 +434,7 @@ class PingPongBoard:
 		self.content = settings['content']
 		self.bgColor = settings['bgColor']
 		self.brightness = settings['brightness']
+		self.timeFormat = settings['timeFormat']
 
 		# Reset the origin to [1,1]
 		self.displayChanged = True

@@ -26,6 +26,10 @@ h4 {
 	text-align: center;
 }
 
+form > * {
+	margin: 5px;
+}
+
 .btn-green {
 	background-color: green;
 }
@@ -106,15 +110,15 @@ h4 {
 	height: 100%; /* Full height */
 	overflow: auto; /* Enable scroll if needed */
 	background-color: rgb(0,0,0); /* Fallback color */
-	background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+	background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
 }
 
 /* Modal Content */
 .modal-content {
-	background-color: #fefefe;
-	margin: auto;
+	background-color: #302686;
+	color: white;
 	padding: 20px;
-	border: 1px solid #888;
+	margin: auto;
 	width: 80%;
 	text-align: center;
 	font-weight: bold;
@@ -122,10 +126,12 @@ h4 {
 
 /* The Close Button */
 .close {
-	color: #aaaaaa;
+	color: white;
 	float: right;
 	font-size: 28px;
 	font-weight: bold;
+	text-align: right;
+	text-shadow: none;
 }
 
 .close:hover,
@@ -283,4 +289,12 @@ p {
 #zipInput {
 	width: 100px;
 	display: inline;
+}
+
+.txt-white {
+	color: white;
+}
+
+.txt-purple {
+	color: #302686;
 }

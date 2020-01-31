@@ -164,24 +164,15 @@
 			<div class="col-sm">
 				<h5>SELECT CONTENT</h5>
 				<form>
-					<input type="checkbox" name="time" id="time" onclick="setContent('time')" checked>Time<br>
+					<input type="checkbox" name="time" id="time" onclick="setContent('time')" checked>Time
+					<button id="configureTimeBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
 					<input type="checkbox" name="date" id="date" onclick="setContent('date')">Date<br>
 					<input type="checkbox" name="weather" id="weather" onclick="setContent('weather')">Weather  
-					<select id="tempUnit">
-						<option value="f">F</option>
-						<option value="c">C</option>
-						<option value="k">K</option>
-					</select>
-					<input id="zipInput" class="form-control form-control-sm" type="text" placeholder="zip code" min="0">
-					<button id="updateWeatherBtn" type="button" class="btn btn-purple" onclick="setWeather()">UPDATE</button><br>
+					<button id="configureWeatherBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
 					<input type="checkbox" name="text" id="text" onclick="setContent('text')">Custom Text
+					<button id="configureTextBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button>
 				</form>
 			</div>	
-			<div class="col-sm">
-				<h5>CUSTOM TEXT</h5>
-				<input id="textInput" class="form-control form-control-lg" type="text" placeholder="" min="0">
-				<button id="sendColorBtn" type="button" class="btn btn-purple" onclick="setCustomText()">SET CUSTOM TEXT</button>
-			</div>
 		</div>
 	</div>
 
@@ -219,6 +210,50 @@
 			</div>
 		</div>
 	</div>
+
+<!-- Modals -->
+<div id="timeModal" class="modal">
+	<div class="modal-content">
+		<span id="timeclose" class="close">&times;</span>
+		<h5>CONFIGURE TIME:</h5>
+		<form class="txt-white">
+			Time Format:
+			<select id="timeFormat">
+				<option value="12h">12 Hour</option>
+				<option value="24h">24 Hour</option>
+			</select><br>
+			<button id="timeBtn" type="button" class="btn btn-white txt-purple" onclick="configureTime()"><b>SUBMIT</b></button>
+		</form>
+	</div>
+</div>
+
+<div id="weatherModal" class="modal">
+	<div class="modal-content">
+		<span id="weatherclose" class="close">&times;</span>
+		<h5>CONFIGURE WEATHER:</h5>
+		<form class="txt-white">
+			Temp Unit:
+			<select id="tempUnit">
+				<option value="f">F</option>
+				<option value="c">C</option>
+				<option value="k">K</option>
+			</select><br>
+			Zip Code: <input id="zipInput" class="form-control form-control-sm" type="text" placeholder="zip code" min="0"><br>
+			<button id="upddateWeatherBtn" type="button" class="btn btn-white txt-purple" onclick="setweather()"><b>SUBMIT</b></button>
+		</form>
+	</div>
+</div>
+
+<div id="customTextModal" class="modal">
+	<div id="textclose" class="modal-content">
+		<span class="close">&times;</span>
+		<h5>CUSTOM TEXT:</h5>
+		<form>
+			<input id="textInput" class="form-control form-control-lg" type="text" placeholder="" min="0">
+			<button id="sendColorBtn" type="button" class="btn btn-white txt-purple" onclick="setCustomText()"><b>SET CUSTOM TEXT</b></button>
+		</form>	
+	</div>
+</div>
 
 <script src="{{ url_for('static',filename='js/script.js') }}"></script>
 <script src="../static/js/script.js"></script>
