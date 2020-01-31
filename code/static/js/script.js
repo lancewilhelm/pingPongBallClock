@@ -230,13 +230,6 @@ timespan.onclick = function() {
 	timemodal.style.display = "none";
 }
 
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-	if (event.target == timemodal) {
-		timemodal.style.display = "none";
-	}
-}
-
 // Weather Modal
 // Get the modal
 var weathermodal = document.getElementById("weatherModal");
@@ -257,13 +250,6 @@ weatherspan.onclick = function() {
 	weathermodal.style.display = "none";
 }
 
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-	if (event.target == weathermodal) {
-		weathermodal.style.display = "none";
-	}
-}
-
 // Custom Text Modal
 // Get the modal
 var textmodal = document.getElementById("customTextModal");
@@ -282,11 +268,4 @@ textbtn.onclick = function() {
 // When the user clicks on <span> (x), close the modal
 textspan.onclick = function() {
 	textmodal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-	if (event.target == textmodal) {
-		textmodal.style.display = "none";
-	}
 }
