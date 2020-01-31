@@ -196,7 +196,12 @@
 		<div class="row">
 			<div class="col-sm">
 				<h5>SET BRIGHTNESS:</h5>
-				0 <input class="brightness-slider brightness-slider" type="range" id="brightnessSlider" value="125" max="255" onclick="setBrightness()"/> 100
+				<div class="sliders">
+					0 <input class="brightness-slider brightness-slider" type="range" id="brightnessSlider" value="125" max="255" onclick="setBrightness()"/> 100
+				</div>
+				<br>
+				<button class="btn btn-lg btn-black" type="button" onclick="setBrightness('30')">NIGHT</button>
+				<button class="btn btn-lg btn-white" type="button" onclick="setBrightness('125')">DAY</button>
 			</div>
 		</div>
 

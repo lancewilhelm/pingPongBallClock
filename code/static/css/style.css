@@ -36,6 +36,7 @@ h4 {
 
 .btn-white {
 	background-color: #ffffff;
+	color: black;
 }
 
 .btn-yellow {
@@ -48,6 +49,7 @@ h4 {
 
 .btn-black {
 	background-color: #000000;
+	color: white;
 }
 
 .btn-purple {
