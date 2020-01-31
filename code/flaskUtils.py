@@ -141,7 +141,7 @@ def setBrightness():
 def setTimeFormat():
 	# Read the values from the POST
 	timeFormat = str(request.form['timeFormat'])
-
+	
 	PPB.timeFormat = timeFormat
 
 	return ""

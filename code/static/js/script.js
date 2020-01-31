@@ -107,7 +107,7 @@ function configureTime(){
 	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	var timeFormat = document.getElementById("timeFormat").value;
-	xhttp.open("POST", "/api/setcontent", true);
+	xhttp.open("POST", "/api/timeformat", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("timeFormat="+timeFormat);
 }
