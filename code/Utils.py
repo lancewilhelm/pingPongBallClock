@@ -64,6 +64,10 @@ class Ball:
 		self.text = False           #this is used to determine whether the ball is being used for text display or not
 		self.color = Color(0,0,0)   #current ball color
 
+		self.twinkle = False		# Is the ball currently being used for a twinkle animation
+		self.twinkleLength = None	# How many frames long is the twinkle animation
+		self.twinkleFrame = 0		# What frame is the twinkle animation currently on if it is twinkling
+
 # Buffer
 buffer = [                          # This is tricky and must be defined this way. I'm creating 7 instances of a list that contains 20 instances of Color(0,0,0). They must all be separately defined
 	[Color(0,0,0)] * 20,
