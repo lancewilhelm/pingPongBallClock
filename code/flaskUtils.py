@@ -145,4 +145,3 @@ def setTimeFormat():
 	PPB.timeFormat = timeFormat
 
 	return ""
-

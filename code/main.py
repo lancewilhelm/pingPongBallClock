@@ -37,4 +37,3 @@ if __name__ == '__main__':
 
 		# Update the actual ball color light
 		PPB.updateBoardColors()
-	
