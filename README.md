@@ -44,12 +44,14 @@ Other things that serve the web app are found in [templates](code/templates/), [
 
 ## Build
 
-You should be able to build this by running `sudo sh setup.sh` from the code directory
+You should be able to build this by running `sudo sh setup.sh` from the `code` directory. After that you should be able to run `sudo python main.py` from the `code` directory to start the program. If you get errors, you may need to debug from the error logs to see what packages need installing. They should all be found in `setup.sh`.
 
-If this doesn't work, then just run through the lines in the setup files to install all of the necessary modules and packages.
+The webpage will be located at the local IP address of your Raspberry Pi and at port 5000. For instance, my local address for the clock was `192.168.1.22:5000`. If you need help finding the IP address of your Raspberry Pi, you can reference this [article](https://www.raspberrypi.org/documentation/remote-access/ip-address.md). I imagine that if you got this far, you can find it on your own though ;]
 
 ## Usage
 
-**Instalation instructions coming soon**
-
 Please fork/clone this repo and make it your own. I would love to see some pull requests. This is a just a side hobby of mine so it may take me some time to get around to reviewing and merging. Also, FYI, not a developer IRL. This is just what I do for fun. Learning as I go. Feel free to contact me! 
+
+## The Future
+
+I plan on making more clocks, and adding more features as I go. I will even make a jumbo clock soon so the code should be designed to be able to fit to any clock size with some tweaking. 
