@@ -1,33 +1,33 @@
 import argparse
 import json
 import math
+import random
 import signal
 import sys
 import time
-import random
 
 import requests
 from neopixel import *
 from Utils import *
 
-
+# This is the PingPongBoard class that drives everything. All functions related to lighting and writing are in here. 
 class PingPongBoard:
 	def __init__(self):
-		self.animationFrame = 0
-		self.animationEnd = 1
-		self.startTime = 0
-		self.timeElapsed = 0
-		self.breathColor = None
+		self.animationFrame = 0			# Used for animations, start at 0
+		self.animationEnd = 1			# Default animation end frame. This is always changed
+		self.startTime = 0				# Used for animations and when to move the string
+		self.timeElapsed = 0			# Used for animations and when to move the string
+		self.breathColor = None			# Necessary for the breathing animation
 
-		self.fontChanged = False
-		self.textOriginMoved = False
-		self.displayString = ''
-		self.displayStringPrev = ''
-		self.displayStringLength = 0
+		self.fontChanged = False		# Store whether or not the font has changed
+		self.textOriginMoved = False	# Store whether or not the origin of the display string has changed
+		self.displayString = ''			# This is the string that will be ultimately displayed on screen
+		self.displayStringPrev = ''		# This is what the display string was during the previous loop
+		self.displayStringLength = 0	# This is calculated and used to determine when we have cycled through an entire string during animations
 
-		self.weatherResponse = None
+		self.weatherResponse = None		# This stores the reponse from the OpenWeather API
 
-		self.minsPrev = None
+		self.minsPrev = None			# Used to calculate when a minute has elapsed. This is useful to only update the weather once a minute TODO Change this
 
 		# Load settings that are saved to a file 
 		self.loadSettings()
@@ -44,18 +44,20 @@ class PingPongBoard:
 			]
 		self.setupBalls()
 
-		# Intialize the library
+		#*Intialize the strip
 		self.strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, self.brightness, LED_CHANNEL, LED_STRIP)
 		self.strip.begin()
 
+	# Sets up a ball object for every single ball on the board. The ball object definition can be found in Utils
 	def setupBalls(self):
 		for y in range(NUM_ROWS):
 			for x in range(NUM_COLS):
 				self.balls[y][x] = Ball([y,x])    #passes [row,col]
 
+	# Actually lights a specic ball (LED) with the color provided to the function. This will check to see if the color is different than the one already set for the ball first. If it is the same then it will not rewrite.
 	def writeBallColor(self,col,row,color):
 		# Do not proceed if bad coordinates (could maybe replace with try/catch)
-		if col < 0 or col >= 20 or row < 0 or row >= 7:
+		if col < 0 or col >= NUM_COLS or row < 0 or row >= NUM_ROWS:
 			return
 
 		# If the color is different than what the buffer has stored, write it and show it
@@ -63,15 +65,17 @@ class PingPongBoard:
 			self.strip.setPixelColor((self.balls[row][col].ledNum)*PIXEL_RATIO,color)
 			self.balls[row][col].color = color
 
+	# Changes the text state of a specific ball. This does NOT actually change the color. Merely whether or not the ball is used to display text. Will not rewrite state if the same.
 	def writeBallTextState(self,col,row,text):
 		# Do not proceed if bad coordinates (could maybe replace with try/catch)
-		if col < 0 or col >= 20 or row < 0 or row >= 7:
+		if col < 0 or col >= NUM_COLS or row < 0 or row >= NUM_ROWS:
 			return
 
 		# If the color is different than what the buffer has stored, write it and show it
 		if self.balls[row][col].text != text:
 			self.balls[row][col].text = text
 
+	# Takes a single character provided and writes it to a location on the board.
 	def writeChar(self,col,row,char,textBool=True):
 		# This makes sure that all text is written in the slanted font despite any other font being set
 		if char.isdigit() == False and char != ':' and char != ';':
@@ -86,11 +90,12 @@ class PingPongBoard:
 			distanceToNext = len(font[ord(char)][0]) + self.textSpacing
 
 		# Do not write characters outside of the display area
-		if col <= -4 or col > 20:
+		if col <= -4 or col > NUM_COLS:
 			return distanceToNext
-		if row < -5 or row >= 7:
+		if row < -5 or row >= NUM_ROWS:
 			return distanceToNext
 
+		#Step through the rows and columns of the character and write each pixel/ball/LED
 		for y in range(len(font[ord(char)])):
 			for x in range(len(font[ord(char)][-(y+1)])): #Using -y to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
 				if font[ord(char)][-(y+1)][x]:
@@ -99,9 +104,12 @@ class PingPongBoard:
 					self.writeBallTextState(col+x,row+y,False)	#write the text to false so that it will be overwritten
 		self.strip.show()
 
+		# Returns the distance to the next character. Used for display string length calcs and to find the location of the next character.
 		return distanceToNext
 
+	# Writes the display string if some conditions are met. 
 	def updateDisplayString(self):
+		#Write the string IF the display stirng is different then it last was OR it has moved location OR the font has changed
 		if self.displayString != self.displayStringPrev or self.textOriginMoved or self.fontChanged:
 			x = self.textOrigin[0] 
 			y = self.textOrigin[1]
@@ -116,6 +124,7 @@ class PingPongBoard:
 			self.displayStringPrev = self.displayString			# Set the displayStringPrev to the current string
 			self.displayStringLength = x - self.textOrigin[0]	# This so happens to show up after we are done here. Useful for the animation scroll
 
+	# This steps the animation frame by one. If the animation frame has reached animationEnd, reset the frame to 0
 	def updateFrame(self, animationEnd):
 		self.animationFrame += 1
 		self.animationEnd = animationEnd
@@ -123,22 +132,27 @@ class PingPongBoard:
 			self.animationFrame = 0
 		return self.animationFrame
 
+	# This sets every ball's text state to False on the board
 	def textStateWipe(self):
 		for y in range(NUM_ROWS):
 			for x in range(NUM_COLS):
 				self.writeBallTextState(x,y,False)
 
+	# Fills sections/the whole board with the provided color. This function can fill: the whole board, only non-text balls, only text balls
 	def colorFill(self,color,fullwipe=False,textOnly=False):
+		# Fill the full screen
 		if fullwipe:
 			for y in range(NUM_ROWS):
 				for x in range(NUM_COLS):
 					self.writeBallTextState(x,y,False)
 					self.writeBallColor(x,y,color)
+		# Fill only the text
 		elif textOnly:
 			for y in range(NUM_ROWS):
 				for x in range(NUM_COLS):
 					if self.balls[y][x].text == True:
 						self.writeBallColor(x,y,color)
+		# Fill only the non-text
 		else:
 			for y in range(NUM_ROWS):
 				for x in range(NUM_COLS):
@@ -146,6 +160,7 @@ class PingPongBoard:
 						self.writeBallColor(x,y,color)
 		self.strip.show()
 
+	# The core function that updates both the background color and text colors
 	def updateBoardColors(self):
 		# Write the BG. Will not overwrite text per the function
 		if self.bgColor[0] == "animation":
@@ -183,6 +198,7 @@ class PingPongBoard:
 		# Reset the display changed boolean now that it has been updated
 		self.displayChanged = False
 
+	# Used to move the string during an animation.
 	def updateTextAnimation(self):
 		# Used to determine whether or not we have scrolled through the whole string
 		# self.displayStringLength = len(self.displayString)*len(self.font[ord(' ')][0])
@@ -211,6 +227,7 @@ class PingPongBoard:
 			# Set the start time to this time now
 			self.startTime = nowTime
 
+	# Used in rainbow and rainbowCycle to determine the color during the cycle. Makes for nice smooth transitions
 	def wheel(self,pos):
 		# Generate rainbow colors across 0-255 positions.
 		if pos < 85:
@@ -222,6 +239,7 @@ class PingPongBoard:
 			pos -= 170
 			return Color(0, pos * 3, 255 - pos * 3)     #blue to green
 
+	# Rainbow color animation
 	def rainbow(self,wait_ms=20):
 		# Draw rainbow that fades across all pixels at once.
 		j = self.updateFrame(LED_COUNT)
@@ -234,6 +252,7 @@ class PingPongBoard:
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
+	# Rainbow text color animation
 	def rainbowText(self,wait_ms=20):
 		# Draw rainbow that fades across all pixels at once.
 		j = self.updateFrame(LED_COUNT)
@@ -246,6 +265,7 @@ class PingPongBoard:
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
+	# Rainbow cycle makes all of the BG balls the same color and changes the color over time
 	def rainbowCycle(self,wait_ms=20):
 		# Draw rainbow that uniformly distributes itself across all pixels.
 		j = self.updateFrame(LED_COUNT)
@@ -258,6 +278,7 @@ class PingPongBoard:
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
+		# Rainbow cycle makes all of the text the same color and changes the color over time
 	def rainbowCycleText(self,wait_ms=20):
 		# Draw rainbow that uniformly distributes itself across all pixels.
 		j = self.updateFrame(LED_COUNT)
@@ -270,20 +291,26 @@ class PingPongBoard:
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
+	# Breathing color animation. Uses the random color list in Utils
 	def breathing(self,text=False,wait_ms=20):
 		# Cycle in and out of random colors from colorList
 		j = self.updateFrame(100)
 
+		# If we are on a new cycle, or a color has not been picked then pick a color
 		if j == 0 or self.breathColor == None:
 			self.breathColor = random.choice(colorListRGB)
 
+		# The brightness factor 0-1.0. Adjusts the brightness of the color
 		brightnessFactor = math.sin(j*(math.pi/100))
 
+		# Apply the brightness factor to the color selected
 		self.breathColorModified = [int(i*brightnessFactor) for i in self.breathColor]
 
+		# Color the balls
 		self.colorFill(Color(self.breathColorModified[0],self.breathColorModified[1],self.breathColorModified[2]),False,text)
-		time.sleep(wait_ms/1000.0)
+		time.sleep(wait_ms/1000.0)	# wait time
 
+	# This function obtains the time and concatenates it to the display string
 	def time(self):
 		# Get the current local time and parse it out to usable variables
 		t = time.localtime()
@@ -329,6 +356,7 @@ class PingPongBoard:
 			self.updateWeather = True
 			self.minsPrev = mins
 
+	# This function obtains the date and concatenates it to the display string
 	def date(self):
 		# Get the current local time and parse it out to usable variables
 		t = time.localtime()
@@ -346,11 +374,13 @@ class PingPongBoard:
 		# Concatenate the date string to the master string with a space termination
 		self.displayString += dateStr + ' '
 
+	# This function concatenates the custom text to the display string
 	def text(self):
 		textStr = self.customText.upper()
 
 		self.displayString += textStr + ' '
 
+	# This function obtains the weather and concatenates it to the display string
 	def weather(self):
 		apiKey = '68ba9f27bc6d081421c5d2707f019a9a'
 
@@ -393,6 +423,7 @@ class PingPongBoard:
 
 		self.displayString += weatherStr + ' '
 
+	# This will dump the current settings to settings.txt
 	def dumpSettings(self):
 		# Create a settings dictionary
 		settings = {
@@ -413,6 +444,7 @@ class PingPongBoard:
 		with open('/home/pi/pingPongBallClock/code/settings.txt', 'w') as filehandle:
 			json.dump(settings, filehandle)
 
+	# This will load the settings from settings.txt
 	def loadSettings(self,bootup=True):
 		# Get the settings dictionary from settings.txt
 		with open('/home/pi/pingPongBallClock/code/settings.txt', 'r') as filehandle:
