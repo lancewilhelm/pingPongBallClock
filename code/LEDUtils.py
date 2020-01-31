@@ -13,10 +13,6 @@ from Utils import *
 
 class PingPongBoard:
 	def __init__(self):
-		self.numBalls = NUM_BALLS
-		self.numRows = NUM_ROWS
-		self.numCols = NUM_COLS
-
 		self.animationFrame = 0
 		self.animationEnd = 1
 		self.startTime = 0
@@ -38,13 +34,13 @@ class PingPongBoard:
 
 		# Set up the ball objects
 		self.balls = [
-			[0] * self.numCols,
-			[0] * self.numCols,
-			[0] * self.numCols,
-			[0] * self.numCols,
-			[0] * self.numCols,
-			[0] * self.numCols,
-			[0] * self.numCols,
+			[0] * NUM_COLS,
+			[0] * NUM_COLS,
+			[0] * NUM_COLS,
+			[0] * NUM_COLS,
+			[0] * NUM_COLS,
+			[0] * NUM_COLS,
+			[0] * NUM_COLS,
 			]
 		self.setupBalls()
 
@@ -53,8 +49,8 @@ class PingPongBoard:
 		self.strip.begin()
 
 	def setupBalls(self):
-		for y in range(self.numRows):
-			for x in range(self.numCols):
+		for y in range(NUM_ROWS):
+			for x in range(NUM_COLS):
 				self.balls[y][x] = Ball([y,x])    #passes [row,col]
 
 	def writeBallColor(self,col,row,color):
@@ -128,24 +124,24 @@ class PingPongBoard:
 		return self.animationFrame
 
 	def textStateWipe(self):
-		for y in range(self.numRows):
-			for x in range(self.numCols):
+		for y in range(NUM_ROWS):
+			for x in range(NUM_COLS):
 				self.writeBallTextState(x,y,False)
 
 	def colorFill(self,color,fullwipe=False,textOnly=False):
 		if fullwipe:
-			for y in range(self.numRows):
-				for x in range(self.numCols):
+			for y in range(NUM_ROWS):
+				for x in range(NUM_COLS):
 					self.writeBallTextState(x,y,False)
 					self.writeBallColor(x,y,color)
 		elif textOnly:
-			for y in range(self.numRows):
-				for x in range(self.numCols):
+			for y in range(NUM_ROWS):
+				for x in range(NUM_COLS):
 					if self.balls[y][x].text == True:
 						self.writeBallColor(x,y,color)
 		else:
-			for y in range(self.numRows):
-				for x in range(self.numCols):
+			for y in range(NUM_ROWS):
+				for x in range(NUM_COLS):
 					if self.balls[y][x].text == False:
 						self.writeBallColor(x,y,color)
 		self.strip.show()
@@ -175,8 +171,8 @@ class PingPongBoard:
 		# Else, check for solid notification
 		elif self.textColor[0] == 'solid' and self.displayChanged:
 			# print "writing TEXT color..."		#debugging
-			for y in range(self.numRows):
-				for x in range(self.numCols):
+			for y in range(NUM_ROWS):
+				for x in range(NUM_COLS):
 					if self.balls[y][x].text == True:
 						if self.textColor[0] == 'animation':
 							return
@@ -230,9 +226,9 @@ class PingPongBoard:
 		# Draw rainbow that fades across all pixels at once.
 		j = self.updateFrame(LED_COUNT)
 
-		for x in range(self.numCols):
-			for y in range(self.numRows):
-				i = x*self.numRows + y
+		for x in range(NUM_COLS):
+			for y in range(NUM_ROWS):
+				i = x*NUM_ROWS + y
 				if self.balls[y][x].text == False:
 					self.writeBallColor(x,y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
 		self.strip.show()
@@ -242,9 +238,9 @@ class PingPongBoard:
 		# Draw rainbow that fades across all pixels at once.
 		j = self.updateFrame(LED_COUNT)
 
-		for x in range(self.numCols):
-			for y in range(self.numRows):
-				i = x*self.numRows + y
+		for x in range(NUM_COLS):
+			for y in range(NUM_ROWS):
+				i = x*NUM_ROWS + y
 				if self.balls[y][x].text == True:
 					self.writeBallColor(x,y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
 		self.strip.show()
@@ -254,11 +250,11 @@ class PingPongBoard:
 		# Draw rainbow that uniformly distributes itself across all pixels.
 		j = self.updateFrame(LED_COUNT)
 
-		for x in range(self.numCols):
-			for y in range(self.numRows):
-				i = x*self.numRows + y
+		for x in range(NUM_COLS):
+			for y in range(NUM_ROWS):
+				i = x*NUM_ROWS + y
 				if self.balls[y][x].text == False:
-					self.writeBallColor(x,y,self.wheel((((i*PIXEL_RATIO)/(self.numBalls*PIXEL_RATIO))+j) & 255))
+					self.writeBallColor(x,y,self.wheel((((i*PIXEL_RATIO)/(NUM_BALLS*PIXEL_RATIO))+j) & 255))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
@@ -266,11 +262,11 @@ class PingPongBoard:
 		# Draw rainbow that uniformly distributes itself across all pixels.
 		j = self.updateFrame(LED_COUNT)
 
-		for x in range(self.numCols):
-			for y in range(self.numRows):
-				i = x*self.numRows + y
+		for x in range(NUM_COLS):
+			for y in range(NUM_ROWS):
+				i = x*NUM_ROWS + y
 				if self.balls[y][x].text == True:
-					self.writeBallColor(x,y,self.wheel((((i*PIXEL_RATIO)/(self.numBalls*PIXEL_RATIO))+j) & 255))
+					self.writeBallColor(x,y,self.wheel((((i*PIXEL_RATIO)/(NUM_BALLS*PIXEL_RATIO))+j) & 255))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
