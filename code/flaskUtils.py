@@ -76,7 +76,6 @@ def setTextAnimation():
 
 	# Wipe the screen
 	PPB.textStateWipe()
-	PPB.displayChanged == True
 	return ""
 
 # Flask Select Content API
