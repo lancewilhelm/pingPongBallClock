@@ -165,7 +165,7 @@ class PingPongBoard:
 
 	# The core function that updates both the background color and text colors
 	def updateBoardColors(self):
-		print self.displayChanged
+		print self.displayChanged, self.bgColor
 		# Write the BG. Will not overwrite text per the function
 		if self.bgColor[0] == "animation":
 			if self.bgColor[1] == "rainbow":
