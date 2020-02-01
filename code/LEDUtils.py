@@ -166,6 +166,7 @@ class PingPongBoard:
 	# The core function that updates both the background color and text colors
 	def updateBoardColors(self):
 		print self.displayChanged, self.bgColor
+		print "before bgs"
 		# Write the BG. Will not overwrite text per the function
 		if self.bgColor[0] == "animation":
 			if self.bgColor[1] == "rainbow":
@@ -176,11 +177,11 @@ class PingPongBoard:
 				self.breathing(False)
 			elif self.bgColor[1] == "twinkle":
 				self.twinkle()
-		
-		if self.bgColor[0] == "solid" and self.displayChanged:
+		elif self.bgColor[0] == "solid" and self.displayChanged:
 			# print "writing BG color..."	#debugging
 			self.colorFill(self.bgColor[1])
 
+		print "after bgs, before text"
 		# Color the Text
 		# Check to see if we have a text color animation
 		if self.textColor[0] == "animation":
@@ -190,9 +191,8 @@ class PingPongBoard:
 				self.rainbowCycleText()
 			elif self.textColor[1] == "breathing":
 				self.breathing(True)
-
 		# Else, check for solid notification
-		if self.textColor[0] == 'solid' and self.displayChanged:
+		elif self.textColor[0] == 'solid' and self.displayChanged:
 			# print "writing TEXT color..."		#debugging
 			for y in range(NUM_ROWS):
 				for x in range(NUM_COLS):
@@ -203,8 +203,10 @@ class PingPongBoard:
 							self.writeBallColor(x,y,self.textColor[1])
 			self.strip.show()
 
+		print "after text, before bool flip"
 		# Reset the display changed boolean now that it has been updated
 		self.displayChanged = False
+		print "after bool flip"
 
 	# Used to move the string during an animation.
 	def updateTextAnimation(self):
