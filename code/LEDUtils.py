@@ -335,7 +335,7 @@ class PingPongBoard:
 					self.balls[y][x].twinkleStep()
 					colorElement = int(self.balls[y][x].brightnessFactor() * 255)
 
-					print "color",colorElement,"at",x,y,"brightness factor:",self.balls[y][x].brightnessFactor(),"length:",self.balls[y][x].twinkleLength
+					print "color",colorElement,"at",x,y,"brightness factor:",self.balls[y][x].brightnessFactor(),"frame:",self.balls[y][x].twinkleFrame,"length:",self.balls[y][x].twinkleLength
 					self.writeBallColor(x,y,Color(colorElement,colorElement,colorElement))
 				else:
 					self.writeBallColor(x,y,Color(0,0,0))
