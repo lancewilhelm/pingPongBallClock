@@ -76,7 +76,7 @@ class Ball:
 
 	def twinkleStep(self):
 		self.twinkleFrame += 1
-		if self.twinkleFrame >= (self.twinkleLength - 1):
+		if self.twinkleFrame >= (self.twinkleLength):
 			self.twinkle = False
 			self.twinkleFrame = 0
 			self.twinkleLength = None
