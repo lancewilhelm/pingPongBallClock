@@ -331,10 +331,9 @@ class PingPongBoard:
 		for x in range(NUM_COLS):
 			for y in range(NUM_ROWS):
 				# If the ball is a current twinkle ball then update the frame and color
-				print x, y
-				if self.balls[x][y].twinkle:
-					self.balls[x][y].twinkleStep()
-					colorElement = self.balls[x][y].brightnessFactor() * 255
+				if self.balls[y][x].twinkle:
+					self.balls[y][x].twinkleStep()
+					colorElement = self.balls[y][x].brightnessFactor() * 255
 
 					self.writeBallColor(x,y,Color(colorElement,colorElement,colorElement))
 				else:
