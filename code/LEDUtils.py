@@ -335,7 +335,7 @@ class PingPongBoard:
 					self.balls[y][x].twinkleStep()
 					colorElement = int(self.balls[y][x].brightnessFactor() * 255)
 
-					print "color",colorElement,"at",x,y,"brightness factor:",self.balls[y][x].brightnessFactor(),"frame:",self.balls[y][x].twinkleFrame,"length:",self.balls[y][x].twinkleLength
+					# print "color",colorElement,"at",x,y,"brightness factor:",self.balls[y][x].brightnessFactor(),"frame:",self.balls[y][x].twinkleFrame,"length:",self.balls[y][x].twinkleLength
 					self.writeBallColor(x,y,Color(colorElement,colorElement,colorElement))
 				else:
 					self.writeBallColor(x,y,Color(0,0,0))
@@ -345,7 +345,6 @@ class PingPongBoard:
 			row = int(random.randint(0,NUM_ROWS-1))
 			col = int(random.randint(0,NUM_COLS-1))
 
-			print "checking ball", col, row, self.balls[row][col].text, self.balls[row][col].twinkle
 			# If the ball is text then get out of here. Do one more loop to determine a new ball
 			if self.balls[row][col].text or self.balls[row][col].twinkle:
 				return

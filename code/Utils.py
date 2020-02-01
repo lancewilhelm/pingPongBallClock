@@ -71,6 +71,7 @@ class Ball:
 		self.twinkleFrame = 0		# What frame is the twinkle animation currently on if it is twinkling
 
 	def brightnessFactor(self):
+		print self.twinkleFrame, self.twinkleLength
 		return math.sin(self.twinkleFrame*(math.pi/self.twinkleLength))
 
 	def twinkleStep(self):
