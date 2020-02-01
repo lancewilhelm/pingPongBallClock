@@ -336,7 +336,7 @@ class PingPongBoard:
 
 					# print "color",colorElement,"at",x,y,"brightness factor:",self.balls[y][x].brightnessFactor(),"frame:",self.balls[y][x].twinkleFrame,"length:",self.balls[y][x].twinkleLength
 					self.writeBallColor(x,y,Color(colorElement,colorElement,colorElement))
-					
+
 					self.balls[y][x].twinkleStep()
 				else:
 					self.writeBallColor(x,y,Color(0,0,0))
@@ -351,11 +351,11 @@ class PingPongBoard:
 				return
 
 			self.balls[row][col].twinkle = True
-			self.balls[row][col].twinkleLength = random.randint(10,100)
+			self.balls[row][col].twinkleLength = random.randint(50,100)
 
 			# Set a new twinkle wait time and reset the time elapsed
 			self.twinkleStartTime = time.time()
-			self.twinkleWaitTime = random.random() * 3	# Pick a random number between 0 and 3 and set the wait time as that
+			self.twinkleWaitTime = random.random() * 2	# Pick a random number between 0 and 3 and set the wait time as that
 
 
 # CONTENT GENERATION --------------------------------------------------------------------
