@@ -335,6 +335,7 @@ class PingPongBoard:
 					self.balls[y][x].twinkleStep()
 					colorElement = self.balls[y][x].brightnessFactor() * 255
 
+					print "color",colorElement,"at",x,y
 					self.writeBallColor(x,y,Color(colorElement,colorElement,colorElement))
 				else:
 					self.writeBallColor(x,y,Color(0,0,0))
@@ -350,6 +351,7 @@ class PingPongBoard:
 
 			self.balls[row][col].twinkle == True
 			self.balls[row][col].twinkleLength == random.randint(10,100)
+			print self.balls[row][col]
 
 			# Set a new twinkle wait time and reset the time elapsed
 			self.twinkleStartTime = time.time()
