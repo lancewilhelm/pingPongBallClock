@@ -71,16 +71,15 @@ class Ball:
 		self.twinkleFrame = 0		# What frame is the twinkle animation currently on if it is twinkling
 
 	def brightnessFactor(self):
-		return math.sin(self.twinkleFrame*(math.pi/self.twinkleFrame))
+		return math.sin(self.twinkleFrame*(math.pi/self.twinkleLength))
 
 	def twinkleStep(self):
 		self.twinkleFrame += 1
-		if self.twinkleFrame == self.twinkleLength:
+		if self.twinkleFrame >= (self.twinkleLength - 1):
 			self.twinkle = False
 			self.twinkleFrame = 0
 			self.twinkleLength = None
 		
-
 # Buffer
 buffer = [                          # This is tricky and must be defined this way. I'm creating 7 instances of a list that contains 20 instances of Color(0,0,0). They must all be separately defined
 	[Color(0,0,0)] * 20,
