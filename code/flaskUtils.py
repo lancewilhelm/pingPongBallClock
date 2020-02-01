@@ -24,6 +24,7 @@ def setBGColor():
 		PPB.bgColor = ["solid", Color(red,green,blue)]
 	else:
 		PPB.bgColor = ["animation", program]
+	print PPB.displayChanged
 	return ""
 
 # Flask Text Color API
