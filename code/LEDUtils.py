@@ -176,7 +176,8 @@ class PingPongBoard:
 				self.breathing(False)
 			elif self.bgColor[1] == "twinkle":
 				self.twinkle()
-		elif self.bgColor[0] == "solid" and self.displayChanged:
+		
+		if self.bgColor[0] == "solid" and self.displayChanged:
 			# print "writing BG color..."	#debugging
 			self.colorFill(self.bgColor[1])
 
@@ -189,8 +190,9 @@ class PingPongBoard:
 				self.rainbowCycleText()
 			elif self.textColor[1] == "breathing":
 				self.breathing(True)
+
 		# Else, check for solid notification
-		elif self.textColor[0] == 'solid' and self.displayChanged:
+		if self.textColor[0] == 'solid' and self.displayChanged:
 			# print "writing TEXT color..."		#debugging
 			for y in range(NUM_ROWS):
 				for x in range(NUM_COLS):
