@@ -348,10 +348,8 @@ class PingPongBoard:
 
 			# If the ball is text then get out of here. Do one more loop to determine a new ball
 			if self.balls[row][col].text or self.balls[row][col].twinkle:
-				print "collision"
 				return
 
-			print "found ball:", row
 			self.balls[row][col].twinkle = True
 			self.balls[row][col].twinkleLength = random.randint(50,100)
 
