@@ -345,13 +345,13 @@ class PingPongBoard:
 			row = int(random.randint(0,NUM_ROWS-1))
 			col = int(random.randint(0,NUM_COLS-1))
 
+			print "checking ball", col, row
 			# If the ball is text then get out of here. Do one more loop to determine a new ball
 			if self.balls[row][col].text or self.balls[row][col].twinkle:
 				return
 
 			self.balls[row][col].twinkle == True
 			self.balls[row][col].twinkleLength == random.randint(10,100)
-			print self.balls[row][col]
 
 			# Set a new twinkle wait time and reset the time elapsed
 			self.twinkleStartTime = time.time()
