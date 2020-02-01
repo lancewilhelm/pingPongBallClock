@@ -350,9 +350,9 @@ class PingPongBoard:
 			if self.balls[row][col].text or self.balls[row][col].twinkle:
 				return
 
-			print "made it past if statement..."
 			self.balls[row][col].twinkle == True
 			self.balls[row][col].twinkleLength == random.randint(10,100)
+			print self.balls[row][col]
 
 			# Set a new twinkle wait time and reset the time elapsed
 			self.twinkleStartTime = time.time()
