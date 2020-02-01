@@ -15,9 +15,12 @@ class PingPongBoard:
 	def __init__(self):
 		self.animationFrame = 0			# Used for animations, start at 0
 		self.animationEnd = 1			# Default animation end frame. This is always changed
-		self.startTime = 0				# Used for animations and when to move the string
-		self.timeElapsed = 0			# Used for animations and when to move the string
+		self.animationStartTime = 0		# Used for animations and when to move the string
+		self.animationTimeElapsed = 0	# Used for animations and when to move the string
 		self.breathColor = None			# Necessary for the breathing animation
+		self.twinkleStartTime = 0		# Used for timing when to initate a twinkle
+		self.twinkleTimeElapsed = 0		# Used for timing when to initate a twinkle
+		self.twinkleWaitTime = 0
 
 		self.fontChanged = False		# Store whether or not the font has changed
 		self.textOriginMoved = False	# Store whether or not the origin of the display string has changed
@@ -170,6 +173,8 @@ class PingPongBoard:
 				self.rainbowCycle()
 			elif self.bgColor[1] == "breathing":
 				self.breathing(False)
+			elif self.bgColor[1] == "twinkle":
+				self.twinkle()
 		elif self.bgColor[0] == "solid" and self.displayChanged:
 			# print "writing BG color..."	#debugging
 			self.colorFill(self.bgColor[1])
@@ -200,20 +205,17 @@ class PingPongBoard:
 
 	# Used to move the string during an animation.
 	def updateTextAnimation(self):
-		# Used to determine whether or not we have scrolled through the whole string
-		# self.displayStringLength = len(self.displayString)*len(self.font[ord(' ')][0])
-
 		# If start time has not been defined, do so
-		if self.startTime == 0:
-			self.startTime = time.time()
+		if self.animationStartTime == 0:
+			self.animationStartTime = time.time()
 		
 		nowTime = time.time()
 
 		# Determine the time elapsed since the start time
-		self.timeElapsed = nowTime - self.startTime
+		self.animationTimeElapsed = nowTime - self.animationStartTime
 
 		# If the time elapsed is >= the time one frame should take for our set speed, do the things
-		if self.timeElapsed >= 1/self.animationSpeed and self.animationSpeed != 0:
+		if self.animationTimeElapsed >= 1/self.animationSpeed and self.animationSpeed != 0:
 			#Indicate the display has changed
 			self.textOriginMoved = True
 
@@ -225,8 +227,9 @@ class PingPongBoard:
 				self.textOrigin[0] = 20
 
 			# Set the start time to this time now
-			self.startTime = nowTime
+			self.animationStartTime = nowTime
 
+# COLOR ANIMATIONS ---------------------------------------------------------------------
 	# Used in rainbow and rainbowCycle to determine the color during the cycle. Makes for nice smooth transitions
 	def wheel(self,pos):
 		# Generate rainbow colors across 0-255 positions.
@@ -309,6 +312,51 @@ class PingPongBoard:
 		# Color the balls
 		self.colorFill(Color(self.breathColorModified[0],self.breathColorModified[1],self.breathColorModified[2]),False,text)
 		time.sleep(wait_ms/1000.0)	# wait time
+
+	def twinkle(self):
+		# If start time has not been defined, do so
+		if self.twinkleStartTime == 0:
+			self.twinkleStartTime = time.time()
+
+		# If a twinkle wait time has not been generated then do so
+		if self.twinkleWaitTime == 0:
+			self.twinkleWaitTime = random.random() * 3	# Pick a random number between 0 and 3 and set the wait time as that
+		
+		nowTime = time.time()
+
+		# Determine the time elapsed since the start time
+		self.twinkleTimeElapsed = nowTime - self.twinkleStartTime
+
+		# Update the twinkles 
+		for x in range(NUM_COLS):
+			for y in range(NUM_ROWS):
+				# If the ball is a current twinkle ball then update the frame and color
+				if self.balls[x][y].twinkle:
+					self.balls[x][y].twinkleStep()
+					colorElement = self.balls[x][y].brightnessFactor() * 255
+
+					self.writeBallColor(x,y,Color(colorElement,colorElement,colorElement))
+				else:
+					self.writeBallColor(x,y,Color(0,0,0))
+
+		# If the time elapsed is greater than the twinkleWaitTime then initiate a twinkle
+		if self.twinkleTimeElapsed >= self.twinkleWaitTime:
+			row = int(random.randint(0,NUM_ROWS))
+			col = int(random.randint(0,NUM_COLS))
+
+			# If the ball is text then get out of here. Do one more loop to determine a new ball
+			if self.balls[row][col].text == True and self.balls[row][col].twinkle:
+				return
+
+			self.balls[row][col].twinkle == True
+			self.balls[row][col].twinkleLength == random.randint(10,100)
+
+			# Set a new twinkle wait time and reset the time elapsed
+			self.twinkleStartTime = time.time()
+			self.twinkleWaitTime = random.random() * 3	# Pick a random number between 0 and 3 and set the wait time as that
+
+
+# CONTENT GENERATION --------------------------------------------------------------------
 
 	# This function obtains the time and concatenates it to the display string
 	def time(self):
@@ -422,6 +470,8 @@ class PingPongBoard:
 		weatherStr = weatherStr.upper() 	# Uppercase the string
 
 		self.displayString += weatherStr + ' '
+
+# SETTING HANDLING -------------------------------------------------------------------
 
 	# This will dump the current settings to settings.txt
 	def dumpSettings(self):
