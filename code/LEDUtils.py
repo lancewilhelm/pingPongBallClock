@@ -315,6 +315,7 @@ class PingPongBoard:
 		time.sleep(wait_ms/1000.0)	# wait time
 
 	def twinkle(self):
+		print "twinkling..."
 		# If start time has not been defined, do so
 		if self.twinkleStartTime == 0:
 			self.twinkleStartTime = time.time()
