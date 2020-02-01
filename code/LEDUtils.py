@@ -341,8 +341,8 @@ class PingPongBoard:
 
 		# If the time elapsed is greater than the twinkleWaitTime then initiate a twinkle
 		if self.twinkleTimeElapsed >= self.twinkleWaitTime:
-			row = int(random.randint(0,NUM_ROWS))
-			col = int(random.randint(0,NUM_COLS))
+			row = int(random.randint(0,NUM_ROWS-1))
+			col = int(random.randint(0,NUM_COLS-1))
 
 			# If the ball is text then get out of here. Do one more loop to determine a new ball
 			if self.balls[row][col].text or self.balls[row][col].twinkle:
