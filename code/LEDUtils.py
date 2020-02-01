@@ -176,7 +176,7 @@ class PingPongBoard:
 			elif self.bgColor[1] == "twinkle":
 				self.twinkle()
 		elif self.bgColor[0] == "solid" and self.displayChanged:
-			# print "writing BG color..."	#debugging
+			print "writing BG color..."	#debugging
 			self.colorFill(self.bgColor[1])
 
 		# Color the Text
@@ -338,7 +338,7 @@ class PingPongBoard:
 					self.writeBallColor(x,y,Color(colorElement,colorElement,colorElement))
 
 					self.balls[y][x].twinkleStep()
-				else:
+				elif self.balls[y][x].text == False:
 					self.writeBallColor(x,y,Color(50,0,255))
 
 		# If the time elapsed is greater than the twinkleWaitTime then initiate a twinkle
