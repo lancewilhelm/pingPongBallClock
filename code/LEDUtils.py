@@ -123,7 +123,7 @@ class PingPongBoard:
 			# After we write a new string, reset/set booleans and set the prev variable to the current string
 			self.textOriginMoved = False						# We just addressed this change, so change it back to false
 			self.fontChanged = False							# We just addressed this change, so change it back to false
-			self.displayChanged = True							# We have written a new string, so the display has changed
+			self.textDisplayChanged = True						# We have written a new string, so the display has changed
 			self.displayStringPrev = self.displayString			# Set the displayStringPrev to the current string
 			self.displayStringLength = x - self.textOrigin[0]	# This so happens to show up after we are done here. Useful for the animation scroll
 
@@ -165,7 +165,7 @@ class PingPongBoard:
 
 	# The core function that updates both the background color and text colors
 	def updateBoardColors(self):
-		print self.displayChanged, self.bgColor
+		print self.bgDisplayChanged, self.bgColor
 		print "before bgs"
 		# Write the BG. Will not overwrite text per the function
 		if self.bgColor[0] == "animation":
@@ -177,9 +177,10 @@ class PingPongBoard:
 				self.breathing(False)
 			elif self.bgColor[1] == "twinkle":
 				self.twinkle()
-		elif self.bgColor[0] == "solid" and self.displayChanged:
+		elif self.bgColor[0] == "solid" and self.bgDisplayChanged:
 			# print "writing BG color..."	#debugging
 			self.colorFill(self.bgColor[1])
+		self.bgDisplayChanged = False
 
 		print "after bgs, before text"
 		# Color the Text
@@ -192,7 +193,7 @@ class PingPongBoard:
 			elif self.textColor[1] == "breathing":
 				self.breathing(True)
 		# Else, check for solid notification
-		elif self.textColor[0] == 'solid' and self.displayChanged:
+		elif self.textColor[0] == 'solid' and self.textDisplayChanged:
 			# print "writing TEXT color..."		#debugging
 			for y in range(NUM_ROWS):
 				for x in range(NUM_COLS):
@@ -205,7 +206,7 @@ class PingPongBoard:
 
 		print "after text, before bool flip"
 		# Reset the display changed boolean now that it has been updated
-		self.displayChanged = False
+		self.textDisplayChanged = False
 		print "after bool flip"
 
 	# Used to move the string during an animation.
@@ -521,7 +522,8 @@ class PingPongBoard:
 		self.timeFormat = settings['timeFormat']
 
 		# Reset the origin to [1,1]
-		self.displayChanged = True
+		self.bgDisplayChanged = True
+		self.textDisplayChanged = True
 		self.updateWeather = True
 		self.textOrigin = [1,1]
 

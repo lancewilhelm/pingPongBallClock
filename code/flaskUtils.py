@@ -18,13 +18,12 @@ def setBGColor():
 	green = int(request.form['green'])
 	blue = int(request.form['blue'])
 	
-	PPB.displayChanged = True
+	PPB.bgDisplayChanged = True
 	# Change the bg color accordingly
 	if program == "solid":
 		PPB.bgColor = ["solid", Color(red,green,blue)]
 	else:
 		PPB.bgColor = ["animation", program]
-	print PPB.displayChanged
 	return ""
 
 # Flask Text Color API
@@ -36,7 +35,7 @@ def setTextColor():
 	green = int(request.form['green'])
 	blue = int(request.form['blue'])
 	
-	PPB.displayChanged = True
+	PPB.textDisplayChanged = True
 	# Change the bg color accordingly
 	if program == "solid":
 		PPB.textColor = ["solid", Color(red,green,blue)]
