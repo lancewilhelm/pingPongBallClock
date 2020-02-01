@@ -339,7 +339,7 @@ class PingPongBoard:
 
 					self.balls[y][x].twinkleStep()
 				else:
-					self.writeBallColor(x,y,Color(0,0,0))
+					self.writeBallColor(x,y,Color(50,0,255))
 
 		# If the time elapsed is greater than the twinkleWaitTime then initiate a twinkle
 		if self.twinkleTimeElapsed >= self.twinkleWaitTime:
