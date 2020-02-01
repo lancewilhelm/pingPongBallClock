@@ -191,7 +191,7 @@ class PingPongBoard:
 				self.breathing(True)
 		# Else, check for solid notification
 		elif self.textColor[0] == 'solid' and self.textDisplayChanged:
-			# print "writing TEXT color..."		#debugging
+			print "writing TEXT color..."		#debugging
 			for y in range(NUM_ROWS):
 				for x in range(NUM_COLS):
 					if self.balls[y][x].text == True:
