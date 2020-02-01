@@ -315,7 +315,6 @@ class PingPongBoard:
 		time.sleep(wait_ms/1000.0)	# wait time
 
 	def twinkle(self):
-		print "twinkling..."
 		# If start time has not been defined, do so
 		if self.twinkleStartTime == 0:
 			self.twinkleStartTime = time.time()
@@ -336,7 +335,7 @@ class PingPongBoard:
 				if self.balls[y][x].twinkle:
 					colorElement = int(self.balls[y][x].brightnessFactor() * 255)
 
-					# print "color",colorElement,"at",x,y,"brightness factor:",self.balls[y][x].brightnessFactor(),"frame:",self.balls[y][x].twinkleFrame,"length:",self.balls[y][x].twinkleLength
+					print "color",colorElement,"at",x,y,"brightness factor:",self.balls[y][x].brightnessFactor(),"frame:",self.balls[y][x].twinkleFrame,"length:",self.balls[y][x].twinkleLength
 					self.writeBallColor(x,y,Color(colorElement,colorElement,colorElement))
 
 					self.balls[y][x].twinkleStep()
@@ -350,8 +349,10 @@ class PingPongBoard:
 
 			# If the ball is text then get out of here. Do one more loop to determine a new ball
 			if self.balls[row][col].text or self.balls[row][col].twinkle:
+				print "collision"
 				return
 
+			print "found ball:", row
 			self.balls[row][col].twinkle = True
 			self.balls[row][col].twinkleLength = random.randint(50,100)
 
