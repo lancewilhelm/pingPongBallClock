@@ -124,6 +124,7 @@ class PingPongBoard:
 			self.textOriginMoved = False						# We just addressed this change, so change it back to false
 			self.fontChanged = False							# We just addressed this change, so change it back to false
 			self.textDisplayChanged = True						# We have written a new string, so the display has changed
+			self.bgDisplayChanged = current_temperature			# Since we have update the string, the bg needs to be updated to write over the old text balls now as well
 			self.displayStringPrev = self.displayString			# Set the displayStringPrev to the current string
 			self.displayStringLength = x - self.textOrigin[0]	# This so happens to show up after we are done here. Useful for the animation scroll
 
