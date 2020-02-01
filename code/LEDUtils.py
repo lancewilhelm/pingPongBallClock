@@ -360,6 +360,7 @@ class PingPongBoard:
 			self.twinkleStartTime = time.time()
 			self.twinkleWaitTime = random.random() * 2	# Pick a random number between 0 and 3 and set the wait time as that
 
+		self.strip.show()
 
 # CONTENT GENERATION --------------------------------------------------------------------
 
