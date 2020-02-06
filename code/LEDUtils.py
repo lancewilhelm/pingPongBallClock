@@ -388,7 +388,10 @@ class PingPongBoard:
 
 		# Create the hour string
 		if hours < 10 and self.animationSpeed == 0:
-			hourStr = ' ' + str(hours)
+			if self.timeFormat == '12h':
+				hourStr = ' ' + str(hours)
+			elif self.timeFormat == '24h':
+				hourStr = '0' + str(hours)
 		else:
 			hourStr = str(hours)
 
