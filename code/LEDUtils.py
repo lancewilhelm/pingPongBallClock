@@ -447,8 +447,11 @@ class PingPongBoard:
 			except:
 				return
 
-			self.weatherResponse = str(response.json())
+			self.weatherResponse = response.json()
 			self.updateWeather = False
+
+			# Stringify the cod element for error checking
+			self.weatherResponse['cod'] = str(self.weatherResponse['cod'])
 
 		print self.weatherResponse
 		if self.weatherResponse['cod'] != '404':
