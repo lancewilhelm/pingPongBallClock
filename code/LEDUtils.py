@@ -455,7 +455,11 @@ class PingPongBoard:
 
 		print self.weatherResponse
 		print self.weatherResponse['cod']
-		if self.weatherResponse['cod'] != '404':
+
+		if self.weatherResponse['cod'] != 401:
+			print 'API KEY ERROR'
+
+		if self.weatherResponse['cod'] != 404:
 			y = self.weatherResponse['main']
 
 			current_temperature = float(y['temp'])
