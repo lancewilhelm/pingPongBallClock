@@ -451,7 +451,7 @@ class PingPongBoard:
 			self.updateWeather = False
 
 		print self.weatherResponse
-		if self.weatherResponse['cod'] != '404':
+		if self.weatherResponse['cod'] != 404:
 			y = self.weatherResponse['main']
 
 			current_temperature = float(y['temp'])
@@ -471,7 +471,7 @@ class PingPongBoard:
 			weatherStr = current_temperature + unit + weather_description
 
 		else:
-			weatherStr = 'City Not Found'
+			weatherStr = 'error'
 
 		# Concatenate the weather string to the display string
 		weatherStr = weatherStr.upper() 	# Uppercase the string
