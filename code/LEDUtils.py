@@ -444,9 +444,10 @@ class PingPongBoard:
 		if self.updateWeather:
 			try:
 				response = requests.get(complete_url)
+				print response
 			except:
 				return
-				
+
 			self.weatherResponse = response.json()
 			self.updateWeather = False
 
