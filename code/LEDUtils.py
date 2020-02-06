@@ -447,7 +447,7 @@ class PingPongBoard:
 			except:
 				return
 
-			self.weatherResponse = response.json()
+			self.weatherResponse = str(response.json())
 			self.updateWeather = False
 
 		print self.weatherResponse
