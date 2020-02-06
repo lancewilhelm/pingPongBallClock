@@ -451,7 +451,7 @@ class PingPongBoard:
 			self.updateWeather = False
 
 		print self.weatherResponse
-		if self.weatherResponse['cod'] != 404:
+		if self.weatherResponse['cod'] != '404':
 			y = self.weatherResponse['main']
 
 			current_temperature = float(y['temp'])
