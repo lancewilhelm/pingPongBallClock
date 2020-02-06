@@ -456,7 +456,7 @@ class PingPongBoard:
 		print self.weatherResponse
 		if self.weatherResponse['cod'] == '401':
 			weatherStr = 'key error'
-		elif self.weatherResponse['cod'] == '404':
+		elif self.weatherResponse['cod'] == '200':
 			y = self.weatherResponse['main']
 
 			current_temperature = float(y['temp'])
