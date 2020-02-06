@@ -434,11 +434,9 @@ class PingPongBoard:
 
 	# This function obtains the weather and concatenates it to the display string
 	def weather(self):
-		apiKey = '68ba9f27bc6d081421c5d2707f019a9a'
-
 		# base_url variable to store url //
 		base_url = "http://api.openweathermap.org/data/2.5/weather?"
-		complete_url = base_url + "appid=" + apiKey + "&zip=" + self.weatherLocation
+		complete_url = base_url + "appid=" + self.openWeatherKey + "&zip=" + self.weatherLocation
 		
 		if self.updateWeather:
 			try:
@@ -503,7 +501,14 @@ class PingPongBoard:
 		# Get the settings dictionary from settings.txt
 		with open('/home/pi/pingPongBallClock/code/settings.txt', 'r') as filehandle:
 			settings = json.load(filehandle)
+
+		# Get the API keys from apikeys.txt
+		with open('/home/pi/pingPongBallClock/code/apikeys.txt', 'r') as filehandle:
+			apikeys = json.load(filehandle)
 		
+		# Set the API Key variables
+		self.openWeatherKey = apikeys['openweather']
+
 		# Set variables from the settings 
 		self.animationSpeed = settings['animationSpeed']									 # Balls/s for animations. Needs to be a float (.0). Static default
 		self.textColor = settings['textColor']
