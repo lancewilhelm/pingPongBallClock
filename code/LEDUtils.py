@@ -453,6 +453,7 @@ class PingPongBoard:
 			# Stringify the cod element for error checking
 			self.weatherResponse['cod'] = str(self.weatherResponse['cod'])
 
+		print self.weatherResponse
 		if self.weatherResponse['cod'] == '401':
 			weatherStr = 'key error'
 		elif self.weatherResponse['cod'] == '404':
