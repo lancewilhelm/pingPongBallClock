@@ -388,7 +388,10 @@ class PingPongBoard:
 
 		# Create the hour string
 		if hours < 10 and self.animationSpeed == 0:
-			hourStr = ' ' + str(hours)
+			if self.timeFormat == '12h':
+				hourStr = ' ' + str(hours)
+			elif self.timeFormat == '24h':
+				hourStr = '0' + str(hours)
 		else:
 			hourStr = str(hours)
 
@@ -434,21 +437,42 @@ class PingPongBoard:
 
 	# This function obtains the weather and concatenates it to the display string
 	def weather(self):
-		apiKey = '68ba9f27bc6d081421c5d2707f019a9a'
+		# In case we are not displaying the time, check the time to see if we need to update the weather
+		# Get the current local time and parse it out to usable variables
+		t = time.localtime()
+		mins = t.tm_min
+
+		# Check to see if the minute has changed this is to update the weather. 
+		if mins != self.minsPrev:
+			self.updateWeather = True
+			self.minsPrev = mins		
 
 		# base_url variable to store url //
 		base_url = "http://api.openweathermap.org/data/2.5/weather?"
-		complete_url = base_url + "appid=" + apiKey + "&zip=" + self.weatherLocation
-		
+
+		# If the zip code field is not empty then use the zip code. Otherwise use the filled city name
+		if self.weatherZipLocation != '':
+			complete_url = base_url + "appid=" + self.openWeatherKey + "&zip=" + self.weatherZipLocation
+		else:
+			complete_url = base_url + "appid=" + self.openWeatherKey + "&q=" + self.weatherCityLocation
+
 		if self.updateWeather:
 			try:
 				response = requests.get(complete_url)
 			except:
 				return
+
 			self.weatherResponse = response.json()
 			self.updateWeather = False
 
-		if self.weatherResponse['cod'] != '404':
+			# Stringify the cod element for error checking
+			self.weatherResponse['cod'] = str(self.weatherResponse['cod'])
+
+		if self.weatherResponse['cod'] == '401':
+			weatherStr = 'key error'
+		if self.weatherResponse['cod'] == '404':
+			weatherStr = 'city not found'
+		elif self.weatherResponse['cod'] == '200':
 			y = self.weatherResponse['main']
 
 			current_temperature = float(y['temp'])
@@ -466,9 +490,8 @@ class PingPongBoard:
 			weather_description = self.weatherResponse['weather'][0]['description']
 
 			weatherStr = current_temperature + unit + weather_description
-
 		else:
-			weatherStr = 'City Not Found'
+			weatherStr = 'error'
 
 		# Concatenate the weather string to the display string
 		weatherStr = weatherStr.upper() 	# Uppercase the string
@@ -486,7 +509,8 @@ class PingPongBoard:
 			'fontName' : self.fontName,
 			'textSpacing' : self.textSpacing,
 			'customText' : self.customText,
-			'weatherLocation' : self.weatherLocation,
+			'weatherZipLocation' : self.weatherZipLocation,
+			'weatherCityLocation' : self.weatherCityLocation,
 			'tempUnits' : self.tempUnits,
 			'content' : self.content,
 			'bgColor' : self.bgColor,
@@ -503,14 +527,22 @@ class PingPongBoard:
 		# Get the settings dictionary from settings.txt
 		with open('/home/pi/pingPongBallClock/code/settings.txt', 'r') as filehandle:
 			settings = json.load(filehandle)
+
+		# Get the API keys from apikeys.txt
+		with open('/home/pi/pingPongBallClock/code/apikeys.txt', 'r') as filehandle:
+			apikeys = json.load(filehandle)
 		
+		# Set the API Key variables
+		self.openWeatherKey = apikeys['openweather']
+
 		# Set variables from the settings 
 		self.animationSpeed = settings['animationSpeed']									 # Balls/s for animations. Needs to be a float (.0). Static default
 		self.textColor = settings['textColor']
 		self.fontName = settings['fontName']
 		self.textSpacing = settings['textSpacing']
 		self.customText = settings['customText']
-		self.weatherLocation = settings['weatherLocation']
+		self.weatherZipLocation = settings['weatherZipLocation']
+		self.weatherCityLocation = settings['weatherCityLocation']
 		self.tempUnits = settings['tempUnits']
 		self.content = settings['content']
 		self.bgColor = settings['bgColor']

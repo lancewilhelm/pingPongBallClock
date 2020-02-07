@@ -291,10 +291,19 @@ p {
 	display: inline;
 }
 
+#cityInput {
+	width: 200px;
+	display: inline;
+}
+
 .txt-white {
 	color: white;
 }
 
 .txt-purple {
 	color: #302686;
+}
+
+.txt-gray {
+	color: #3b3b3b;
 }
