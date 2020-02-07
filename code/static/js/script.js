@@ -120,7 +120,7 @@ function setWeather(){
 	var city = document.getElementById("cityInput").value;
 	xhttp.open("POST", "/api/weather", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("unit="+unit+"&zip="+zip+"&city"+city);
+	xhttp.send("unit="+unit+"&zip="+zip+"&city="+city);
 }
 
 function setCustomText(){
