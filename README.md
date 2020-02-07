@@ -1,4 +1,6 @@
 
+![logo](imgs/ppbcsmall.png)
+
 # Ping Pong Ball Clock
 
 Raspberry Pi code for the Ping Pong Ball Clock Project
@@ -26,9 +28,9 @@ The layout of the LED strips called for a font libraries and character writing f
 
 The the following images gave me a concept of how I was going to program the LED display with each vertical red line in the first image being an LED strip:
 ![layout concept](imgs/layout&#32;visualizer-01.jpg)
-![layout concept](imgs/layout&#32;visualizer-02.jpg)
-![layout concept](imgs/layout&#32;visualizer-03.jpg)
-![layout concept](imgs/layout&#32;visualizer-04.jpg)
+![digits concept](imgs/layout&#32;visualizer-02.jpg)
+![slanted digits concept](imgs/layout&#32;visualizer-03.jpg)
+![slanted font concept](imgs/layout&#32;visualizer-04.jpg)
 
 ## Implementation
 
