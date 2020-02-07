@@ -437,9 +437,19 @@ class PingPongBoard:
 
 	# This function obtains the weather and concatenates it to the display string
 	def weather(self):
+		# In case we are not displaying the time, check the time to see if we need to update the weather
+		# Get the current local time and parse it out to usable variables
+		t = time.localtime()
+		mins = t.tm_min
+
+		# Check to see if the minute has changed this is to update the weather. 
+		if mins != self.minsPrev:
+			self.updateWeather = True
+			self.minsPrev = mins		
+
 		# base_url variable to store url //
 		base_url = "http://api.openweathermap.org/data/2.5/weather?"
-		
+
 		# If the zip code field is not empty then use the zip code. Otherwise use the filled city name
 		if self.weatherZipLocation != '':
 			complete_url = base_url + "appid=" + self.openWeatherKey + "&zip=" + self.weatherZipLocation
