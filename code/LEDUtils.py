@@ -438,7 +438,8 @@ class PingPongBoard:
 	# This function obtains the weather and concatenates it to the display string
 	def weather(self):
 		# base_url variable to store url //
-		base_url = "http://api.openweathermap.org/data/2.5/weather?"\
+		base_url = "http://api.openweathermap.org/data/2.5/weather?"
+		
 		# If the zip code field is not empty then use the zip code. Otherwise use the filled city name
 		if self.weatherZipLocation != '':
 			complete_url = base_url + "appid=" + self.openWeatherKey + "&zip=" + self.weatherZipLocation
