@@ -108,7 +108,8 @@ def setCustomText():
 def setWeather():
 	# Read the values from the POST
 	PPB.tempUnits = str(request.form['unit'])
-	PPB.weatherLocation = str(request.form['zip'])
+	PPB.weatherZipLocation = str(request.form['zip'])
+	PPB.weatherCityLocation = str(request.form['city'])
 
 	PPB.updateWeather = True
 	return ""

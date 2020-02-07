@@ -291,6 +291,11 @@ p {
 	display: inline;
 }
 
+#cityInput {
+	width: 200px;
+	display: inline;
+}
+
 .txt-white {
 	color: white;
 }

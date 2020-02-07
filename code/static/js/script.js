@@ -117,13 +117,10 @@ function setWeather(){
 	var xhttp = new XMLHttpRequest();
 	var unit = document.getElementById("tempUnit").value;
 	var zip = document.getElementById("zipInput").value;
-	if (zip == ''){
-		zip = '80925';
-		
-	}
+	var city = document.getElementById("cityInput").value;
 	xhttp.open("POST", "/api/weather", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("unit="+unit+"&zip="+zip);
+	xhttp.send("unit="+unit+"&zip="+zip+"&city"+city);
 }
 
 function setCustomText(){

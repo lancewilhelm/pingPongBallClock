@@ -438,9 +438,14 @@ class PingPongBoard:
 	# This function obtains the weather and concatenates it to the display string
 	def weather(self):
 		# base_url variable to store url //
-		base_url = "http://api.openweathermap.org/data/2.5/weather?"
-		complete_url = base_url + "appid=" + self.openWeatherKey + "&zip=" + self.weatherLocation
+		base_url = "http://api.openweathermap.org/data/2.5/weather?"\
 		
+		# If the zip code field is not empty then use the zip code. Otherwise use the filled city name
+		if self.weatherZipLocation != '':
+			complete_url = base_url + "appid=" + self.openWeatherKey + "&zip=" + self.weatherZipLocation
+		else:
+			complete_url = base_url + "appid=" + self.openWeatherKey + "&q=" + self.weatherCityLocation
+
 		if self.updateWeather:
 			try:
 				response = requests.get(complete_url)
@@ -494,7 +499,8 @@ class PingPongBoard:
 			'fontName' : self.fontName,
 			'textSpacing' : self.textSpacing,
 			'customText' : self.customText,
-			'weatherLocation' : self.weatherLocation,
+			'weatherZipLocation' : self.weatherZipLocation,
+			'weatherCityLocation' : self.weatherCityLocation,
 			'tempUnits' : self.tempUnits,
 			'content' : self.content,
 			'bgColor' : self.bgColor,
@@ -525,7 +531,8 @@ class PingPongBoard:
 		self.fontName = settings['fontName']
 		self.textSpacing = settings['textSpacing']
 		self.customText = settings['customText']
-		self.weatherLocation = settings['weatherLocation']
+		self.weatherZipLocation = settings['weatherZipLocation']
+		self.weatherCityLocation = settings['weatherCityLocation']
 		self.tempUnits = settings['tempUnits']
 		self.content = settings['content']
 		self.bgColor = settings['bgColor']
