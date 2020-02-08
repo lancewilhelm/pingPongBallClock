@@ -43,10 +43,21 @@ The [flaskUtils](code/flaskUtils.py) file contains all of the api views that res
 Other things that serve the web app are found in [templates](code/templates/), [static](code/static/)
 
 ---
+## Wiring
+
+It is worth considering running a separate 5V power supply to power just the LEDs since you will be powering at least 128 of them. Then the only two wires that run to the raspberry pi from the LEDs are the data and ground wires. If you use a separate power supply, you must run a ground wire from the ground of the power supply to the raspberry pi ground so that logic is consistent, otherwise the LEDs will not light properly.  
+
+The data wire should be run to pin "18" as indicated below. This is how the code is set up currently. If you want to change the pin, make sure that you adjust the "LED_PIN" value in [Utils](code/Utils.py). 
+
+The ground wire can be run to any of the ground pins on the pi (black circles below). You can use the 5V pins to test short strands of LEDs but you **should not try to power the full length of LEDs with it. This has the potential to damage your pi.** Most noticible though, it will change the color of your LEDs throughout the strip because of the lack of power. 
+
+![pinout](imgs/raspberry-pi-pinout.png)
 
 ## Build
 
-You should be able to build this by running `sudo sh setup.sh` from the `code` directory. After that you should be able to run `sudo python main.py` from the `code` directory to start the program. If you get errors, you may need to debug from the error logs to see what packages need installing. They should all be found in `setup.sh`.
+You must first make sure that git is installed on your raspberry pi so that you can clone the repo. First run `sudo apt-get update` to make sure that you have the correct package directory listings. Then run `sudo apt-get install git`. You then should be able to clone this repo by running `git clone https://github.com/PlanetaryMotion/pingPongBallClock.git`.
+
+You should be able to build this by running `sudo sh setup.sh` from the `code` directory. After that you should be able to run `sudo python main.py` from the `code` directory to start the program. If you get errors, you may need to debug from the error logs to see what packages need installing. They should all be found in `setup.sh`. One known error right now is that the crontab script does not copy properly. You can manually copy the crontab script to the root crontab file by running `sudo cp ~/pingPongBallClock/code/crontabScript /var/spool/cron/crontabs/root`. This allows the clock code to run when the raspberry pi boots up.
 
 The webpage will be located at the local IP address of your Raspberry Pi and at port 5000. For instance, my local address for the clock was `192.168.1.22:5000`. If you need help finding the IP address of your Raspberry Pi, you can reference this [article](https://www.raspberrypi.org/documentation/remote-access/ip-address.md). I imagine that if you got this far, you can find it on your own though ;]
 

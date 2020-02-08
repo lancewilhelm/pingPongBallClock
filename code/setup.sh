@@ -7,7 +7,7 @@ sudo apt-get install python-pip
 sudo pip install flask
 sudo pip install requests
 
-sudo apt-get install scons wig
+sudo apt-get install scons swig
 git clone https://github.com/jgarff/rpi_ws281x.git
 cd rpi_ws281x
 scons
