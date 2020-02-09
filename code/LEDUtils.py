@@ -39,7 +39,7 @@ class PingPongBoard:
 		self.balls = []
 		for i in range(NUM_ROWS):
 			self.balls.append([0] * NUM_COLS)
-			
+
 		# self.balls = [
 		# 	[0] * NUM_COLS,
 		# 	[0] * NUM_COLS,
@@ -49,6 +49,7 @@ class PingPongBoard:
 		# 	[0] * NUM_COLS,
 		# 	[0] * NUM_COLS,
 		# 	]
+		print self.balls
 		self.setupBalls()
 
 		#*Intialize the strip
