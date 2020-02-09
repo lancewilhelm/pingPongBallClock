@@ -549,7 +549,7 @@ class PingPongBoard:
 		self.bgDisplayChanged = True
 		self.textDisplayChanged = True
 		self.updateWeather = True
-		self.textOrigin = [4,4]		#[x,y]
+		self.textOrigin = [2,4]		#[x,y]
 
 		# Address possible font change
 		if self.fontName == 'slanted':
