@@ -5,7 +5,7 @@ function loadWebSettings(){
 		if (this.readyState == 4 && this.status == 200) {
 			responseTextArray = this.responseText
 			console.log(responseTextArray)
-			// document.getElementById("gates-list").innerHTML = text;
+			document.getElementById("pageTitle").innerHTML = responseTextArray;
 		}
 	};
 
