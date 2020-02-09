@@ -32,8 +32,9 @@ class PingPongBoard:
 
 		self.minsPrev = None			# Used to calculate when a minute has elapsed. This is useful to only update the weather once a minute TODO Change this
 
-		# Load settings that are saved to a file 
+		# Load settings that are saved to files 
 		self.loadSettings()
+		self.loadWebSettings()
 
 		# Set up the ball objects
 		#CHANGED FOR XL
@@ -565,5 +566,13 @@ class PingPongBoard:
 		if bootup == False:
 			self.strip.setBrightness(self.brightness)
 
+	def loadWebSettings(self):
+		# Get the web page settings dictionary from webpagesettings.txt
+		with open('/home/pi/pingPongBallClock/code/webpagesettings.txt', 'r') as filehandle:
+			webPageSettings = json.load(filehandle)
+
+		# Read the variables from the settings file and assign them to variables
+		self.webPageTitle = webPageSettings['title']
+		
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()

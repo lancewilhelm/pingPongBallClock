@@ -1,3 +1,20 @@
+function loadWebSettings(){
+	origin = window.location.origin
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			responseTextArray = this.responseText
+			console.log(responseTextArray)
+			// document.getElementById("gates-list").innerHTML = text;
+		}
+	};
+
+	xhttp.open("GET", "/api/webpagesettings", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("");
+
+}
+
 function setCustomBGColor(color){
 	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();

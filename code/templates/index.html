@@ -11,9 +11,9 @@
     <style>
     </style>
 </head>
-<body>
+<body onload="loadWebSettings()">
     <div class="jumbotron text-left">
-        <h1>PING PONG CLOCK</h1>
+        <h1 id="pageTitle">PING PONG CLOCK</h1>
     </div>
     <div class="container-fluid text-center bg">  
         <div class="row bg-header">
@@ -182,7 +182,7 @@
 	<div class="container-fluid text-center bg">
 		<div class="row bg-header">
 			<div class="col-sm text-right">
-				<h4>SETTINGS</h4>
+				<h4>PPBC SETTINGS</h4>
 			</div>
 		</div>
 		<div class="row">
@@ -207,6 +207,27 @@
 					SAVE
 				</button>
 				<button class="btn btn-lg btn-purple" type="button" onclick="settings('load')">
+					LOAD
+				</button>		
+			</div>
+		</div>
+	</div>
+
+	<hr class="major">
+
+	<div class="container-fluid text-center bg">
+		<div class="row bg-header">
+			<div class="col-sm text-right">
+				<h4>WEB PAGE SETTINGS</h4>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm">
+				<h5>SAVE WEB PAGE SETTINGS</h5>
+				<button class="btn btn-lg btn-purple" type="button" onclick="webSettings('save')">
+					SAVE
+				</button>
+				<button class="btn btn-lg btn-purple" type="button" onclick="webSettings('load')">
 					LOAD
 				</button>		
 			</div>

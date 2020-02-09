@@ -146,3 +146,8 @@ def setTimeFormat():
 	PPB.timeFormat = timeFormat
 
 	return ""
+
+# Flask Web PageSettings API
+@app.route("/api/webpagesettings", methods=['GET'])
+def updateWebPageSettings():
+	return PPB.webPageTitle
