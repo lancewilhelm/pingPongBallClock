@@ -4,8 +4,8 @@ function loadWebSettings(){
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			responseTextArray = this.responseText
-			console.log(responseTextArray)
 			document.getElementById("pageTitle").innerHTML = responseTextArray;
+			document.title = responseTextArray;
 		}
 	};
 
