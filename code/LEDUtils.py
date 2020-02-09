@@ -36,19 +36,11 @@ class PingPongBoard:
 		self.loadSettings()
 
 		# Set up the ball objects
+		#CHANGED FOR XL
 		self.balls = []
 		for i in range(NUM_ROWS):
 			self.balls.append([0] * NUM_COLS)
 
-		# self.balls = [
-		# 	[0] * NUM_COLS,
-		# 	[0] * NUM_COLS,
-		# 	[0] * NUM_COLS,
-		# 	[0] * NUM_COLS,
-		# 	[0] * NUM_COLS,
-		# 	[0] * NUM_COLS,
-		# 	[0] * NUM_COLS,
-		# 	]
 		print self.balls
 		self.setupBalls()
 
@@ -60,7 +52,6 @@ class PingPongBoard:
 	def setupBalls(self):
 		for y in range(NUM_ROWS):
 			for x in range(NUM_COLS):
-				print x,y
 				self.balls[y][x] = Ball([y,x])    #passes [row,col]
 
 	# Actually lights a specic ball (LED) with the color provided to the function. This will check to see if the color is different than the one already set for the ball first. If it is the same then it will not rewrite.
