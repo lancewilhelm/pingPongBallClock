@@ -36,15 +36,19 @@ class PingPongBoard:
 		self.loadSettings()
 
 		# Set up the ball objects
-		self.balls = [
-			[0] * NUM_COLS,
-			[0] * NUM_COLS,
-			[0] * NUM_COLS,
-			[0] * NUM_COLS,
-			[0] * NUM_COLS,
-			[0] * NUM_COLS,
-			[0] * NUM_COLS,
-			]
+		self.balls = []
+		for i in range(NUM_ROWS):
+			self.balls.append([0] * NUM_COLS)
+			
+		# self.balls = [
+		# 	[0] * NUM_COLS,
+		# 	[0] * NUM_COLS,
+		# 	[0] * NUM_COLS,
+		# 	[0] * NUM_COLS,
+		# 	[0] * NUM_COLS,
+		# 	[0] * NUM_COLS,
+		# 	[0] * NUM_COLS,
+		# 	]
 		self.setupBalls()
 
 		#*Intialize the strip
