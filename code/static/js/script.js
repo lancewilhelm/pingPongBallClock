@@ -19,12 +19,16 @@ function setPageTitle(){
 	var title = document.getElementById('titleInput').value;
 	document.getElementById("pageTitle").innerHTML = title;
 	document.title = title;
+
+	sendWebPageSettings();
 }
 
 function setCustomPageColor(){
 	var color = document.querySelector('.page-color-preview').style.background
 	document.documentElement.style.setProperty('--main-bg-color', color);
 	console.log("set the color to " + color);
+
+	sendWebPageSettings();
 }
 
 function sendWebPageSettings(){
