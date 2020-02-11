@@ -6,6 +6,7 @@ function loadWebSettings(){
 			webPageSettings = JSON.parse(this.responseText)
 			document.getElementById("pageTitle").innerHTML = webPageSettings.title;
 			document.title = webPageSettings.title;
+			document.documentElement.style.setProperty('--main-bg-color', webPageSettings.mainBGColor);
 		}
 	};
 
