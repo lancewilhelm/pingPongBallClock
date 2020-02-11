@@ -153,7 +153,7 @@ def updateWebPageSettings():
 
 	# Get the web page settings dictionary from webpagesettings.txt
 	with open('/home/pi/pingPongBallClock/code/webpagesettings.txt', 'r') as filehandle:
-	webPageSettings = filehandle.read()
+		webPageSettings = filehandle.read()
 	
 	print webPageSettings
 
