@@ -32,19 +32,15 @@ class PingPongBoard:
 
 		self.minsPrev = None			# Used to calculate when a minute has elapsed. This is useful to only update the weather once a minute TODO Change this
 
-		# Load settings that are saved to a file 
+		# Load settings that are saved to files 
 		self.loadSettings()
 
 		# Set up the ball objects
-		self.balls = [
-			[0] * NUM_COLS,
-			[0] * NUM_COLS,
-			[0] * NUM_COLS,
-			[0] * NUM_COLS,
-			[0] * NUM_COLS,
-			[0] * NUM_COLS,
-			[0] * NUM_COLS,
-			]
+		#CHANGED FOR XL
+		self.balls = []
+		for i in range(NUM_ROWS):
+			self.balls.append([0] * NUM_COLS)
+
 		self.setupBalls()
 
 		#*Intialize the strip
@@ -553,7 +549,7 @@ class PingPongBoard:
 		self.bgDisplayChanged = True
 		self.textDisplayChanged = True
 		self.updateWeather = True
-		self.textOrigin = [1,1]
+		self.textOrigin = [2,4]		#[x,y]
 
 		# Address possible font change
 		if self.fontName == 'slanted':
