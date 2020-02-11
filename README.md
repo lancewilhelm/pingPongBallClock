@@ -63,6 +63,10 @@ You should be able to build this by running `sudo sh setup.sh` from the `code` d
 
 The webpage will be located at the local IP address of your Raspberry Pi and at port 5000. For instance, my local address for the clock was `192.168.1.22:5000`. If you need help finding the IP address of your Raspberry Pi, you can reference this [article](https://www.raspberrypi.org/documentation/remote-access/ip-address.md). I imagine that if you got this far, you can find it on your own though ;]
 
+## Setup
+
+The Ping Pong Ball Clock is setup by default for 128 balls/LEDs and an layout of 20 rows and 7 columns. In the settings section you can set up the display for more. You can also change the text origin row and column, as well as how many lines are on screen to adjust the way the text displays. It is recommended that you have at least 10 rows to display two lines of text on the screen because the text fonts are 5 balls tall.
+
 ## Weather API Key (Required for weather content)
 
 Weather is collected via the Open Weather API. This means that an API key is required to use this feature. An API key is free and can be aquired [here](https://openweathermap.org/appid). The firmware for Ping Pong Ball Clock was written with the maximum number of API calls to the weather service in mind. This firmware will only make a new call when the weather settings have been changed, or every minute. This should avoid the 60 calls/min maximum for the free version.

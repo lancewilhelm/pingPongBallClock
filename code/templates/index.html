@@ -11,11 +11,11 @@
     <style>
     </style>
 </head>
-<body>
+<body onload="loadWebSettings()">
     <div class="jumbotron text-left">
-        <h1>PING PONG CLOCK</h1>
+        <h1 id="pageTitle"></h1>
     </div>
-    <div class="container-fluid text-center bg">  
+    <div class="container-fluid text-center">  
         <div class="row bg-header">
             <div class="col-sm text-right">
                 <h4>BG STYLE PICKER</h4>
@@ -76,7 +76,7 @@
 
     <hr class="major">
 
-	<div class="container-fluid text-center bg"> 
+	<div class="container-fluid text-center"> 
 		<div class="row bg-header">
 			<div class="col-sm text-right">
 				<h4>TEXT STYLE PICKER</h4>
@@ -155,7 +155,7 @@
 
 	<hr class="major">
 
-	<div class="container-fluid text-center bg"> 
+	<div class="container-fluid text-center"> 
 		<div class="row bg-header">
 			<div class="col-sm text-right">
 				<h4>CONTENT</h4>
@@ -179,10 +179,10 @@
 
 	<hr class="major">
 
-	<div class="container-fluid text-center bg">
+	<div class="container-fluid text-center">
 		<div class="row bg-header">
 			<div class="col-sm text-right">
-				<h4>SETTINGS</h4>
+				<h4>PPBC SETTINGS</h4>
 			</div>
 		</div>
 		<div class="row">
@@ -209,6 +209,42 @@
 				<button class="btn btn-lg btn-purple" type="button" onclick="settings('load')">
 					LOAD
 				</button>		
+			</div>
+		</div>
+	</div>
+
+	<hr class="major">
+
+	<div class="container-fluid text-center">
+		<div class="row bg-header">
+			<div class="col-sm text-right">
+				<h4>WEB PAGE SETTINGS</h4>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm">
+				<b>CUSTOM PAGE BG COLOR:</b>
+				<div class="page-color-picker">
+					<div class="sliders">
+						<div class="slide-container">
+							<input class="page-red-slider short-slider" type="range" id="rangeinput" value="255" max="255" onchange="setPageRgb()" oninput="setPageRgb()" />
+						</div>
+						<div class="slide-container">
+							<input class="page-green-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setPageRgb()" oninput="setPageRgb()" />
+						</div>
+						<div class="slide-container">
+							<input class="page-blue-slider short-slider" type="range" id="rangeinput" value="0" max="255" oninput="setPageRgb()" onchange="setPageRgb()" />
+						</div>
+					</div>
+					<div id="page-color-preview" class="page-color-preview"></div>
+				</div>
+				<button id="sendColorBtn" type="button" class="btn btn-purple" onclick="setCustomPageColor()">SET PAGE BG COLOR</button>
+			</div>
+
+			<div class="col-sm">
+				<h5>PAGE TITLE:</h5>
+				<input id="titleInput" class="form-control form-control-lg" type="text" placeholder="title">
+				<button id="sendColorBtn" type="button" class="btn btn-purple" onclick="setPageTitle()">SET PAGE TITLE</button>
 			</div>
 		</div>
 	</div>
