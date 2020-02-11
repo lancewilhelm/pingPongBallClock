@@ -45,6 +45,8 @@ Other things that serve the web app are found in [templates](code/templates/), [
 ---
 ## Wiring
 
+**WARNING: You may not have wired your LEDs like I did. This means that you will need to adjust the ledAdresses list in [Utils](code/Utils.py). How to do this and sort it out is described in this [issue](https://github.com/PlanetaryMotion/pingPongBallClock/issues/32).**
+
 It is worth considering running a separate 5V power supply to power just the LEDs since you will be powering at least 128 of them. Then the only two wires that run to the raspberry pi from the LEDs are the data and ground wires. If you use a separate power supply, you must run a ground wire from the ground of the power supply to the raspberry pi ground so that logic is consistent, otherwise the LEDs will not light properly.  
 
 The data wire should be run to pin "18" as indicated below. This is how the code is set up currently. If you want to change the pin, make sure that you adjust the "LED_PIN" value in [Utils](code/Utils.py). 
