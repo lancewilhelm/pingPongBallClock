@@ -160,3 +160,4 @@ def updateWebPageSettings():
 		# Write the settings to webpagesettings.txt
 		with open('/home/pi/pingPongBallClock/code/webpagesettings.txt', 'w') as filehandle:
 			filehandle.write(settings)
+		return ""
