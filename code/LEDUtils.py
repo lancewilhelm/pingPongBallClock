@@ -34,7 +34,6 @@ class PingPongBoard:
 
 		# Load settings that are saved to files 
 		self.loadSettings()
-		self.loadWebSettings()
 
 		# Set up the ball objects
 		#CHANGED FOR XL
@@ -565,6 +564,6 @@ class PingPongBoard:
 		# Set brightness if we are not in bootup
 		if bootup == False:
 			self.strip.setBrightness(self.brightness)
-			
+
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
