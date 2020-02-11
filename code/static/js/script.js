@@ -37,7 +37,7 @@ function sendWebPageSettings(){
 
 	var settings = {
 		title: document.getElementById("pageTitle").innerHTML,
-		mainBGColor: document.querySelector('.page-color-preview').style.background
+		mainBGColor: document.getElementById("page-color-preview").style.background
 	}
 
 	settingsString = JSON.stringify(settings)
@@ -249,9 +249,9 @@ function setBGRgb () {
 
 // Color picker
 function setTextRgb () {
-	var red = document.querySelector('.text-color-picker .text-red-slider').value;
-	var green = document.querySelector('.text-color-picker .text-green-slider').value;
-	var blue = document.querySelector('.text-color-picker .text-blue-slider').value;
+	var red = document.getElementById('text-red-slider').value;
+	var green = document.getElementById('text-green-slider').value;
+	var blue = document.getElementById('text-blue-slider').value;
 	var color = "rgb(" + red + "," + green + "," + blue + ")";
 	document.querySelector('.text-color-preview').style.background = color;
 }
@@ -259,11 +259,12 @@ function setTextRgb () {
 
 // Color picker
 function setPageRgb () {
-	var red = document.querySelector('.page-color-picker .page-red-slider').value;
-	var green = document.querySelector('.page-color-picker .page-green-slider').value;
-	var blue = document.querySelector('.page-color-picker .page-blue-slider').value;
+	var red = document.getElementById("page-red-slider").value;
+	var green = document.getElementById("page-green-slider").value;
+	var blue = document.getElementById("page-blue-slider").value;
 	var color = "rgb(" + red + "," + green + "," + blue + ")";
-	document.querySelector('.page-color-preview').style.background = color;
+
+	document.getElementById("page-color-preview").style.background = color;
 }
 	setPageRgb();
 
@@ -325,4 +326,24 @@ textbtn.onclick = function() {
 // When the user clicks on <span> (x), close the modal
 textspan.onclick = function() {
 	textmodal.style.display = "none";
+}
+
+// Web Page Settings Modal
+// Get the modal
+var pageSettingsModal = document.getElementById("webPageSettingsModal");
+
+// Get the button that opens the modal
+var pageSettingsBtn = document.getElementById("settingsIcon");
+
+// Get the <span> element that closes the modal
+var pageSettingsSpan = document.getElementById("settingsclose");
+
+// When the user clicks on the button, open the modal
+pageSettingsBtn.onclick = function() {
+	pageSettingsModal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+pageSettingsSpan.onclick = function() {
+	pageSettingsModal.style.display = "none";
 }
