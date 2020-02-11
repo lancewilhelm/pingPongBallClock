@@ -148,13 +148,10 @@ def setTimeFormat():
 	return ""
 
 # Flask Web PageSettings API
-@app.route("/api/webpagesettings", methods=['GET'])
+@app.route("/api/webpagesettings", methods=['GET','POST'])
 def updateWebPageSettings():
-
-	# Get the web page settings dictionary from webpagesettings.txt
-	with open('/home/pi/pingPongBallClock/code/webpagesettings.txt', 'r') as filehandle:
-		webPageSettings = filehandle.read()
+	if request.method == 'GET':
+		# Get the web page settings dictionary from webpagesettings.txt
+		with open('/home/pi/pingPongBallClock/code/webpagesettings.txt', 'r') as filehandle:
+			return filehandle.read()
 	
-	print webPageSettings
-
-	return webPageSettings

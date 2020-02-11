@@ -163,6 +163,15 @@ form > * {
 	padding: 10px 20px;
 	border-radius: 10px;
 }
+
+.page-color-picker {
+	width: fit-content;
+	margin: 10px auto;
+	background-color: var(--main-bg-color);
+	padding: 10px 20px;
+	border-radius: 10px;
+}
+
 .short-slider {
 	-webkit-appearance: none;
 	background: #d3d3d3;
@@ -241,6 +250,27 @@ form > * {
 }
 
 .text-color-preview {
+width: 50px;
+height: 50px;
+border-radius: 25px;
+margin: 2px;
+margin-left: 15px;
+display: inline-block;
+}
+
+.page-red-slider::-webkit-slider-thumb {
+	background: #ff3300;
+}
+
+.page-green-slider::-webkit-slider-thumb {
+	background: #33cc33;
+}
+
+.page-blue-slider::-webkit-slider-thumb {
+	background: #336699;
+}
+
+.page-color-preview {
 width: 50px;
 height: 50px;
 border-radius: 25px;

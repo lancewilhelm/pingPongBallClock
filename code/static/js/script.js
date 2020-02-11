@@ -13,7 +13,30 @@ function loadWebSettings(){
 	xhttp.open("GET", "/api/webpagesettings", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("");
+}
 
+function setPageTitle(){
+	var title = document.getElementById('titleInput').value;
+	document.getElementById("pageTitle").innerHTML = title;
+	document.title = title;
+
+}
+
+function setCustomPageColor(){
+	// origin = window.location.origin
+	// var xhttp = new XMLHttpRequest();
+
+	// var red = document.querySelector('.bg-color-picker .bg-red-slider').value;
+	// var green = document.querySelector('.bg-color-picker .bg-green-slider').value;
+	// var blue = document.querySelector('.bg-color-picker .bg-blue-slider').value;
+	// var color = "rgb(" + red + "," + green + "," + blue + ")"
+	var color = document.querySelector('.page-color-preview').style.background
+
+	document.documentElement.style.setProperty('--main-bg-color', color);
+	console.log("set the color to " + color);
+	// xhttp.open("POST", "/api/bgcolor", true);
+	// xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	// xhttp.send("color="+color+"&red="+red+"&green="+green+"&blue="+blue);
 }
 
 function setCustomBGColor(color){
@@ -215,7 +238,7 @@ function setBGRgb () {
 }
 	setBGRgb();
 
-	// Color picker
+// Color picker
 function setTextRgb () {
 	var red = document.querySelector('.text-color-picker .text-red-slider').value;
 	var green = document.querySelector('.text-color-picker .text-green-slider').value;
@@ -224,6 +247,16 @@ function setTextRgb () {
 	document.querySelector('.text-color-preview').style.background = color;
 }
 	setTextRgb();
+
+// Color picker
+function setPageRgb () {
+	var red = document.querySelector('.page-color-picker .page-red-slider').value;
+	var green = document.querySelector('.page-color-picker .page-green-slider').value;
+	var blue = document.querySelector('.page-color-picker .page-blue-slider').value;
+	var color = "rgb(" + red + "," + green + "," + blue + ")";
+	document.querySelector('.page-color-preview').style.background = color;
+}
+	setPageRgb();
 
 // Time Modal
 // Get the modal
