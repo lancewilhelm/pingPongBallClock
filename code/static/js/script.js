@@ -19,24 +19,29 @@ function setPageTitle(){
 	var title = document.getElementById('titleInput').value;
 	document.getElementById("pageTitle").innerHTML = title;
 	document.title = title;
-
 }
 
 function setCustomPageColor(){
-	// origin = window.location.origin
-	// var xhttp = new XMLHttpRequest();
-
-	// var red = document.querySelector('.bg-color-picker .bg-red-slider').value;
-	// var green = document.querySelector('.bg-color-picker .bg-green-slider').value;
-	// var blue = document.querySelector('.bg-color-picker .bg-blue-slider').value;
-	// var color = "rgb(" + red + "," + green + "," + blue + ")"
 	var color = document.querySelector('.page-color-preview').style.background
-
 	document.documentElement.style.setProperty('--main-bg-color', color);
 	console.log("set the color to " + color);
-	// xhttp.open("POST", "/api/bgcolor", true);
-	// xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	// xhttp.send("color="+color+"&red="+red+"&green="+green+"&blue="+blue);
+}
+
+function sendWebPageSettings(){
+	origin = window.location.origin
+	var xhttp = new XMLHttpRequest();
+
+	var settings = {
+		title: document.getElementById("pageTitle").innerHTML,
+		mainBGColor: document.querySelector('.page-color-preview').style.background
+	}
+
+	settingsString = JSON.stringify(settings)
+	console.log(settingsString)
+
+	xhttp.open("POST", "/api/webpagesettings", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("settings="+settingsString);
 }
 
 function setCustomBGColor(color){
