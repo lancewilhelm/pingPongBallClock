@@ -5,7 +5,7 @@
 
 Raspberry Pi code for the Ping Pong Ball Clock Project
 
-Author: Lance Wilhelm (PlanetaryMotion)
+Author: PlanetaryMotion
 
 ---
 
