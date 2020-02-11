@@ -150,4 +150,11 @@ def setTimeFormat():
 # Flask Web PageSettings API
 @app.route("/api/webpagesettings", methods=['GET'])
 def updateWebPageSettings():
-	return PPB.webPageTitle
+
+	# Get the web page settings dictionary from webpagesettings.txt
+	with open('/home/pi/pingPongBallClock/code/webpagesettings.txt', 'r') as filehandle:
+	webPageSettings = filehandle.read()
+	
+	print webPageSettings
+
+	return webPageSettings

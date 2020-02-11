@@ -565,14 +565,6 @@ class PingPongBoard:
 		# Set brightness if we are not in bootup
 		if bootup == False:
 			self.strip.setBrightness(self.brightness)
-
-	def loadWebSettings(self):
-		# Get the web page settings dictionary from webpagesettings.txt
-		with open('/home/pi/pingPongBallClock/code/webpagesettings.txt', 'r') as filehandle:
-			webPageSettings = json.load(filehandle)
-
-		# Read the variables from the settings file and assign them to variables
-		self.webPageTitle = webPageSettings['title']
-		
+			
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()
