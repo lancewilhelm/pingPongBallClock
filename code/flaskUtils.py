@@ -77,7 +77,7 @@ def setTextAnimation():
 		elif PPB.boardType == 'xl':
 			if PPB.lineCount == 1:
 				PPB.textOrigin[0] = [2,4]
-			elif PPB.lineCount == 2
+			elif PPB.lineCount == 2:
 				PPB.textOrigin[0] = [4,1]
 		PPB.animationSpeed = 0
 	if animation == "scrolling":
@@ -198,7 +198,7 @@ def setBoardType():
 	if PPB.boardType == 'xl':
 		if PPB.lineCount == 1:
 			PPB.textOrigin[0] = [2,4]
-		elif PPB.lineCount == 2
+		elif PPB.lineCount == 2:
 			PPB.textOrigin[0] = [4,1]
 	else 
 		print "Board is not set to XL"
