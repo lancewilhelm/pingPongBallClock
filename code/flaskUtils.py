@@ -203,4 +203,5 @@ def setXLSettings():
 	else: 
 		print "Board is not set to XL"
 
+	print PPB.textOrigin
 	return ""
