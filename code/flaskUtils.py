@@ -191,7 +191,7 @@ def setBoardType():
 @app.route("/api/xlsettings", methods=['POST'])
 def setXLSettings():
 	# Read the values from the POST
-	lineCount = str(request.form['lineCount'])
+	lineCount = int(request.form['lineCount'])
 
 	PPB.lineCount = lineCount
 
