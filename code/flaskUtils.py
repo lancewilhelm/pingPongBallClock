@@ -173,8 +173,11 @@ def setBoardType():
 	boardType = str(request.form['boardType'])
 
 	print boardType
+
+	# Change the board type and save the settings
 	PPB.boardType = boardType
 	PPB.dumpSettings()
 
-	os.execv(sys.executable, ['python'] + sys.argv)
+	# Reset the PPB object
+	PPB = PingPongBoard()
 	return ""
