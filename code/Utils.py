@@ -6,8 +6,8 @@ from neopixel import *
 # CONGIFURE YOUR BOARD HERE!
 # LED strip configuration:
 NUM_BALLS		= 128				# Number of balls on your board #CHANGED FOR XL
-NUM_ROWS		= 7					# How many rows of balls are on your board #CHANGED FOR XL
-NUM_COLS		= 20				# How many effective columns are on your board. This is equal to your widest row. #CHANGED FOR XL
+NUM_ROWS		= 7					# How many rows of balls are on your board
+NUM_COLS		= 20				# How many effective columns are on your board. This is equal to your widest row.
 PIXEL_DENSITY	= 60				# This is how dense your strip is with pixels. 30 is the ideal density to buy (LEDs/meter)
 
 PIXEL_RATIO		= PIXEL_DENSITY/30	# Needed for the odd strips like mine
@@ -18,8 +18,11 @@ LED_INVERT     	= False   			# True to invert the signal (when using NPN transis
 LED_CHANNEL    	= 0       			# set to '1' for GPIOs 13, 19, 41, 45 or 53
 LED_STRIP      	= ws.WS2811_STRIP_GRB   # Strip type and colour ordering
 
-# Define the rows the grid by defining the ball numbers. THIS IS IMPORTANT
-# This is the only way the program knows the correct LED numbers for each ball
+# Define the rows the grid by defining the ball numbers.
+
+# THIS IS IMPORTANT AND MAY BE DIFFERENT FOR YOUR BOARD!!!!!!
+
+# This is the only way the program knows the correct LED numbers for each ball AND is essential to displaying text and things properly
 ledAddresses = [
 [999,999,999,3,16,17,30,31,44,45,58,59,72,73,86,87,100,101,114,115],    #0 row
 [999,999,4,15,18,29,32,43,46,57,60,71,74,85,88,99,102,113,116,126],     #1 row
@@ -46,6 +49,7 @@ ledAddressesXL = [
 [10,32,35,58,61,84,87,110,113,136,139,162,165,188,191,214,217,240,999,999,999,999,999],     #11 row
 [33,34,59,60,85,86,111,112,137,138,163,164,189,190,215,216,241,999,999,999,999,999,999]     #12 row
 ]
+
 
 #-----------------------------------------------------------------------------------------
 
@@ -84,7 +88,7 @@ class Ball:
 			self.ledNum = ledAddresses[self.location[0]][self.location[1]]   #[row,col]	#CHANGED FOR XL
 		elif boardType == 'xl':
 			self.ledNum = ledAddressesXL[self.location[0]][self.location[1]]   #[row,col]	#CHANGED FOR XL
-
+      
 		self.text = False           #this is used to determine whether the ball is being used for text display or not
 		self.color = Color(0,0,0)   #current ball color
 
