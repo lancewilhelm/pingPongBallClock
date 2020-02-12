@@ -6,7 +6,7 @@ from neopixel import *
 # CONGIFURE YOUR BOARD HERE!
 # LED strip configuration:
 NUM_BALLS		= 128				# Number of balls on your board #CHANGED FOR XL
-NUM_ROWS		= 7				# How many rows of balls are on your board #CHANGED FOR XL
+NUM_ROWS		= 7					# How many rows of balls are on your board #CHANGED FOR XL
 NUM_COLS		= 20				# How many effective columns are on your board. This is equal to your widest row. #CHANGED FOR XL
 PIXEL_DENSITY	= 60				# This is how dense your strip is with pixels. 30 is the ideal density to buy (LEDs/meter)
 

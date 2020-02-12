@@ -13,6 +13,10 @@ from Utils import *
 # This is the PingPongBoard class that drives everything. All functions related to lighting and writing are in here. 
 class PingPongBoard:
 	def __init__(self):
+		self.num_balls = NUM_BALLS		# Needed for changing board type
+		self.num_rows = NUM_ROWS		# Needed for changing board type
+		self.num_cols = NUM_COLS		# Needed for changing board type	
+
 		self.animationFrame = 0			# Used for animations, start at 0
 		self.animationEnd = 1			# Default animation end frame. This is always changed
 		self.animationStartTime = 0		# Used for animations and when to move the string
@@ -38,8 +42,8 @@ class PingPongBoard:
 		# Set up the ball objects
 		#CHANGED FOR XL
 		self.balls = []
-		for i in range(NUM_ROWS):
-			self.balls.append([0] * NUM_COLS)
+		for i in range(self.num_rows):
+			self.balls.append([0] * self.num_cols)
 
 		# Initialize the ball objects
 		self.setupBalls()
@@ -50,14 +54,14 @@ class PingPongBoard:
 
 	# Sets up a ball object for every single ball on the board. The ball object definition can be found in Utils
 	def setupBalls(self):
-		for y in range(NUM_ROWS):
-			for x in range(NUM_COLS):
+		for y in range(self.num_rows):
+			for x in range(self.num_cols):
 				self.balls[y][x] = Ball([y,x],self.boardType)    #passes [row,col], and the type of board which is used for the ledAdresses
 
 	# Actually lights a specic ball (LED) with the color provided to the function. This will check to see if the color is different than the one already set for the ball first. If it is the same then it will not rewrite.
 	def writeBallColor(self,col,row,color):
 		# Do not proceed if bad coordinates (could maybe replace with try/catch)
-		if col < 0 or col >= NUM_COLS or row < 0 or row >= NUM_ROWS:
+		if col < 0 or col >= self.num_cols or row < 0 or row >= self.num_rows:
 			return
 
 		# If the color is different than what the buffer has stored, write it and show it
@@ -68,7 +72,7 @@ class PingPongBoard:
 	# Changes the text state of a specific ball. This does NOT actually change the color. Merely whether or not the ball is used to display text. Will not rewrite state if the same.
 	def writeBallTextState(self,col,row,text):
 		# Do not proceed if bad coordinates (could maybe replace with try/catch)
-		if col < 0 or col >= NUM_COLS or row < 0 or row >= NUM_ROWS:
+		if col < 0 or col >= self.num_cols or row < 0 or row >= self.num_rows:
 			return
 
 		# If the color is different than what the buffer has stored, write it and show it
@@ -90,9 +94,9 @@ class PingPongBoard:
 			distanceToNext = len(font[ord(char)][0]) + self.textSpacing
 
 		# Do not write characters outside of the display area
-		if col <= -4 or col > NUM_COLS:
+		if col <= -4 or col > self.num_cols:
 			return distanceToNext
-		if row < -5 or row >= NUM_ROWS:
+		if row < -5 or row >= self.num_rows:
 			return distanceToNext
 
 		#Step through the rows and columns of the character and write each pixel/ball/LED
@@ -135,28 +139,28 @@ class PingPongBoard:
 
 	# This sets every ball's text state to False on the board
 	def textStateWipe(self):
-		for y in range(NUM_ROWS):
-			for x in range(NUM_COLS):
+		for y in range(self.num_rows):
+			for x in range(self.num_cols):
 				self.writeBallTextState(x,y,False)
 
 	# Fills sections/the whole board with the provided color. This function can fill: the whole board, only non-text balls, only text balls
 	def colorFill(self,color,fullwipe=False,textOnly=False):
 		# Fill the full screen
 		if fullwipe:
-			for y in range(NUM_ROWS):
-				for x in range(NUM_COLS):
+			for y in range(self.num_rows):
+				for x in range(self.num_cols):
 					self.writeBallTextState(x,y,False)
 					self.writeBallColor(x,y,color)
 		# Fill only the text
 		elif textOnly:
-			for y in range(NUM_ROWS):
-				for x in range(NUM_COLS):
+			for y in range(self.num_rows):
+				for x in range(self.num_cols):
 					if self.balls[y][x].text == True:
 						self.writeBallColor(x,y,color)
 		# Fill only the non-text
 		else:
-			for y in range(NUM_ROWS):
-				for x in range(NUM_COLS):
+			for y in range(self.num_rows):
+				for x in range(self.num_cols):
 					if self.balls[y][x].text == False:
 						self.writeBallColor(x,y,color)
 		self.strip.show()
@@ -189,8 +193,8 @@ class PingPongBoard:
 				self.breathing(True)
 		# Else, check for solid notification
 		elif self.textColor[0] == 'solid' and self.textDisplayChanged:
-			for y in range(NUM_ROWS):
-				for x in range(NUM_COLS):
+			for y in range(self.num_rows):
+				for x in range(self.num_cols):
 					if self.balls[y][x].text == True:
 						if self.textColor[0] == 'animation':
 							return
@@ -245,9 +249,9 @@ class PingPongBoard:
 		# Draw rainbow that fades across all pixels at once.
 		j = self.updateFrame(LED_COUNT)
 
-		for x in range(NUM_COLS):
-			for y in range(NUM_ROWS):
-				i = x*NUM_ROWS + y
+		for x in range(self.num_cols):
+			for y in range(self.num_rows):
+				i = x*self.num_rows + y
 				if self.balls[y][x].text == False:
 					self.writeBallColor(x,y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
 		self.strip.show()
@@ -258,9 +262,9 @@ class PingPongBoard:
 		# Draw rainbow that fades across all pixels at once.
 		j = self.updateFrame(LED_COUNT)
 
-		for x in range(NUM_COLS):
-			for y in range(NUM_ROWS):
-				i = x*NUM_ROWS + y
+		for x in range(self.num_cols):
+			for y in range(self.num_rows):
+				i = x*self.num_rows + y
 				if self.balls[y][x].text == True:
 					self.writeBallColor(x,y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
 		self.strip.show()
@@ -271,11 +275,11 @@ class PingPongBoard:
 		# Draw rainbow that uniformly distributes itself across all pixels.
 		j = self.updateFrame(LED_COUNT)
 
-		for x in range(NUM_COLS):
-			for y in range(NUM_ROWS):
-				i = x*NUM_ROWS + y
+		for x in range(self.num_cols):
+			for y in range(self.num_rows):
+				i = x*self.num_rows + y
 				if self.balls[y][x].text == False:
-					self.writeBallColor(x,y,self.wheel((((i*PIXEL_RATIO)/(NUM_BALLS*PIXEL_RATIO))+j) & 255))
+					self.writeBallColor(x,y,self.wheel((((i*PIXEL_RATIO)/(self.num_balls*PIXEL_RATIO))+j) & 255))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
@@ -284,11 +288,11 @@ class PingPongBoard:
 		# Draw rainbow that uniformly distributes itself across all pixels.
 		j = self.updateFrame(LED_COUNT)
 
-		for x in range(NUM_COLS):
-			for y in range(NUM_ROWS):
-				i = x*NUM_ROWS + y
+		for x in range(self.num_cols):
+			for y in range(self.num_rows):
+				i = x*self.num_rows + y
 				if self.balls[y][x].text == True:
-					self.writeBallColor(x,y,self.wheel((((i*PIXEL_RATIO)/(NUM_BALLS*PIXEL_RATIO))+j) & 255))
+					self.writeBallColor(x,y,self.wheel((((i*PIXEL_RATIO)/(self.num_balls*PIXEL_RATIO))+j) & 255))
 		self.strip.show()
 		time.sleep(wait_ms/1000.0)
 
@@ -326,8 +330,8 @@ class PingPongBoard:
 		self.twinkleTimeElapsed = nowTime - self.twinkleStartTime
 
 		# Update the twinkles 
-		for x in range(NUM_COLS):
-			for y in range(NUM_ROWS):
+		for x in range(self.num_cols):
+			for y in range(self.num_rows):
 				# If the ball is a current twinkle ball then update the frame and color
 				if self.balls[y][x].twinkle:
 					colorElement = int(self.balls[y][x].brightnessFactor() * 255)
@@ -341,8 +345,8 @@ class PingPongBoard:
 
 		# If the time elapsed is greater than the twinkleWaitTime then initiate a twinkle
 		if self.twinkleTimeElapsed >= self.twinkleWaitTime:
-			row = int(random.randint(0,NUM_ROWS-1))
-			col = int(random.randint(0,NUM_COLS-1))
+			row = int(random.randint(0,self.num_rows-1))
+			col = int(random.randint(0,self.num_cols-1))
 
 			# If the ball is text then get out of here. Do one more loop to determine a new ball
 			if self.balls[row][col].text or self.balls[row][col].twinkle:
@@ -557,9 +561,9 @@ class PingPongBoard:
 		if self.boardType == 'normal':
 			self.textOrigin = [1,1]		#[x,y]
 		elif self.boardType == 'xl':
-			NUM_BALLS		= 257				# Number of balls on your board #CHANGED FOR XL
-			NUM_ROWS		= 13				# How many rows of balls are on your board #CHANGED FOR XL
-			NUM_COLS		= 23				# How many effective columns are on your board. This is equal to your widest row. #CHANGED FOR XL
+			self.num_balls		= 257				# Number of balls on your board #CHANGED FOR XL
+			self.num_rows		= 13				# How many rows of balls are on your board #CHANGED FOR XL
+			self.num_cols		= 23				# How many effective columns are on your board. This is equal to your widest row. #CHANGED FOR XL
 			self.textOrigin = [2,4]
 
 		# Address possible font change
