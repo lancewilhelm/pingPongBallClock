@@ -1,5 +1,6 @@
 from flask import Flask, request, render_template
 from LEDUtils import *
+from Utils import *
 
 #Setup the flask object and get it going
 app = Flask(__name__)
@@ -169,5 +170,16 @@ def setBoardType():
 	boardType = str(request.form['boardType'])
 
 	PPB.boardType = boardType
+	
+	if PPB.boardType == 'normal':
+			PPB.textOrigin = [1,1]		#[x,y]
+		elif PPB.boardType == 'xl':
+			NUM_BALLS		= 257				# Number of balls on your board #CHANGED FOR XL
+			NUM_ROWS		= 13				# How many rows of balls are on your board #CHANGED FOR XL
+			NUM_COLS		= 23				# How many effective columns are on your board. This is equal to your widest row. #CHANGED FOR XL
+			PPB.textOrigin = [2,4]
+
+	PPB.bgDisplayChanged = True
+	PPB.textDisplayChanged = True
 
 	return ""
