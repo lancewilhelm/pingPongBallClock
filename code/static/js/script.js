@@ -37,7 +37,7 @@ function sendWebPageSettings(){
 
 	var settings = {
 		title: document.getElementById("pageTitle").innerHTML,
-		mainBGColor: document.getElementById("page-color-preview").style.background
+		mainBGColor: document.querySelector('.page-color-preview').style.background
 	}
 
 	settingsString = JSON.stringify(settings)
@@ -249,9 +249,9 @@ function setBGRgb () {
 
 // Color picker
 function setTextRgb () {
-	var red = document.getElementById('text-red-slider').value;
-	var green = document.getElementById('text-green-slider').value;
-	var blue = document.getElementById('text-blue-slider').value;
+	var red = document.querySelector('.text-color-picker .text-red-slider').value;
+	var green = document.querySelector('.text-color-picker .text-green-slider').value;
+	var blue = document.querySelector('.text-color-picker .text-blue-slider').value;
 	var color = "rgb(" + red + "," + green + "," + blue + ")";
 	document.querySelector('.text-color-preview').style.background = color;
 }
@@ -259,12 +259,11 @@ function setTextRgb () {
 
 // Color picker
 function setPageRgb () {
-	var red = document.getElementById("page-red-slider").value;
-	var green = document.getElementById("page-green-slider").value;
-	var blue = document.getElementById("page-blue-slider").value;
+	var red = document.querySelector('.modal-body .page-color-picker .page-red-slider').value;
+	var green = document.querySelector('.modal-body .page-color-picker .page-green-slider').value;
+	var blue = document.querySelector('.modal-body .page-color-picker .page-blue-slider').value;
 	var color = "rgb(" + red + "," + green + "," + blue + ")";
-
-	document.getElementById("page-color-preview").style.background = color;
+	document.querySelector('.modal-body .page-color-preview').style.background = color;
 }
 	setPageRgb();
 
