@@ -341,10 +341,36 @@
 			<div class="xl-settings" id="xl-settings">
 				<br><hr class="minor"><br>
 				NUMBER OF LINES: 
-				<select id="lineCount">
+				<select id="lineCount" onchange="openLineSettings()">
 					<option value="1">1</option>
 					<option value="2">2</option>
 				</select><br><br>
+				<div class="line-settings" id="line-settings">
+					Line 1:
+					<form>
+						<input type="checkbox" name="time" id="line1time" onclick="setContent('time')" checked>Time
+						<button id="configureTimeBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
+						<input type="checkbox" name="date" id="line1date" onclick="setContent('date')">Date<br>
+						<input type="checkbox" name="weather" id="line1weather" onclick="setContent('weather')">Weather  
+						<button id="configureWeatherBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
+						<input type="checkbox" name="text" id="line1text" onclick="setContent('text')">Custom Text
+						<button id="configureTextBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button>
+						<input id="line1SpeedInput" class="form-control form-control-sm" type="text" placeholder="line 1 speed" min="0">
+					</form>
+					<br>
+					Line 2:
+					<form>
+						<input type="checkbox" name="time" id="line2time" onclick="setContent('time')" checked>Time
+						<button id="configureTimeBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
+						<input type="checkbox" name="date" id="line2date" onclick="setContent('date')">Date<br>
+						<input type="checkbox" name="weather" id="line2weather" onclick="setContent('weather')">Weather  
+						<button id="configureWeatherBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
+						<input type="checkbox" name="text" id="line2text" onclick="setContent('text')">Custom Text
+						<button id="configureTextBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button>
+						<input id="line2SpeedInput" class="form-control form-control-sm" type="text" placeholder="line 2 speed" min="0">
+					</form>
+					<br>
+				</div>
 				<button class="btn btn-purple" type="button" onclick="sendXLSettings()">SEND SETTINGS</button>
 			</div>
 		</div>

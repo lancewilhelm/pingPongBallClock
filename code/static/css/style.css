@@ -317,6 +317,14 @@ p {
 	display: inline;
 }
 
+#line1SpeedInput {
+	width: 100px;
+}
+
+#line2SpeedInput {
+	width: 100px;
+}
+
 #cityInput {
 	width: 200px;
 	display: inline;
@@ -378,5 +386,9 @@ p {
 }
 
 .xl-settings {
+	display: none;
+}
+
+.line-settings {
 	display: none;
 }

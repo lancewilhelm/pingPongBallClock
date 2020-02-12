@@ -207,6 +207,15 @@ function openXLSettings(){
 	}
 }
 
+function openLineSettings(){
+	var lineCount = document.getElementById('lineCount').value
+	if(lineCount == 2){
+		document.getElementById('line-settings').style.display = 'block';
+	} else {
+		document.getElementById('line-settings').style.display = 'none';
+	}
+}
+
 function sendBoardType(){
 	var boardType = document.getElementById('boardType').value
 	var xhttp = new XMLHttpRequest();
