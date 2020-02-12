@@ -115,8 +115,8 @@ class PingPongBoard:
 	def updateDisplayString(self):
 		#Write the string IF the display stirng is different then it last was OR it has moved location OR the font has changed
 		if self.displayString != self.displayStringPrev or self.textOriginMoved or self.fontChanged:
-			x = self.textOrigin[0] 
-			y = self.textOrigin[1]
+			x = self.textOrigin[0][0] 
+			y = self.textOrigin[0][1]
 			for i in range(len(self.displayString)):
 				distanceToNext = self.writeChar(x,y,self.displayString[i])
 				x += distanceToNext
@@ -127,7 +127,7 @@ class PingPongBoard:
 			self.textDisplayChanged = True						# We have written a new string, so the display has changed
 			self.bgDisplayChanged = True						# Since we have update the string, the bg needs to be updated to write over the old text balls now as well
 			self.displayStringPrev = self.displayString			# Set the displayStringPrev to the current string
-			self.displayStringLength = x - self.textOrigin[0]	# This so happens to show up after we are done here. Useful for the animation scroll
+			self.displayStringLength = x - self.textOrigin[0][0]	# This so happens to show up after we are done here. Useful for the animation scroll
 
 	# This steps the animation frame by one. If the animation frame has reached animationEnd, reset the frame to 0
 	def updateFrame(self, animationEnd):
@@ -222,11 +222,11 @@ class PingPongBoard:
 			self.textOriginMoved = True
 
 			# Move the text one space to the left
-			self.textOrigin[0] -= 1
+			self.textOrigin[0][0] -= 1
 
 			# Reset the x text origin to 20 if it gets through the screen
-			if self.textOrigin[0] < -1 * self.displayStringLength:
-				self.textOrigin[0] = 20
+			if self.textOrigin[0][0] < -1 * self.displayStringLength:
+				self.textOrigin[0][0] = 20
 
 			# Set the start time to this time now
 			self.animationStartTime = nowTime
@@ -559,12 +559,12 @@ class PingPongBoard:
 
 		# Address possible different settings based on the board type
 		if self.boardType == 'normal':
-			self.textOrigin = [1,1]		#[x,y]
+			self.textOrigin = [0][1,1]		#[line #][x,y]
 		elif self.boardType == 'xl':
 			self.num_balls		= 257				# Number of balls on your board #CHANGED FOR XL
 			self.num_rows		= 13				# How many rows of balls are on your board #CHANGED FOR XL
 			self.num_cols		= 23				# How many effective columns are on your board. This is equal to your widest row. #CHANGED FOR XL
-			self.textOrigin = [2,4]
+			self.textOrigin = [0][2,4]		#[line #][x,y]
 
 		# Calculate the LED count
 		self.led_count = self.num_balls * PIXEL_RATIO
