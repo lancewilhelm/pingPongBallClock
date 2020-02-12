@@ -1,5 +1,9 @@
-from flask import Flask, request, render_template
+import os
+import sys
+
+from flask import Flask, render_template, request
 from LEDUtils import *
+from Utils import *
 
 #Setup the flask object and get it going
 app = Flask(__name__)
@@ -68,7 +72,14 @@ def setTextAnimation():
 	animation = request.form['animation']
 
 	if animation == "static":
-		PPB.textOrigin = [1,1]
+		if PPB.boardType == 'normal':
+			PPB.textOrigin[0] = [1,1]
+		elif PPB.boardType == 'xl':
+			if PPB.lineCount == 1:
+				PPB.textOrigin[0] = [2,4]
+			elif PPB.lineCount == 2:
+				PPB.textOrigin[0] = [4,1]
+				PPB.textOrigin[1] = [1,7]
 		PPB.animationSpeed = 0
 	if animation == "scrolling":
 		speed = float(request.form['speed'])
@@ -161,3 +172,41 @@ def updateWebPageSettings():
 		with open('/home/pi/pingPongBallClock/code/webpagesettings.txt', 'w') as filehandle:
 			filehandle.write(settings)
 		return ""
+
+# Board Type API
+@app.route("/api/boardtype", methods=['POST'])
+def setBoardType():
+	# Read the values from the POST
+	boardType = str(request.form['boardType'])
+
+	if boardType == 'normal':
+		PPB.lineCount = 1
+
+	# Change the board type and save the settings
+	PPB.boardType = boardType
+	PPB.dumpSettings()
+
+	return ""
+
+# XL Settings API
+@app.route("/api/xlsettings", methods=['POST'])
+def setXLSettings():
+	# Read the values from the POST
+	lineCount = int(request.form['lineCount'])
+
+	PPB.lineCount = lineCount
+
+	if PPB.boardType == 'xl':
+		if PPB.lineCount == 1:
+			PPB.textOrigin[0] = [2,4]
+		elif PPB.lineCount == 2:
+			PPB.textOrigin[0] = [4,1]
+			PPB.textOrigin[1] = [1,7]
+	else: 
+		print "Board is not set to XL"
+
+	# Perform a reset of the board to eliminate the ghost text balls
+	PPB.colorFill(Color(0,0,0), True)
+
+	print PPB.textOrigin
+	return ""

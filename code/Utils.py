@@ -9,8 +9,8 @@ NUM_BALLS		= 128				# Number of balls on your board #CHANGED FOR XL
 NUM_ROWS		= 7					# How many rows of balls are on your board
 NUM_COLS		= 20				# How many effective columns are on your board. This is equal to your widest row.
 PIXEL_DENSITY	= 60				# This is how dense your strip is with pixels. 30 is the ideal density to buy (LEDs/meter)
+
 PIXEL_RATIO		= PIXEL_DENSITY/30	# Needed for the odd strips like mine
-LED_COUNT		= NUM_BALLS*PIXEL_RATIO
 LED_PIN        	= 18      			# GPIO pin connected to the pixels (18 uses PWM!).
 LED_FREQ_HZ    	= 800000  			# LED signal frequency in hertz (usually 800khz)
 LED_DMA        	= 10       			# DMA channel to use for generating signal (try 5)
@@ -81,9 +81,14 @@ colorListRGB = [
 	[255,0,50]		# Hot Pink
 ]
 class Ball:
-	def __init__(self, location):   #location is a list of two variables, [row, col]
+	def __init__(self, location, boardType):   #location is a list of two variables, [row, col]
 		self.location = location    #[row,col]
-		self.ledNum = ledAddresses[self.location[0]][self.location[1]]   #[row,col]	#CHANGED FOR XL
+
+		if boardType == 'normal':
+			self.ledNum = ledAddresses[self.location[0]][self.location[1]]   #[row,col]	#CHANGED FOR XL
+		elif boardType == 'xl':
+			self.ledNum = ledAddressesXL[self.location[0]][self.location[1]]   #[row,col]	#CHANGED FOR XL
+      
 		self.text = False           #this is used to determine whether the ball is being used for text display or not
 		self.color = Color(0,0,0)   #current ball color
 

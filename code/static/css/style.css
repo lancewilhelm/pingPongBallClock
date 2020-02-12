@@ -122,21 +122,10 @@ form > * {
 .modal-content {
 	background-color: var(--main-bg-color);
 	color: white;
-	padding: 20px;
 	margin: auto;
 	width: 80%;
 	text-align: center;
 	font-weight: bold;
-}
-
-/* The Close Button */
-.close {
-	color: white;
-	float: right;
-	font-size: 28px;
-	font-weight: bold;
-	text-align: right;
-	text-shadow: none;
 }
 
 .close:hover,
@@ -308,6 +297,12 @@ hr.major {
 	background-color: rgba(255, 255, 255, 0.5);
 }
 
+.modal-header {
+	background-color: rgba(255, 255, 255, 0.5);
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
 .btn-lg {
 	font-weight: 700;
 }
@@ -320,6 +315,14 @@ p {
 #zipInput {
 	width: 100px;
 	display: inline;
+}
+
+#line1SpeedInput {
+	width: 100px;
+}
+
+#line2SpeedInput {
+	width: 100px;
 }
 
 #cityInput {
@@ -341,4 +344,51 @@ p {
 
 .container-fluid {
 	background-color: var(--main-bg-color);
+}
+
+/* The Close Button */
+.close {
+	color: white;
+	font-size: 28px;
+	font-weight: bold;
+	text-shadow: none;
+	width: min-content;
+    position: absolute;
+    right: 30px;
+}
+
+.modal-header .close {
+	padding: 0px;
+}
+
+/* The Close Button */
+.settings {
+	color: white;
+	font-size: 40px;
+	font-weight: bold;
+	text-shadow: none;
+	width: min-content;
+    position: absolute;
+	right: 15px;
+	top: 0px;
+	opacity: 50%;
+}
+
+.settings:hover,
+.settings:focus {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.modal-body {
+	background-color: rgba(255, 255, 255, 0.2)
+}
+
+.xl-settings {
+	display: none;
+}
+
+.line-settings {
+	display: none;
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Ping Pong Clock</title>
+    <title>PPBC</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
@@ -13,6 +13,7 @@
 </head>
 <body onload="loadWebSettings()">
     <div class="jumbotron text-left">
+		<span id="settingsIcon" class="settings">&#9881;</span>
         <h1 id="pageTitle"></h1>
     </div>
     <div class="container-fluid text-center">  
@@ -58,7 +59,7 @@
 				<div class="bg-color-picker">
 					<div class="sliders">
 						<div class="slide-container">
-							<input class="bg-red-slider short-slider" type="range" id="rangeinput" value="255" max="255" onchange="setBGRgb()" oninput="setBGRgb()" />
+							<input class="bg-red-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setBGRgb()" oninput="setBGRgb()" />
 						</div>
 						<div class="slide-container">
 							<input class="bg-green-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setBGRgb()" oninput="setBGRgb()" />
@@ -137,7 +138,7 @@
 				<div class="text-color-picker">
 					<div class="sliders">
 						<div class="slide-container">
-							<input class="text-red-slider short-slider" type="range" id="rangeinput" value="255" max="255" onchange="setTextRgb()" oninput="setTextRgb()" />
+							<input class="text-red-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setTextRgb()" oninput="setTextRgb()" />
 						</div>
 						<div class="slide-container">
 							<input class="text-green-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setTextRgb()" oninput="setTextRgb()" />
@@ -211,87 +212,168 @@
 				</button>		
 			</div>
 		</div>
-	</div>
 
-	<hr class="major">
+		<hr class="minor">
 
-	<div class="container-fluid text-center">
-		<div class="row bg-header">
-			<div class="col-sm text-right">
-				<h4>WEB PAGE SETTINGS</h4>
-			</div>
-		</div>
 		<div class="row">
 			<div class="col-sm">
-				<b>CUSTOM PAGE BG COLOR:</b>
-				<div class="page-color-picker">
-					<div class="sliders">
-						<div class="slide-container">
-							<input class="page-red-slider short-slider" type="range" id="rangeinput" value="255" max="255" onchange="setPageRgb()" oninput="setPageRgb()" />
-						</div>
-						<div class="slide-container">
-							<input class="page-green-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setPageRgb()" oninput="setPageRgb()" />
-						</div>
-						<div class="slide-container">
-							<input class="page-blue-slider short-slider" type="range" id="rangeinput" value="0" max="255" oninput="setPageRgb()" onchange="setPageRgb()" />
-						</div>
-					</div>
-					<div id="page-color-preview" class="page-color-preview"></div>
-				</div>
-				<button id="sendColorBtn" type="button" class="btn btn-purple" onclick="setCustomPageColor()">SET PAGE BG COLOR</button>
-			</div>
-
-			<div class="col-sm">
-				<h5>PAGE TITLE:</h5>
-				<input id="titleInput" class="form-control form-control-lg" type="text" placeholder="title">
-				<button id="sendColorBtn" type="button" class="btn btn-purple" onclick="setPageTitle()">SET PAGE TITLE</button>
+				<button class="btn btn-sm btn-purple" type="button" id="oddBoardBtn">ODD-SIZED BOARD SETTINGS</button>
 			</div>
 		</div>
+
 	</div>
 
 <!-- Modals -->
 <div id="timeModal" class="modal">
 	<div class="modal-content">
-		<span id="timeclose" class="close">&times;</span>
-		<h5>CONFIGURE TIME:</h5>
-		<form class="txt-white">
-			Time Format:
-			<select id="timeFormat">
-				<option value="12h">12 Hour</option>
-				<option value="24h">24 Hour</option>
-			</select><br>
-			<button id="timeBtn" type="button" class="btn btn-white txt-purple" onclick="configureTime()"><b>SUBMIT</b></button>
-		</form>
+		<div class="modal-header">
+			<span id="timeclose" class="close">&times;</span>
+			<div class="col-sm text-left">
+				<h4>CONFIGURE TIME</h4>
+			</div>
+		</div>
+	<div class="modal-body">
+			<form class="txt-white">
+				Time Format:
+				<select id="timeFormat">
+					<option value="12h">12 Hour</option>
+					<option value="24h">24 Hour</option>
+				</select><br>
+				<button id="timeBtn" type="button" class="btn btn-white txt-purple" onclick="configureTime()"><b>SUBMIT</b></button>
+			</form>
+		</div>
 	</div>
 </div>
 
 <div id="weatherModal" class="modal">
 	<div class="modal-content">
-		<span id="weatherclose" class="close">&times;</span>
-		<h5>CONFIGURE WEATHER:</h5>
-		<form class="txt-white">
-			Temp Unit:
-			<select id="tempUnit">
-				<option value="f">F</option>
-				<option value="c">C</option>
-				<option value="k">K</option>
-			</select><br><br>
-			Please enter only one of the following. If you have both filled, zip code will be used.<br>
-			Zip Code: <input id="zipInput" class="form-control form-control-sm" type="text" placeholder="zip code" min="0"><br>
-			City Name: <input id="cityInput" class="form-control form-control-sm" type="text" placeholder="city name"><br>
-			<button id="upddateWeatherBtn" type="button" class="btn btn-white txt-purple" onclick="setWeather()"><b>SUBMIT</b></button>
-		</form>
+		<div class="modal-header">
+			<span id="weatherclose" class="close">&times;</span>
+			<div class="col-sm text-left">
+				<h4>CONFIGURE WEATHER</h4>
+			</div>
+		</div>
+		<div class="modal-body">
+			<form class="txt-white">
+				Temp Unit:
+				<select id="tempUnit">
+					<option value="f">F</option>
+					<option value="c">C</option>
+					<option value="k">K</option>
+				</select><br><br>
+				Please enter only one of the following. If you have both filled, zip code will be used.<br>
+				Zip Code: <input id="zipInput" class="form-control form-control-sm" type="text" placeholder="zip code" min="0"><br>
+				City Name: <input id="cityInput" class="form-control form-control-sm" type="text" placeholder="city name"><br>
+				<button id="upddateWeatherBtn" type="button" class="btn btn-white txt-purple" onclick="setWeather()"><b>SUBMIT</b></button>
+			</form>
+		</div>
 	</div>
 </div>
 
 <div id="customTextModal" class="modal">
 	<div class="modal-content">
-		<span id="textclose" class="close">&times;</span>
-		<h5>CUSTOM TEXT:</h5>
-		<form>
-			<input id="textInput" class="form-control form-control-lg" type="text" placeholder="" min="0">
-			<button id="sendTextBtn" type="button" class="btn btn-white txt-purple" onclick="setCustomText()"><b>SET CUSTOM TEXT</b></button>
-		</form>	
+		<div class="modal-header">
+			<span id="textclose" class="close">&times;</span>
+			<div class="col-sm text-left">
+				<h4>CONFIGURE CUSTOM TEXT</h4>
+			</div>
+		</div>
+		<div class="modal-body">
+			<form>
+				<input id="textInput" class="form-control form-control-lg" type="text" placeholder="custom text" min="0">
+				<button id="sendTextBtn" type="button" class="btn btn-white txt-purple" onclick="setCustomText()"><b>SET CUSTOM TEXT</b></button>
+			</form>	
+		</div>
+	</div>
+</div>
+
+<div id="webPageSettingsModal" class="modal">
+	<div class="modal-content">
+		<div class="modal-header">
+			<span id="settingsclose" class="close">&times;</span>
+			<div class="col-sm text-left">
+				<h4>CONFIGURE WEB PAGE</h4>
+			</div>
+		</div>
+		<div class="modal-body txt-white">
+			CUSTOM PAGE BG COLOR:
+			<div class="page-color-picker">
+				<div class="sliders">
+					<div class="slide-container">
+						<input class="page-red-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setPageRgb()" oninput="setPageRgb()" />
+					</div>
+					<div class="slide-container">
+						<input class="page-green-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setPageRgb()" oninput="setPageRgb()" />
+					</div>
+					<div class="slide-container">
+						<input class="page-blue-slider short-slider" type="range" id="rangeinput" value="0" max="255" oninput="setPageRgb()" onchange="setPageRgb()" />
+					</div>
+				</div>
+				<div id="page-color-preview" class="page-color-preview"></div>
+			</div>
+			<button id="sendColorBtn" type="button" class="btn btn-purple" onclick="setCustomPageColor()">SET PAGE BG COLOR</button>
+
+			<hr class="minor">
+			<br>
+			<h5>PAGE TITLE:</h5>
+			<input id="titleInput" class="form-control form-control-lg" type="text" placeholder="title">
+			<button id="sendColorBtn" type="button" class="btn btn-purple" onclick="setPageTitle()">SET PAGE TITLE</button>
+
+		</div>
+	</div>
+</div>
+
+<div id="oddBoardModal" class="modal">
+	<div class="modal-content">
+		<div class="modal-header">
+			<span id="oddboardclose" class="close">&times;</span>
+			<div class="col-sm text-left">
+				<h4>CONFIGURE ODD BOARDS</h4>
+			</div>
+		</div>
+		<div class="modal-body txt-white">
+			BOARD TYPE (will take effect during next reboot):
+			<select id="boardType" onchange="openXLSettings()">
+				<option value="normal">Normal</option>
+				<option value="xl">XL</option>
+			</select>
+			<button class="btn btn-sm btn-purple" type="button" onclick="sendBoardType()">SET</button>
+			<div class="xl-settings" id="xl-settings">
+				<br><hr class="minor"><br>
+				NUMBER OF LINES: 
+				<select id="lineCount" onchange="openLineSettings()">
+					<option value="1">1</option>
+					<option value="2">2</option>
+				</select><br><br>
+				<div class="line-settings" id="line-settings">
+					Line 1:
+					<form>
+						<input type="checkbox" name="time" id="line1time" onclick="setContent('time')" checked>Time
+						<button id="configureTimeBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
+						<input type="checkbox" name="date" id="line1date" onclick="setContent('date')">Date<br>
+						<input type="checkbox" name="weather" id="line1weather" onclick="setContent('weather')">Weather  
+						<button id="configureWeatherBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
+						<input type="checkbox" name="text" id="line1text" onclick="setContent('text')">Custom Text
+						<button id="configureTextBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button>
+						<input id="line1SpeedInput" class="form-control form-control-sm" type="text" placeholder="line 1 speed" min="0">
+					</form>
+					<br>
+					Line 2:
+					<form>
+						<input type="checkbox" name="time" id="line2time" onclick="setContent('time')" checked>Time
+						<button id="configureTimeBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
+						<input type="checkbox" name="date" id="line2date" onclick="setContent('date')">Date<br>
+						<input type="checkbox" name="weather" id="line2weather" onclick="setContent('weather')">Weather  
+						<button id="configureWeatherBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
+						<input type="checkbox" name="text" id="line2text" onclick="setContent('text')">Custom Text
+						<button id="configureTextBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button>
+						<input id="line2SpeedInput" class="form-control form-control-sm" type="text" placeholder="line 2 speed" min="0">
+					</form>
+					<br>
+				</div>
+				<button class="btn btn-purple" type="button" onclick="sendXLSettings()">SEND SETTINGS</button>
+			</div>
+		</div>
 	</div>
 </div>
 
