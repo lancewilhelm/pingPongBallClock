@@ -169,6 +169,7 @@ def setBoardType():
 	# Read the values from the POST
 	boardType = str(request.form['boardType'])
 
+	print boardType
 	PPB.boardType = boardType
 	
 	if PPB.boardType == 'normal':
