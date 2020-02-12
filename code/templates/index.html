@@ -212,6 +212,15 @@
 				</button>		
 			</div>
 		</div>
+
+		<hr class="minor">
+
+		<div class="row">
+			<div class="col-sm">
+				<button class="btn btn-sm btn-purple" type="button" id="oddBoardBtn">ODD-SIZED BOARD SETTINGS</button>
+			</div>
+		</div>
+
 	</div>
 
 <!-- Modals -->
@@ -310,6 +319,32 @@
 			<input id="titleInput" class="form-control form-control-lg" type="text" placeholder="title">
 			<button id="sendColorBtn" type="button" class="btn btn-purple" onclick="setPageTitle()">SET PAGE TITLE</button>
 
+		</div>
+	</div>
+</div>
+
+<div id="oddBoardModal" class="modal">
+	<div class="modal-content">
+		<div class="modal-header">
+			<span id="oddboardclose" class="close">&times;</span>
+			<div class="col-sm text-left">
+				<h4>CONFIGURE ODD BOARDS</h4>
+			</div>
+		</div>
+		<div class="modal-body txt-white">
+			BOARD TYPE:
+			<select id="boardType" onchange="openXLSettings()">
+				<option value="normal">Normal</option>
+				<option value="xl">XL</option>
+			</select>
+			<div class="xl-settings" id="xl-settings">
+				<br><hr class="minor"><br>
+				NUMBER OF LINES: 
+				<select id="boardType" onchange="openXLSettings()">
+					<option value="normal">Normal</option>
+					<option value="xl">XL</option>
+				</select>
+			</div>
 		</div>
 	</div>
 </div>

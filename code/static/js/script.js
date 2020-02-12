@@ -1,5 +1,4 @@
 function loadWebSettings(){
-	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
@@ -32,7 +31,6 @@ function setCustomPageColor(){
 }
 
 function sendWebPageSettings(){
-	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 
 	var settings = {
@@ -49,7 +47,6 @@ function sendWebPageSettings(){
 }
 
 function setCustomBGColor(color){
-	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	var red = document.querySelector('.bg-color-picker .bg-red-slider').value;
 	var green = document.querySelector('.bg-color-picker .bg-green-slider').value;
@@ -60,7 +57,6 @@ function setCustomBGColor(color){
 }
 
 function setCustomTextColor(color){
-	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	var red = document.querySelector('.text-color-picker .text-red-slider').value;
 	var green = document.querySelector('.text-color-picker .text-green-slider').value;
@@ -71,7 +67,6 @@ function setCustomTextColor(color){
 }
 
 function setBGGreen(){
-	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	var red = 0;
 	var green = 255;
@@ -82,7 +77,6 @@ function setBGGreen(){
 }
 
 function setBGRed(){
-	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	var red = 255;
 	var green = 0;
@@ -93,7 +87,6 @@ function setBGRed(){
 }
 
 function setBGBlue(){
-	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	var red = 0;
 	var green = 0;
@@ -104,7 +97,6 @@ function setBGBlue(){
 }
 
 function setBGBlack(){
-	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	var red = 0;
 	var green = 0;
@@ -115,7 +107,6 @@ function setBGBlack(){
 }
 
 function setTextWhite(){
-	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	var red = 255;
 	var green = 255;
@@ -126,7 +117,6 @@ function setTextWhite(){
 }
 
 function setTextBlack(){
-	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	var red = 0;
 	var green = 0;
@@ -137,7 +127,6 @@ function setTextBlack(){
 }
 
 function setFont(font){
-	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	xhttp.open("POST", "/api/font", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -145,7 +134,6 @@ function setFont(font){
 }
 
 function setContent(content){
-	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	var checked = document.getElementById(content).checked;
 	xhttp.open("POST", "/api/setcontent", true);
@@ -154,7 +142,6 @@ function setContent(content){
 }
 
 function configureTime(){
-	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	var timeFormat = document.getElementById("timeFormat").value;
 	xhttp.open("POST", "/api/timeformat", true);
@@ -163,7 +150,6 @@ function configureTime(){
 }
 
 function setWeather(){
-	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	var unit = document.getElementById("tempUnit").value;
 	var zip = document.getElementById("zipInput").value;
@@ -174,7 +160,6 @@ function setWeather(){
 }
 
 function setCustomText(){
-	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	var text = document.getElementById('textInput').value;
 	xhttp.open("POST", "/api/setcustomtext", true);
@@ -183,7 +168,6 @@ function setCustomText(){
 }
 
 function setBrightness(brightness){
-	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	if(brightness == undefined) {
 		var brightness = document.getElementById('brightnessSlider').value;
@@ -196,7 +180,6 @@ function setBrightness(brightness){
 }
 
 function settings(action){
-	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	xhttp.open("POST", "/api/settings", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -204,7 +187,6 @@ function settings(action){
 }
 
 function setTextAnimation(animation){
-	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
 	var speed = document.getElementById('speedInput').value;
 	if (speed == ''){
@@ -216,25 +198,19 @@ function setTextAnimation(animation){
 	xhttp.send("animation="+animation+"&speed="+speed);
 }
 
-var responseTextArray = [];
+function openXLSettings(){
+	var boardType = document.getElementById('boardType').value
+	if(boardType == 'xl'){
+		document.getElementById('xl-settings').style.display = 'block';
+	} else {
+		document.getElementById('xl-settings').style.display = 'none';
+	}
 
-function getGateList(){
-	origin = window.location.origin
 	var xhttp = new XMLHttpRequest();
-	var re = /'(\S*)'/g;
-	xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			responseTextArray = this.responseText.match(re);
-			var text = "";
-			for (i = 0; i < responseTextArray.length; i++){
-					text += "<div class=\"gate-address id=\"element" + i + "\" onclick=\"gateClick(" + i + ")\">" + i + ": " + responseTextArray[i] + "</div>";
-			}
-			document.getElementById("gates-list").innerHTML = text;
-		}
-	};
-	xhttp.open("GET", "/api/server/gates", true);
+	xhttp.open("POST", "/api/boardtype", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("");
+	xhttp.send("boardType="+boardType);
+
 }
 
 // Color picker
@@ -345,4 +321,24 @@ pageSettingsBtn.onclick = function() {
 // When the user clicks on <span> (x), close the modal
 pageSettingsSpan.onclick = function() {
 	pageSettingsModal.style.display = "none";
+}
+
+// Odd-Sized Board Modal
+// Get the modal
+var oddBoardModal = document.getElementById("oddBoardModal");
+
+// Get the button that opens the modal
+var oddBoardBtn = document.getElementById("oddBoardBtn");
+
+// Get the <span> element that closes the modal
+var oddBoardSpan = document.getElementById("oddboardclose");
+
+// When the user clicks on the button, open the modal
+oddBoardBtn.onclick = function() {
+	oddBoardModal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+oddBoardSpan.onclick = function() {
+	oddBoardModal.style.display = "none";
 }

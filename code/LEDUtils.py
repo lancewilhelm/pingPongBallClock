@@ -41,6 +41,7 @@ class PingPongBoard:
 		for i in range(NUM_ROWS):
 			self.balls.append([0] * NUM_COLS)
 
+		# Initialize the ball objects
 		self.setupBalls()
 
 		#*Intialize the strip
@@ -51,7 +52,7 @@ class PingPongBoard:
 	def setupBalls(self):
 		for y in range(NUM_ROWS):
 			for x in range(NUM_COLS):
-				self.balls[y][x] = Ball([y,x])    #passes [row,col]
+				self.balls[y][x] = Ball([y,x],self.boardType)    #passes [row,col], and the type of board which is used for the ledAdresses
 
 	# Actually lights a specic ball (LED) with the color provided to the function. This will check to see if the color is different than the one already set for the ball first. If it is the same then it will not rewrite.
 	def writeBallColor(self,col,row,color):
@@ -511,7 +512,8 @@ class PingPongBoard:
 			'content' : self.content,
 			'bgColor' : self.bgColor,
 			'brightness' : self.brightness,
-			'timeFormat' : self.timeFormat
+			'timeFormat' : self.timeFormat,
+			'boardType'  : self.boardType
 		}
 
 		# Dump the settings to settings.txt
@@ -544,12 +546,21 @@ class PingPongBoard:
 		self.bgColor = settings['bgColor']
 		self.brightness = settings['brightness']
 		self.timeFormat = settings['timeFormat']
+		self.boardType = settings['boardType']
 
-		# Reset the origin to [1,1]
+		# Since we have loaded new settings, assume the displays have changed
 		self.bgDisplayChanged = True
 		self.textDisplayChanged = True
 		self.updateWeather = True
-		self.textOrigin = [2,4]		#[x,y]
+
+		# Address possible different settings based on the board type
+		if self.boardType == 'normal':
+			self.textOrigin = [1,1]		#[x,y]
+		elif self.boardType == 'xl':
+			NUM_BALLS		= 257				# Number of balls on your board #CHANGED FOR XL
+			NUM_ROWS		= 13				# How many rows of balls are on your board #CHANGED FOR XL
+			NUM_COLS		= 23				# How many effective columns are on your board. This is equal to your widest row. #CHANGED FOR XL
+			self.textOrigin = [2,4]
 
 		# Address possible font change
 		if self.fontName == 'slanted':

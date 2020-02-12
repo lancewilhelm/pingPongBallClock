@@ -161,3 +161,13 @@ def updateWebPageSettings():
 		with open('/home/pi/pingPongBallClock/code/webpagesettings.txt', 'w') as filehandle:
 			filehandle.write(settings)
 		return ""
+
+# Board Type API
+@app.route("/api/boardtype", methods=['POST'])
+def setBoardType():
+	# Read the values from the POST
+	boardType = str(request.form['boardType'])
+
+	PPB.boardType = boardType
+
+	return ""
