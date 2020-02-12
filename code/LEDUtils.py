@@ -557,6 +557,9 @@ class PingPongBoard:
 		self.textDisplayChanged = True
 		self.updateWeather = True
 
+		# Establish the text origin list with spaces for 2 lines
+		self.textOrigin = [0,0]
+
 		# Address possible different settings based on the board type
 		if self.boardType == 'normal':
 			self.textOrigin[0] = [1,1]		#[line #][x,y]
