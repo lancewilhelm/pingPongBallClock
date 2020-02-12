@@ -189,7 +189,7 @@ def setBoardType():
 
 # XL Settings API
 @app.route("/api/xlsettings", methods=['POST'])
-def setBoardType():
+def setXLSettings():
 	# Read the values from the POST
 	lineCount = str(request.form['lineCount'])
 
