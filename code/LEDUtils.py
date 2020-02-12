@@ -559,12 +559,12 @@ class PingPongBoard:
 
 		# Address possible different settings based on the board type
 		if self.boardType == 'normal':
-			self.textOrigin = [0][1,1]		#[line #][x,y]
+			self.textOrigin[0] = [1,1]		#[line #][x,y]
 		elif self.boardType == 'xl':
 			self.num_balls		= 257				# Number of balls on your board #CHANGED FOR XL
 			self.num_rows		= 13				# How many rows of balls are on your board #CHANGED FOR XL
 			self.num_cols		= 23				# How many effective columns are on your board. This is equal to your widest row. #CHANGED FOR XL
-			self.textOrigin = [0][2,4]		#[line #][x,y]
+			self.textOrigin[0] = [2,4]		#[line #][x,y]
 
 		# Calculate the LED count
 		self.led_count = self.num_balls * PIXEL_RATIO

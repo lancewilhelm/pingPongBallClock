@@ -73,9 +73,9 @@ def setTextAnimation():
 
 	if animation == "static":
 		if PPB.boardType == 'normal':
-			PPB.textOrigin = [0][1,1]
+			PPB.textOrigin[0] = [1,1]
 		elif PPB.boardType == 'xl':
-			PPB.textOrigin = [0][2,4]
+			PPB.textOrigin[0] = [2,4]
 		PPB.animationSpeed = 0
 	if animation == "scrolling":
 		speed = float(request.form['speed'])
