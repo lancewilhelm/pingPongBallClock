@@ -573,7 +573,8 @@ class PingPongBoard:
 			if self.lineCount == 1:
 				self.textOrigin[0] = [2,4]
 			elif self.lineCount == 2:
-				self.textOrigin[0] = [1,7]
+				PPB.textOrigin[0] = [4,1]
+				PPB.textOrigin[1] = [1,7]
 
 		# Calculate the LED count
 		self.led_count = self.num_balls * PIXEL_RATIO

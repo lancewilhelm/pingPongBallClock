@@ -78,7 +78,8 @@ def setTextAnimation():
 			if PPB.lineCount == 1:
 				PPB.textOrigin[0] = [2,4]
 			elif PPB.lineCount == 2:
-				PPB.textOrigin[0] = [1,7]
+				PPB.textOrigin[0] = [4,1]
+				PPB.textOrigin[1] = [1,7]
 		PPB.animationSpeed = 0
 	if animation == "scrolling":
 		speed = float(request.form['speed'])
@@ -199,7 +200,8 @@ def setXLSettings():
 		if PPB.lineCount == 1:
 			PPB.textOrigin[0] = [2,4]
 		elif PPB.lineCount == 2:
-			PPB.textOrigin[0] = [1,7]
+			PPB.textOrigin[0] = [4,1]
+			PPB.textOrigin[1] = [1,7]
 	else: 
 		print "Board is not set to XL"
 
