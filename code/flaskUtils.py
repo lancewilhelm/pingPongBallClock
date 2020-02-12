@@ -200,7 +200,7 @@ def setBoardType():
 			PPB.textOrigin[0] = [2,4]
 		elif PPB.lineCount == 2:
 			PPB.textOrigin[0] = [4,1]
-	else 
+	else: 
 		print "Board is not set to XL"
 
 	return ""
