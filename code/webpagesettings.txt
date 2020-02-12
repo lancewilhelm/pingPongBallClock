@@ -1,1 +1,1 @@
-{"title":"PPBC XL","mainBGColor":"rgb(103, 39, 0)"}
+{"title":"PPBC","mainBGColor":"rgb(103, 39, 0)"}
