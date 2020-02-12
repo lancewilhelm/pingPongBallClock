@@ -205,12 +205,14 @@ function openXLSettings(){
 	} else {
 		document.getElementById('xl-settings').style.display = 'none';
 	}
+}
 
+function sendBoardType(){
+	var boardType = document.getElementById('boardType').value
 	var xhttp = new XMLHttpRequest();
 	xhttp.open("POST", "/api/boardtype", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("boardType="+boardType);
-
 }
 
 // Color picker

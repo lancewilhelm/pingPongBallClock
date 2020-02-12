@@ -337,13 +337,15 @@
 				<option value="normal">Normal</option>
 				<option value="xl">XL</option>
 			</select>
+			<button class="btn btn-sm btn-purple" type="button" onclick="sendBoardType()">SET</button>
 			<div class="xl-settings" id="xl-settings">
 				<br><hr class="minor"><br>
 				NUMBER OF LINES: 
-				<select id="boardType" onchange="openXLSettings()">
-					<option value="normal">Normal</option>
-					<option value="xl">XL</option>
-				</select>
+				<select id="lineCount">
+					<option value="1">1</option>
+					<option value="2">2</option>
+				</select><br><br>
+				<button class="btn btn-purple" type="button" onclick="sendXLSettings()">SEND SETTINGS</button>
 			</div>
 		</div>
 	</div>
