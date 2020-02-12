@@ -1,6 +1,3 @@
-import sys
-import os
-
 from flask import Flask, render_template, request
 from LEDUtils import *
 from Utils import *
@@ -175,7 +172,5 @@ def setBoardType():
 	print boardType
 	PPB.boardType = boardType
 	PPB.dumpSettings()
-
-	os.execv(__file__, sys.argv)
 
 	return ""
