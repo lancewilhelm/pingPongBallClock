@@ -181,6 +181,4 @@ def setBoardType():
 	PPB.boardType = boardType
 	PPB.dumpSettings()
 
-	# Reset the PPB object
-	PPB = PingPongBoard()
 	return ""
