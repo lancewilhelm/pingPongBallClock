@@ -1,1 +1,1 @@
-{"title": "PING PONG BALL CLOCK", "mainBGColor": "rgb(48, 38, 134)"}
+{"title":"PPBC","mainBGColor":"rgb(103, 39, 0)"}
