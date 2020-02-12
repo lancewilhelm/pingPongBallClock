@@ -17,7 +17,6 @@ function loadWebSettings(){
 
 function setPageTitle(){
 	var title = document.getElementById('titleInput').value;
-	console.log(title)
 	document.getElementById("pageTitle").innerHTML = title;
 	document.title = title;
 
