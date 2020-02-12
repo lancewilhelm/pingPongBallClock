@@ -203,8 +203,8 @@ def setXLSettings():
 	else: 
 		print "Board is not set to XL"
 
-	PPB.bgDisplayChanged = True
-	PPB.textDisplayChanged = True
-	
+	# Perform a reset of the board to eliminate the ghost text balls
+	PPB.colorFill(Color(0,0,0), True)
+
 	print PPB.textOrigin
 	return ""
