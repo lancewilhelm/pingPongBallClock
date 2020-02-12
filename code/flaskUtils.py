@@ -175,6 +175,6 @@ def setBoardType():
 	PPB.boardType = boardType
 	PPB.dumpSettings()
 
-	os.exec
+	os.execv(__file__, sys.argv)
 
 	return ""
