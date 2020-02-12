@@ -11,7 +11,6 @@ NUM_COLS		= 20				# How many effective columns are on your board. This is equal 
 PIXEL_DENSITY	= 60				# This is how dense your strip is with pixels. 30 is the ideal density to buy (LEDs/meter)
 
 PIXEL_RATIO		= PIXEL_DENSITY/30	# Needed for the odd strips like mine
-LED_COUNT		= NUM_BALLS*PIXEL_RATIO
 LED_PIN        	= 18      			# GPIO pin connected to the pixels (18 uses PWM!).
 LED_FREQ_HZ    	= 800000  			# LED signal frequency in hertz (usually 800khz)
 LED_DMA        	= 10       			# DMA channel to use for generating signal (try 5)

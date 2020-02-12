@@ -15,7 +15,7 @@ class PingPongBoard:
 	def __init__(self):
 		self.num_balls = NUM_BALLS		# Needed for changing board type
 		self.num_rows = NUM_ROWS		# Needed for changing board type
-		self.num_cols = NUM_COLS		# Needed for changing board type	
+		self.num_cols = NUM_COLS		# Needed for changing board type
 
 		self.animationFrame = 0			# Used for animations, start at 0
 		self.animationEnd = 1			# Default animation end frame. This is always changed
@@ -48,8 +48,8 @@ class PingPongBoard:
 		# Initialize the ball objects
 		self.setupBalls()
 
-		#*Intialize the strip
-		self.strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, self.brightness, LED_CHANNEL, LED_STRIP)
+		#Intialize the strip
+		self.strip = Adafruit_NeoPixel(self.led_count, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, self.brightness, LED_CHANNEL, LED_STRIP)
 		self.strip.begin()
 
 	# Sets up a ball object for every single ball on the board. The ball object definition can be found in Utils
@@ -247,7 +247,7 @@ class PingPongBoard:
 	# Rainbow color animation
 	def rainbow(self,wait_ms=20):
 		# Draw rainbow that fades across all pixels at once.
-		j = self.updateFrame(LED_COUNT)
+		j = self.updateFrame(self.led_count)
 
 		for x in range(self.num_cols):
 			for y in range(self.num_rows):
@@ -260,7 +260,7 @@ class PingPongBoard:
 	# Rainbow text color animation
 	def rainbowText(self,wait_ms=20):
 		# Draw rainbow that fades across all pixels at once.
-		j = self.updateFrame(LED_COUNT)
+		j = self.updateFrame(self.led_count)
 
 		for x in range(self.num_cols):
 			for y in range(self.num_rows):
@@ -273,7 +273,7 @@ class PingPongBoard:
 	# Rainbow cycle makes all of the BG balls the same color and changes the color over time
 	def rainbowCycle(self,wait_ms=20):
 		# Draw rainbow that uniformly distributes itself across all pixels.
-		j = self.updateFrame(LED_COUNT)
+		j = self.updateFrame(self.led_count)
 
 		for x in range(self.num_cols):
 			for y in range(self.num_rows):
@@ -286,7 +286,7 @@ class PingPongBoard:
 		# Rainbow cycle makes all of the text the same color and changes the color over time
 	def rainbowCycleText(self,wait_ms=20):
 		# Draw rainbow that uniformly distributes itself across all pixels.
-		j = self.updateFrame(LED_COUNT)
+		j = self.updateFrame(self.led_count)
 
 		for x in range(self.num_cols):
 			for y in range(self.num_rows):
@@ -565,6 +565,9 @@ class PingPongBoard:
 			self.num_rows		= 13				# How many rows of balls are on your board #CHANGED FOR XL
 			self.num_cols		= 23				# How many effective columns are on your board. This is equal to your widest row. #CHANGED FOR XL
 			self.textOrigin = [2,4]
+
+		# Calculate the LED count
+		self.led_count = self.num_balls * PIXEL_RATIO
 
 		# Address possible font change
 		if self.fontName == 'slanted':
