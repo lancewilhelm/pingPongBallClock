@@ -75,7 +75,10 @@ def setTextAnimation():
 		if PPB.boardType == 'normal':
 			PPB.textOrigin[0] = [1,1]
 		elif PPB.boardType == 'xl':
-			PPB.textOrigin[0] = [2,4]
+			if PPB.lineCount == 1:
+				PPB.textOrigin[0] = [2,4]
+			elif PPB.lineCount == 2
+				PPB.textOrigin[0] = [4,1]
 		PPB.animationSpeed = 0
 	if animation == "scrolling":
 		speed = float(request.form['speed'])
@@ -175,10 +178,29 @@ def setBoardType():
 	# Read the values from the POST
 	boardType = str(request.form['boardType'])
 
-	print boardType
+	if boardType == 'normal':
+		PPB.lineCount = 1
 
 	# Change the board type and save the settings
 	PPB.boardType = boardType
 	PPB.dumpSettings()
+
+	return ""
+
+# XL Settings API
+@app.route("/api/xlsettings", methods=['POST'])
+def setBoardType():
+	# Read the values from the POST
+	lineCount = str(request.form['lineCount'])
+
+	PPB.lineCount = lineCount
+
+	if PPB.boardType == 'xl':
+		if PPB.lineCount == 1:
+			PPB.textOrigin[0] = [2,4]
+		elif PPB.lineCount == 2
+			PPB.textOrigin[0] = [4,1]
+	else 
+		print "Board is not set to XL"
 
 	return ""

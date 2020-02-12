@@ -517,7 +517,8 @@ class PingPongBoard:
 			'bgColor' : self.bgColor,
 			'brightness' : self.brightness,
 			'timeFormat' : self.timeFormat,
-			'boardType'  : self.boardType
+			'boardType'  : self.boardType,
+			'lineCount'  : self.lineCount
 		}
 
 		# Dump the settings to settings.txt
@@ -551,6 +552,7 @@ class PingPongBoard:
 		self.brightness = settings['brightness']
 		self.timeFormat = settings['timeFormat']
 		self.boardType = settings['boardType']
+		self.lineCount = settings['lineCount']
 
 		# Since we have loaded new settings, assume the displays have changed
 		self.bgDisplayChanged = True
@@ -567,7 +569,11 @@ class PingPongBoard:
 			self.num_balls		= 257				# Number of balls on your board #CHANGED FOR XL
 			self.num_rows		= 13				# How many rows of balls are on your board #CHANGED FOR XL
 			self.num_cols		= 23				# How many effective columns are on your board. This is equal to your widest row. #CHANGED FOR XL
-			self.textOrigin[0] = [2,4]		#[line #][x,y]
+
+			if self.lineCount == 1:
+				self.textOrigin[0] = [2,4]
+			elif self.lineCount == 2
+				self.textOrigin[0] = [4,1]
 
 		# Calculate the LED count
 		self.led_count = self.num_balls * PIXEL_RATIO

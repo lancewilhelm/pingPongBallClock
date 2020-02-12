@@ -215,6 +215,13 @@ function sendBoardType(){
 	xhttp.send("boardType="+boardType);
 }
 
+function sendXLSettings(){
+	var lineCount = document.getElementById('lineCount').value
+	var xhttp = new XMLHttpRequest();
+	xhttp.open("POST", "/api/xlsettings", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("lineCount="+lineCount);
+}
 // Color picker
 function setBGRgb () {
 	var red = document.querySelector('.bg-color-picker .bg-red-slider').value;
