@@ -115,7 +115,7 @@ class PingPongBoard:
 		# Iterate across the line numbers
 		for i in range(self.lineCount):
 			#Write the string IF the display stirng is different then it last was OR it has moved location OR the font has changed
-			if self.displayString[i] != self.displayStringPrev[i] or self.textOriginMoved or self.fontChanged:
+			if self.displayString[i] != self.displayStringPrev[i] or self.textOriginMoved[i] or self.fontChanged:
 				x = self.textOrigin[i][0] 
 				y = self.textOrigin[i][1]
 				for j in range(len(self.displayString[i])):
@@ -123,7 +123,7 @@ class PingPongBoard:
 					x += distanceToNext
 
 				# After we write a new string, reset/set booleans and set the prev variable to the current string
-				self.textOriginMoved = False							# We just addressed this change, so change it back to false
+				self.textOriginMoved[i] = False							# We just addressed this change, so change it back to false
 				self.fontChanged = False								# We just addressed this change, so change it back to false
 				self.textDisplayChanged = True							# We have written a new string, so the display has changed
 				self.bgDisplayChanged = True							# Since we have update the string, the bg needs to be updated to write over the old text balls now as well
@@ -219,8 +219,6 @@ class PingPongBoard:
 
 		# If the time elapsed is >= the time one frame should take for our set speed, do the things
 		if self.animationTimeElapsed[lineNum] >= 1/self.animationSpeed[lineNum] and self.animationSpeed[lineNum] != 0:
-			if lineNum == 1:
-				print "updating line 2 animation"
 			#Indicate the display has changed
 			self.textOriginMoved[lineNum] = True
 
