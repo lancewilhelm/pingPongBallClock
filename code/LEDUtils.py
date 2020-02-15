@@ -26,11 +26,11 @@ class PingPongBoard:
 		self.twinkleTimeElapsed = 0		# Used for timing when to initate a twinkle
 		self.twinkleWaitTime = 0
 
-		self.fontChanged = False		# Store whether or not the font has changed
-		self.textOriginMoved = False	# Store whether or not the origin of the display string has changed
-		self.displayString = ''			# This is the string that will be ultimately displayed on screen
-		self.displayStringPrev = ''		# This is what the display string was during the previous loop
-		self.displayStringLength = 0	# This is calculated and used to determine when we have cycled through an entire string during animations
+		self.fontChanged = False				# Store whether or not the font has changed
+		self.textOriginMoved = False			# Store whether or not the origin of the display string has changed
+		self.displayString = ['', '']			# This is the string that will be ultimately displayed on screen
+		self.displayStringPrev = ['', '']		# This is what the display string was during the previous loop
+		self.displayStringLength = [0, 0]		# This is calculated and used to determine when we have cycled through an entire string during animations
 
 		self.weatherResponse = None		# This stores the reponse from the OpenWeather API
 
@@ -74,7 +74,7 @@ class PingPongBoard:
 		if col < 0 or col >= self.num_cols or row < 0 or row >= self.num_rows:
 			return
 
-		# If the color is different than what the buffer has stored, write it and show it
+		# If the text state is different than what the buffer has stored, change it
 		if self.balls[row][col].text != text:
 			self.balls[row][col].text = text
 
@@ -112,21 +112,23 @@ class PingPongBoard:
 
 	# Writes the display string if some conditions are met. 
 	def updateDisplayString(self):
-		#Write the string IF the display stirng is different then it last was OR it has moved location OR the font has changed
-		if self.displayString != self.displayStringPrev or self.textOriginMoved or self.fontChanged:
-			x = self.textOrigin[0][0] 
-			y = self.textOrigin[0][1]
-			for i in range(len(self.displayString)):
-				distanceToNext = self.writeChar(x,y,self.displayString[i])
-				x += distanceToNext
+		# Iterate across the line numbers
+		for i in range(self.lineCount):
+			#Write the string IF the display stirng is different then it last was OR it has moved location OR the font has changed
+			if self.displayString[i] != self.displayStringPrev[i] or self.textOriginMoved or self.fontChanged:
+				x = self.textOrigin[i][0] 
+				y = self.textOrigin[i][1]
+				for j in range(len(self.displayString[i])):
+					distanceToNext = self.writeChar(x,y,self.displayString[i][j])
+					x += distanceToNext
 
-			# After we write a new string, reset/set booleans and set the prev variable to the current string
-			self.textOriginMoved = False						# We just addressed this change, so change it back to false
-			self.fontChanged = False							# We just addressed this change, so change it back to false
-			self.textDisplayChanged = True						# We have written a new string, so the display has changed
-			self.bgDisplayChanged = True						# Since we have update the string, the bg needs to be updated to write over the old text balls now as well
-			self.displayStringPrev = self.displayString			# Set the displayStringPrev to the current string
-			self.displayStringLength = x - self.textOrigin[0][0]	# This so happens to show up after we are done here. Useful for the animation scroll
+				# After we write a new string, reset/set booleans and set the prev variable to the current string
+				self.textOriginMoved = False							# We just addressed this change, so change it back to false
+				self.fontChanged = False								# We just addressed this change, so change it back to false
+				self.textDisplayChanged = True							# We have written a new string, so the display has changed
+				self.bgDisplayChanged = True							# Since we have update the string, the bg needs to be updated to write over the old text balls now as well
+				self.displayStringPrev[i] = self.displayString[i]		# Set the displayStringPrev[i] to the current string
+				self.displayStringLength[i] = x - self.textOrigin[i][0]	# This so happens to show up after we are done here. Useful for the animation scroll
 
 	# This steps the animation frame by one. If the animation frame has reached animationEnd, reset the frame to 0
 	def updateFrame(self, animationEnd):
@@ -216,7 +218,7 @@ class PingPongBoard:
 		self.animationTimeElapsed = nowTime - self.animationStartTime
 
 		# If the time elapsed is >= the time one frame should take for our set speed, do the things
-		if self.animationTimeElapsed >= 1/self.animationSpeed and self.animationSpeed != 0:
+		if self.animationTimeElapsed >= 1/self.animationSpeed[0] and self.animationSpeed[0] != 0:
 			#Indicate the display has changed
 			self.textOriginMoved = True
 
@@ -224,7 +226,7 @@ class PingPongBoard:
 			self.textOrigin[0][0] -= 1
 
 			# Reset the x text origin to 20 if it gets through the screen
-			if self.textOrigin[0][0] < -1 * self.displayStringLength:
+			if self.textOrigin[0][0] < -1 * self.displayStringLength[0]:
 				self.textOrigin[0][0] = 20
 
 			# Set the start time to this time now
@@ -363,7 +365,7 @@ class PingPongBoard:
 # CONTENT GENERATION --------------------------------------------------------------------
 
 	# This function obtains the time and concatenates it to the display string
-	def time(self):
+	def time(self, lineNum):
 		# Get the current local time and parse it out to usable variables
 		t = time.localtime()
 		hours = t.tm_hour
@@ -387,7 +389,7 @@ class PingPongBoard:
 			minStr = str(mins)
 
 		# Create the hour string
-		if hours < 10 and self.animationSpeed == 0:
+		if hours < 10 and self.animationSpeed[lineNum] == 0:
 			if self.timeFormat == '12h':
 				hourStr = ' ' + str(hours)
 			elif self.timeFormat == '24h':
@@ -396,7 +398,7 @@ class PingPongBoard:
 			hourStr = str(hours)
 
 		# Used to determine colon lit state
-		if secs % 2 == 1 and self.animationSpeed <= 5.0:
+		if secs % 2 == 1 and self.animationSpeed[lineNum] <= 5.0 and self.lineCount == 1:
 			# Even seconds, concatenate the strings with a colon in the middle
 			timeStr = hourStr + ';' + minStr
 		else:
@@ -404,7 +406,10 @@ class PingPongBoard:
 			timeStr = hourStr + ':' + minStr 
 
 		# Concatenate the date string to the master string with a space termination
-		self.displayString += timeStr + ' '
+		if lineNum == 0:
+			self.displayString[0] += timeStr + ' '
+		elif lineNum == 1:
+			self.displayString[1] += timeStr + ' '
 
 		# Check to see if the minute has changed this is to update the weather. 
 		if mins != self.minsPrev:
@@ -412,7 +417,7 @@ class PingPongBoard:
 			self.minsPrev = mins
 
 	# This function obtains the date and concatenates it to the display string
-	def date(self):
+	def date(self, lineNum):
 		# Get the current local time and parse it out to usable variables
 		t = time.localtime()
 		mon = t.tm_mon
@@ -427,16 +432,22 @@ class PingPongBoard:
 		dateStr = monStr + '-' + dayStr + '-' + yearStr[-2:]
 		
 		# Concatenate the date string to the master string with a space termination
-		self.displayString += dateStr + ' '
+		if lineNum == 0:
+			self.displayString[0] += dateStr + ' '
+		elif lineNum == 1:
+			self.displayString[1] += dateStr + ' '
 
 	# This function concatenates the custom text to the display string
-	def text(self):
+	def text(self, lineNum):
 		textStr = self.customText.upper()
 
-		self.displayString += textStr + ' '
+		if lineNum == 0:
+			self.displayString[0] += textStr + ' '
+		elif lineNum == 1:
+			self.displayString[1] += textStr + ' '
 
 	# This function obtains the weather and concatenates it to the display string
-	def weather(self):
+	def weather(self, lineNum):
 		# In case we are not displaying the time, check the time to see if we need to update the weather
 		# Get the current local time and parse it out to usable variables
 		t = time.localtime()
@@ -496,7 +507,10 @@ class PingPongBoard:
 		# Concatenate the weather string to the display string
 		weatherStr = weatherStr.upper() 	# Uppercase the string
 
-		self.displayString += weatherStr + ' '
+		if lineNum == 0:
+			self.displayString[0] += weatherStr + ' '
+		elif lineNum == 1:
+			self.displayString[1] += weatherStr + ' '
 
 # SETTING HANDLING -------------------------------------------------------------------
 
@@ -504,7 +518,7 @@ class PingPongBoard:
 	def dumpSettings(self):
 		# Create a settings dictionary
 		settings = {
-			'animationSpeed' : self.animationSpeed,									 # Balls/s for animations. Needs to be a float (.0). Static default
+			'animationSpeed' : self.animationSpeed,		# Balls/s for animations. Needs to be a float (.0). Static default
 			'textColor' : self.textColor,
 			'fontName' : self.fontName,
 			'textSpacing' : self.textSpacing,
@@ -565,9 +579,9 @@ class PingPongBoard:
 		if self.boardType == 'normal':
 			self.textOrigin[0] = [1,1]		#[line #][x,y]
 		elif self.boardType == 'xl':
-			self.num_balls		= 257				# Number of balls on your board #CHANGED FOR XL
-			self.num_rows		= 13				# How many rows of balls are on your board #CHANGED FOR XL
-			self.num_cols		= 23				# How many effective columns are on your board. This is equal to your widest row. #CHANGED FOR XL
+			self.num_balls = 257				# Number of balls on your board #CHANGED FOR XL
+			self.num_rows = 13				# How many rows of balls are on your board #CHANGED FOR XL
+			self.num_cols = 23				# How many effective columns are on your board. This is equal to your widest row. #CHANGED FOR XL
 
 			if self.lineCount == 1:
 				self.textOrigin[0] = [2,4]
