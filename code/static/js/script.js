@@ -190,9 +190,9 @@ function setTextAnimation(animation, lineNum){
 	var xhttp = new XMLHttpRequest();
 
 	if (lineNum == 0){
-		var speed = document.getElementById('line1speedInput').value;
+		var speed = document.getElementById('line1SpeedInput').value;
 	} else if (lineNum == 1) {
-		var speed = document.getElementById('line2speedInput').value;
+		var speed = document.getElementById('line2SpeedInput').value;
 	}
 	
 	if (speed == ''){
