@@ -227,7 +227,7 @@ class PingPongBoard:
 
 			# Reset the x text origin to 20 if it gets through the screen
 			if self.textOrigin[lineNum][0] < -1 * self.displayStringLength[lineNum]:
-				self.textOrigin[lineNum][0] = 20
+				self.textOrigin[lineNum][0] = 23
 
 			# Set the start time to this time now
 			self.animationStartTime[lineNum] = nowTime
