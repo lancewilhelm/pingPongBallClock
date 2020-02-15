@@ -212,5 +212,4 @@ def setXLSettings():
 	# Perform a reset of the board to eliminate the ghost text balls
 	PPB.colorFill(Color(0,0,0), True)
 
-	print PPB.textOrigin
 	return ""

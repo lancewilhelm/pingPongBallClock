@@ -389,7 +389,7 @@ class PingPongBoard:
 			minStr = str(mins)
 
 		# Create the hour string
-		if hours < 10 and self.animationSpeed[0] == 0:
+		if hours < 10 and self.animationSpeed[lineNum] == 0:
 			if self.timeFormat == '12h':
 				hourStr = ' ' + str(hours)
 			elif self.timeFormat == '24h':
