@@ -77,7 +77,7 @@ class PingPongBoard:
 		if col < 0 or col >= self.num_cols or row < 0 or row >= self.num_rows:
 			return
 
-		# If the color is different than what the buffer has stored, write it and show it
+		# If the text state is different than what the buffer has stored, change it
 		if self.balls[row][col].text != text:
 			self.balls[row][col].text = text
 
@@ -407,9 +407,9 @@ class PingPongBoard:
 			timeStr = hourStr + ':' + minStr 
 
 		# Concatenate the date string to the master string with a space termination
-		if lineNum == 1:
+		if lineNum == 0:
 			self.displayStringLine1 += timeStr + ' '
-		elif lineNum == 2:
+		elif lineNum == 1:
 			self.displayStringLine2 += timeStr + ' '
 
 		# Check to see if the minute has changed this is to update the weather. 
@@ -433,18 +433,18 @@ class PingPongBoard:
 		dateStr = monStr + '-' + dayStr + '-' + yearStr[-2:]
 		
 		# Concatenate the date string to the master string with a space termination
-		if lineNum == 1:
+		if lineNum == 0:
 			self.displayStringLine1 += dateStr + ' '
-		elif lineNum == 2:
+		elif lineNum == 1:
 			self.displayStringLine2 += dateStr + ' '
 
 	# This function concatenates the custom text to the display string
 	def text(self, lineNum):
 		textStr = self.customText.upper()
 
-		if lineNum == 1:
+		if lineNum == 0:
 			self.displayStringLine1 += textStr + ' '
-		elif lineNum == 2:
+		elif lineNum == 1:
 			self.displayStringLine2 += textStr + ' '
 
 	# This function obtains the weather and concatenates it to the display string
@@ -508,9 +508,9 @@ class PingPongBoard:
 		# Concatenate the weather string to the display string
 		weatherStr = weatherStr.upper() 	# Uppercase the string
 
-		if lineNum == 1:
+		if lineNum == 0:
 			self.displayStringLine1 += weatherStr + ' '
-		elif lineNum == 2:
+		elif lineNum == 1:
 			self.displayStringLine2 += weatherStr + ' '
 
 # SETTING HANDLING -------------------------------------------------------------------
