@@ -72,7 +72,6 @@ function sendWebPageSettings(){
 	}
 
 	settingsString = JSON.stringify(settings)
-	console.log(settingsString)
 
 	xhttp.open("POST", "/api/webpagesettings", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -90,7 +89,6 @@ function setPageTitle(){
 function setCustomPageColor(){
 	var color = document.querySelector('.page-color-preview').style.background
 	document.documentElement.style.setProperty('--main-bg-color', color);
-	console.log("set the color to " + color);
 
 	sendWebPageSettings();
 }
@@ -258,7 +256,6 @@ function setTextAnimation(animation, lineNum){
 			document.getElementById('line2SpeedInput').value = 0;
 		}
 	}
-	console.log(speed);
 	xhttp.open("POST", "/api/textanimation", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("animation="+animation+"&speed="+speed+"&lineNum="+lineNum);
@@ -286,7 +283,6 @@ function openLineSettings(){
 
 function sendBoardType(){
 	var boardType = document.getElementById('boardType').value
-	console.log(boardType)
 	if (boardType == 'normal'){
 		document.getElementById('lineCount').value = 1;
 		openLineSettings();
