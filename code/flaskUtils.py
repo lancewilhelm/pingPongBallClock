@@ -90,7 +90,7 @@ def setTextAnimation():
 
 	# Reset the text on the screen
 	PPB.textStateWipe()
-	PPB.textOriginMoved[lineNum]= True
+	PPB.textOriginMoved = [True, True]
 	PPB.updateDisplayString()
 	return ""
 
