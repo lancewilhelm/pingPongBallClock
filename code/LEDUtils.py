@@ -27,7 +27,7 @@ class PingPongBoard:
 		self.twinkleWaitTime = 0
 
 		self.fontChanged = False				# Store whether or not the font has changed
-		self.textOriginMoved = False			# Store whether or not the origin of the display string has changed
+		self.textOriginMoved = [False, False]	# Store whether or not the origin of the display string has changed
 		self.displayString = ['', '']			# This is the string that will be ultimately displayed on screen
 		self.displayStringPrev = ['', '']		# This is what the display string was during the previous loop
 		self.displayStringLength = [0, 0]		# This is calculated and used to determine when we have cycled through an entire string during animations
@@ -222,7 +222,7 @@ class PingPongBoard:
 			if lineNum == 1:
 				print "updating line 2 animation"
 			#Indicate the display has changed
-			self.textOriginMoved = True
+			self.textOriginMoved[lineNum] = True
 
 			# Move the text one space to the left
 			self.textOrigin[lineNum][0] -= 1
