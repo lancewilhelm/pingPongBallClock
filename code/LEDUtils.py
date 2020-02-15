@@ -43,7 +43,6 @@ class PingPongBoard:
 		self.loadSettings()
 
 		# Set up the ball objects
-		#CHANGED FOR XL
 		self.balls = []
 		for i in range(self.num_rows):
 			self.balls.append([0] * self.num_cols)
