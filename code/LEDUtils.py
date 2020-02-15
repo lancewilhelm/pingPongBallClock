@@ -219,7 +219,7 @@ class PingPongBoard:
 		self.animationTimeElapsed = nowTime - self.animationStartTime
 
 		# If the time elapsed is >= the time one frame should take for our set speed, do the things
-		if self.animationTimeElapsed >= 1/self.animationSpeed and self.animationSpeed != 0:
+		if self.animationTimeElapsed >= 1/self.animationSpeedLine1 and self.animationSpeedLine1 != 0:
 			#Indicate the display has changed
 			self.textOriginMoved = True
 
@@ -390,7 +390,7 @@ class PingPongBoard:
 			minStr = str(mins)
 
 		# Create the hour string
-		if hours < 10 and self.animationSpeed == 0:
+		if hours < 10 and self.animationSpeedLine1 == 0:
 			if self.timeFormat == '12h':
 				hourStr = ' ' + str(hours)
 			elif self.timeFormat == '24h':
@@ -399,7 +399,7 @@ class PingPongBoard:
 			hourStr = str(hours)
 
 		# Used to determine colon lit state
-		if secs % 2 == 1 and self.animationSpeed <= 5.0:
+		if secs % 2 == 1 and self.animationSpeedLine1 <= 5.0:
 			# Even seconds, concatenate the strings with a colon in the middle
 			timeStr = hourStr + ';' + minStr
 		else:
@@ -519,7 +519,8 @@ class PingPongBoard:
 	def dumpSettings(self):
 		# Create a settings dictionary
 		settings = {
-			'animationSpeed' : self.animationSpeed,									 # Balls/s for animations. Needs to be a float (.0). Static default
+			'animationSpeedLine1' : self.animationSpeedLine1,		# Balls/s for animations. Needs to be a float (.0). Static default
+			'animationSpeedLine2' : self.animationSpeedLine2,		# Balls/s for animations. Needs to be a float (.0). Static default
 			'textColor' : self.textColor,
 			'fontName' : self.fontName,
 			'textSpacing' : self.textSpacing,
@@ -553,7 +554,8 @@ class PingPongBoard:
 		self.openWeatherKey = apikeys['openweather']
 
 		# Set variables from the settings 
-		self.animationSpeed = settings['animationSpeed']									 # Balls/s for animations. Needs to be a float (.0). Static default
+		self.animationSpeedLine1 = settings['animationSpeedLine1']
+		self.animationSpeedLine2 = settings['animationSpeedLine2']										 # Balls/s for animations. Needs to be a float (.0). Static default
 		self.textColor = settings['textColor']
 		self.fontName = settings['fontName']
 		self.textSpacing = settings['textSpacing']
