@@ -565,8 +565,6 @@ class PingPongBoard:
 		self.boardType = settings['boardType']
 		self.lineCount = settings['lineCount']
 
-		print self.animationSpeed 
-
 		# Since we have loaded new settings, assume the displays have changed
 		self.bgDisplayChanged = True
 		self.textDisplayChanged = True
