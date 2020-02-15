@@ -2,10 +2,50 @@ function loadWebSettings(){
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
+			// Get the settings JSON and parse it out
 			webPageSettings = JSON.parse(this.responseText)
+
+			// Set the page title
 			document.getElementById("pageTitle").innerHTML = webPageSettings.title;
 			document.title = webPageSettings.title;
+			document.getElementById("pageTitle").innerHTML = webPageSettings.title;
+
+			// BG Color
 			document.documentElement.style.setProperty('--main-bg-color', webPageSettings.mainBGColor);
+			document.querySelector('.page-color-preview').style.background = webPageSettings.mainBGColor;
+			
+			// Board Type
+			document.getElementById('boardType').value = webPageSettings.boardType;
+
+			// Line Count
+			document.getElementById('lineCount').value = webPageSettings.lineCount;
+
+			// Brightness
+			document.getElementById('brightnessSlider').value = webPageSettings.brightness;
+
+			//Line 1 Content
+			document.getElementById('line1time').checked = webPageSettings.line1time;
+			document.getElementById('line1date').checked = webPageSettings.line1date;
+			document.getElementById('line1weather').checked = webPageSettings.line1weather;
+			document.getElementById('line1text').checked = webPageSettings.line1text;
+
+			//Line 2 Content
+			document.getElementById('line2time').checked = webPageSettings.line2time;
+			document.getElementById('line2date').checked = webPageSettings.line2date;
+			document.getElementById('line2weather').checked = webPageSettings.line2weather;
+			document.getElementById('line2text').checked = webPageSettings.line2text;
+
+			// Line 1 Speed Input
+			document.getElementById('line1SpeedInput').value = webPageSettings.line1Speed;
+
+			// Line 2 Speed Input
+			document.getElementById('line2SpeedInput').value = webPageSettings.line2Speed;
+
+			// Custom Text Input
+			document.getElementById('textInput').value = webPageSettings.customText;
+
+			openLineSettings();
+			openXLSettings();
 		}
 	};
 
@@ -14,36 +54,54 @@ function loadWebSettings(){
 	xhttp.send("");
 }
 
+function sendWebPageSettings(){
+	var xhttp = new XMLHttpRequest();
+
+	var settings = {
+		title: document.getElementById("pageTitle").innerHTML,
+		mainBGColor: document.querySelector('.page-color-preview').style.background,
+		boardType: document.getElementById('boardType').value,
+		lineCount: document.getElementById('lineCount').value,
+		brightness: document.getElementById('brightnessSlider').value,
+		line1Speed: document.getElementById('line1SpeedInput').value,
+		line2Speed: document.getElementById('line2SpeedInput').value,
+		customText: document.getElementById('textInput').value,
+
+		//Line 1 Content
+		line1time: document.getElementById('line1time').checked,
+		line1date: document.getElementById('line1date').checked,
+		line1weather: document.getElementById('line1weather').checked,
+		line1text: document.getElementById('line1text').checked,
+
+		//Line 2 Content
+		line2time: document.getElementById('line2time').checked,
+		line2date: document.getElementById('line2date').checked,
+		line2weather: document.getElementById('line2weather').checked,
+		line2text: document.getElementById('line2text').checked
+	}
+
+	settingsString = JSON.stringify(settings)
+
+	xhttp.open("POST", "/api/webpagesettings", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("settings="+settingsString);
+}
+
 function setPageTitle(){
 	var title = document.getElementById('titleInput').value;
 	document.getElementById("pageTitle").innerHTML = title;
 	document.title = title;
 
 	sendWebPageSettings();
+	settings('save');
 }
 
 function setCustomPageColor(){
 	var color = document.querySelector('.page-color-preview').style.background
 	document.documentElement.style.setProperty('--main-bg-color', color);
-	console.log("set the color to " + color);
 
 	sendWebPageSettings();
-}
-
-function sendWebPageSettings(){
-	var xhttp = new XMLHttpRequest();
-
-	var settings = {
-		title: document.getElementById("pageTitle").innerHTML,
-		mainBGColor: document.querySelector('.page-color-preview').style.background
-	}
-
-	settingsString = JSON.stringify(settings)
-	console.log(settingsString)
-
-	xhttp.open("POST", "/api/webpagesettings", true);
-	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("settings="+settingsString);
+	settings('save');
 }
 
 function setCustomBGColor(color){
@@ -54,6 +112,8 @@ function setCustomBGColor(color){
 	xhttp.open("POST", "/api/bgcolor", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color="+color+"&red="+red+"&green="+green+"&blue="+blue);
+	
+	settings('save');
 }
 
 function setCustomTextColor(color){
@@ -64,6 +124,8 @@ function setCustomTextColor(color){
 	xhttp.open("POST", "/api/textcolor", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color="+color+"&red="+red+"&green="+green+"&blue="+blue);
+
+	settings('save');
 }
 
 function setBGGreen(){
@@ -74,6 +136,8 @@ function setBGGreen(){
 	xhttp.open("POST", "/api/bgcolor", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
+
+	settings('save');
 }
 
 function setBGRed(){
@@ -84,6 +148,8 @@ function setBGRed(){
 	xhttp.open("POST", "/api/bgcolor", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
+
+	settings('save');
 }
 
 function setBGBlue(){
@@ -94,6 +160,8 @@ function setBGBlue(){
 	xhttp.open("POST", "/api/bgcolor", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
+
+	settings('save');
 }
 
 function setBGBlack(){
@@ -104,6 +172,8 @@ function setBGBlack(){
 	xhttp.open("POST", "/api/bgcolor", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
+
+	settings('save');
 }
 
 function setTextWhite(){
@@ -114,6 +184,8 @@ function setTextWhite(){
 	xhttp.open("POST", "/api/textcolor", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
+
+	settings('save');
 }
 
 function setTextBlack(){
@@ -124,6 +196,8 @@ function setTextBlack(){
 	xhttp.open("POST", "/api/textcolor", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
+
+	settings('save');
 }
 
 function setFont(font){
@@ -131,6 +205,8 @@ function setFont(font){
 	xhttp.open("POST", "/api/font", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("font="+font);
+
+	settings('save');
 }
 
 function setContent(id, content, lineNum){
@@ -139,6 +215,9 @@ function setContent(id, content, lineNum){
 	xhttp.open("POST", "/api/setcontent", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("content="+content+"&lineNum="+lineNum+"&checked="+checked);
+
+	sendWebPageSettings();
+	settings('save');
 }
 
 function configureTime(){
@@ -147,6 +226,8 @@ function configureTime(){
 	xhttp.open("POST", "/api/timeformat", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("timeFormat="+timeFormat);
+
+	settings('save');
 }
 
 function setWeather(){
@@ -157,6 +238,8 @@ function setWeather(){
 	xhttp.open("POST", "/api/weather", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("unit="+unit+"&zip="+zip+"&city="+city);
+
+	settings('save');
 }
 
 function setCustomText(){
@@ -165,6 +248,9 @@ function setCustomText(){
 	xhttp.open("POST", "/api/setcustomtext", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("text="+text);
+
+	sendWebPageSettings();
+	settings('save');
 }
 
 function setBrightness(brightness){
@@ -177,6 +263,9 @@ function setBrightness(brightness){
 	xhttp.open("POST", "/api/brightness", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("brightness="+brightness);
+	
+	sendWebPageSettings();
+	settings('save');
 }
 
 function settings(action){
@@ -196,12 +285,22 @@ function setTextAnimation(animation, lineNum){
 	}
 	
 	if (speed == ''){
-		speed = 5;
+		speed = 0;
 	}
-	console.log(speed);
+
+	if (animation == 'static'){
+		if (lineNum == 0){
+			document.getElementById('line1SpeedInput').value = 0;
+		} else if (lineNum == 1) {
+			document.getElementById('line2SpeedInput').value = 0;
+		}
+	}
 	xhttp.open("POST", "/api/textanimation", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("animation="+animation+"&speed="+speed+"&lineNum="+lineNum);
+
+	sendWebPageSettings();
+	settings('save');
 }
 
 function openXLSettings(){
@@ -224,7 +323,6 @@ function openLineSettings(){
 
 function sendBoardType(){
 	var boardType = document.getElementById('boardType').value
-	console.log(boardType)
 	if (boardType == 'normal'){
 		document.getElementById('lineCount').value = 1;
 		openLineSettings();
@@ -234,6 +332,9 @@ function sendBoardType(){
 	xhttp.open("POST", "/api/boardtype", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("boardType="+boardType);
+
+	sendWebPageSettings();
+	settings('save');
 }
 
 function sendXLSettings(){
@@ -243,9 +344,12 @@ function sendXLSettings(){
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("lineCount="+lineCount);
 
+	sendWebPageSettings();
+	settings('save');
 	openLineSettings();
 }
-// Color picker
+
+// Color picker ---------------------
 function setBGRgb () {
 	var red = document.querySelector('.bg-color-picker .bg-red-slider').value;
 	var green = document.querySelector('.bg-color-picker .bg-green-slider').value;
@@ -275,6 +379,7 @@ function setPageRgb () {
 }
 	setPageRgb();
 
+// Modals --------------------------------------------
 // Time Modal
 // Get the modal
 var timemodal = document.getElementById("timeModal");
