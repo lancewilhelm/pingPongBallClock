@@ -133,9 +133,9 @@ function setFont(font){
 	xhttp.send("font="+font);
 }
 
-function setContent(content, lineNum){
+function setContent(id, content, lineNum){
 	var xhttp = new XMLHttpRequest();
-	var checked = document.getElementById(content).checked;
+	var checked = document.getElementById(id).checked;
 	xhttp.open("POST", "/api/setcontent", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("content="+content+"&lineNum="+lineNum+"&checked="+checked);
