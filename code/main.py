@@ -35,8 +35,9 @@ if __name__ == '__main__':
 				PPB.weather(int(x[1]))
 
 		# If the animation speed is not 0, then update the animation
-		if PPB.animationSpeed[0] != 0:
-			PPB.updateTextAnimation()
+		for i in range(PPB.lineCount):
+			if PPB.animationSpeed[i] != 0:
+				PPB.updateTextAnimation(i)
 
 		# Write the display string text state if the string is different than last loop
 		PPB.updateDisplayString()

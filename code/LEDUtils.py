@@ -207,32 +207,30 @@ class PingPongBoard:
 		self.textDisplayChanged = False
 
 	# Used to move the string during an animation.
-	def updateTextAnimation(self):
+	def updateTextAnimation(self, lineNum):
 		# If start time has not been defined, do so
-		for i in range(self.lineCount):
-			if self.animationStartTime[i] == 0:
-				self.animationStartTime[i] = time.time()
+		if self.animationStartTime[lineNum] == 0:
+			self.animationStartTime[lineNum] = time.time()
 		
 		nowTime = time.time()
 
-		for i in range(self.lineCount):
-			# Determine the time elapsed since the start time
-			self.animationTimeElapsed[i]= nowTime - self.animationStartTime[i]
+		# Determine the time elapsed since the start time
+		self.animationTimeElapsed[lineNum]= nowTime - self.animationStartTime[lineNum]
 
-			# If the time elapsed is >= the time one frame should take for our set speed, do the things
-			if self.animationTimeElapsed[i]>= 1/self.animationSpeed[i] and self.animationSpeed[i] != 0:
-				#Indicate the display has changed
-				self.textOriginMoved = True
+		# If the time elapsed is >= the time one frame should take for our set speed, do the things
+		if self.animationTimeElapsed[lineNum] >= 1/self.animationSpeed[lineNum] and self.animationSpeed[lineNum] != 0:
+			#Indicate the display has changed
+			self.textOriginMoved = True
 
-				# Move the text one space to the left
-				self.textOrigin[i][0] -= 1
+			# Move the text one space to the left
+			self.textOrigin[lineNum][0] -= 1
 
-				# Reset the x text origin to 20 if it gets through the screen
-				if self.textOrigin[i][0] < -1 * self.displayStringLength[i]:
-					self.textOrigin[i][0] = 20
+			# Reset the x text origin to 20 if it gets through the screen
+			if self.textOrigin[lineNum][0] < -1 * self.displayStringLength[lineNum]:
+				self.textOrigin[lineNum][0] = 20
 
-				# Set the start time to this time now
-				self.animationStartTime[i] = nowTime
+			# Set the start time to this time now
+			self.animationStartTime[lineNum] = nowTime
 
 # COLOR ANIMATIONS ---------------------------------------------------------------------
 	# Used in rainbow and rainbowCycle to determine the color during the cycle. Makes for nice smooth transitions
