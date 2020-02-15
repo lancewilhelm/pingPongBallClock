@@ -236,6 +236,8 @@ function sendXLSettings(){
 	xhttp.open("POST", "/api/xlsettings", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("lineCount="+lineCount);
+
+	openLineSettings();
 }
 // Color picker
 function setBGRgb () {
