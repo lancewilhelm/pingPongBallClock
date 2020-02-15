@@ -90,7 +90,8 @@ def setTextAnimation():
 
 	# Reset the text on the screen
 	PPB.textStateWipe()
-	PPB.textDisplayChanged = True
+	PPB.textOriginMoved[lineNum]= True
+	PPB.updateDisplayString()
 	return ""
 
 # Flask Select Content API
