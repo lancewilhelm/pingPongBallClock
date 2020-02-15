@@ -118,8 +118,8 @@ class PingPongBoard:
 			if self.displayString[i] != self.displayStringPrev[i] or self.textOriginMoved or self.fontChanged:
 				x = self.textOrigin[i][0] 
 				y = self.textOrigin[i][1]
-				for i in range(len(self.displayString[i])):
-					distanceToNext = self.writeChar(x,y,self.displayString[i][i])
+				for j in range(len(self.displayString[i])):
+					distanceToNext = self.writeChar(x,y,self.displayString[i][j])
 					x += distanceToNext
 
 				# After we write a new string, reset/set booleans and set the prev variable to the current string
@@ -127,7 +127,7 @@ class PingPongBoard:
 				self.fontChanged = False							# We just addressed this change, so change it back to false
 				self.textDisplayChanged = True						# We have written a new string, so the display has changed
 				self.bgDisplayChanged = True						# Since we have update the string, the bg needs to be updated to write over the old text balls now as well
-				self.displayStringPrev[i] = self.displayString[i]			# Set the displayStringPrev[0] to the current string
+				self.displayStringPrev[i] = self.displayString[i]			# Set the displayStringPrev[i] to the current string
 				self.displayStringLength[i] = x - self.textOrigin[i][0]	# This so happens to show up after we are done here. Useful for the animation scroll
 
 	# This steps the animation frame by one. If the animation frame has reached animationEnd, reset the frame to 0
