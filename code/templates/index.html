@@ -121,19 +121,6 @@
 			</div>
 
 			<div class="col-sm">
-				<form>
-					<button class="btn btn-lg btn-purple" type="button" onclick="setTextAnimation('scrolling')">
-						SCROLLING
-					</button>	
-					<button class="btn btn-lg btn-purple" type="button" onclick="setTextAnimation('static')">
-						STATIC
-					</button>
-					<P>SPEED INPUT (balls/s):</P>
-					<input id="speedInput" class="form-control form-control-lg" type="text" placeholder="5" min="0">	
-				</form>
-			</div>
-
-			<div class="col-sm">
 				<b>CUSTOM COLOR:</b>
 				<div class="text-color-picker">
 					<div class="sliders">
@@ -164,17 +151,54 @@
 		</div>
 		<div class="row">
 			<div class="col-sm">
-				<h5>SELECT CONTENT</h5>
+				<h4>BOARD TYPE:</h4><h5>(will take effect during next reboot)</h5>
+				<select id="boardType" onchange="openXLSettings()">
+					<option value="normal">Normal</option>
+					<option value="xl">XL</option>
+				</select>
+				<button class="btn btn-sm btn-purple" type="button" onclick="sendBoardType()">SET</button>
+				<div class="xl-settings" id="xl-settings">
+					<br><hr class="minor"><br>
+					NUMBER OF LINES: 
+					<select id="lineCount">
+						<option value="1">1</option>
+						<option value="2">2</option>
+					</select>
+					<button class="btn btn-sm btn-purple" type="button" onclick="sendXLSettings()">SET</button>
+				</div>
+			</div>
+
+			<div class="col-sm">
+				<h4>Line 1:</h4>
 				<form>
-					<input type="checkbox" name="time" id="time" onclick="setContent('time')" checked>Time
+					<input type="checkbox" name="time" id="line1time" onclick="setContent('line1time','time','0')" checked>Time
 					<button id="configureTimeBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
-					<input type="checkbox" name="date" id="date" onclick="setContent('date')">Date<br>
-					<input type="checkbox" name="weather" id="weather" onclick="setContent('weather')">Weather  
+					<input type="checkbox" name="date" id="line1date" onclick="setContent('line1date','date','0')">Date<br>
+					<input type="checkbox" name="weather" id="line1weather" onclick="setContent('line1weather','weather','0')">Weather  
 					<button id="configureWeatherBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
-					<input type="checkbox" name="text" id="text" onclick="setContent('text')">Custom Text
+					<input type="checkbox" name="text" id="line1text" onclick="setContent('line1text','text','0')">Custom Text
 					<button id="configureTextBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button>
+					<input id="line1SpeedInput" class="form-control form-control-sm" type="text" placeholder="line 1 speed" min="0">
+					<button class="btn btn-sm btn-purple" type="button" onclick="setTextAnimation('scrolling','0')">SCROLLING</button>	
+					<button class="btn btn-sm btn-purple" type="button" onclick="setTextAnimation('static','0')">RESET</button>
 				</form>
-			</div>	
+			</div>
+	
+			<div class="col-sm" id="line2-settings">
+				<h4>Line 2:</h4>
+				<form>
+					<input type="checkbox" name="time" id="line2time" onclick="setContent('line2time','time','1')" checked>Time
+					<button id="configureTimeBtn2" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
+					<input type="checkbox" name="date" id="line2date" onclick="setContent('line2date','date','1')">Date<br>
+					<input type="checkbox" name="weather" id="line2weather" onclick="setContent('line2weather','weather','1')">Weather  
+					<button id="configureWeatherBtn2" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
+					<input type="checkbox" name="text" id="line2text" onclick="setContent('line2text','text','1')">Custom Text
+					<button id="configureTextBtn2" type="button" class="btn btn-sm btn-purple">CONFIGURE</button>
+					<input id="line2SpeedInput" class="form-control form-control-sm" type="text" placeholder="line 2 speed" min="0">
+					<button class="btn btn-sm btn-purple" type="button" onclick="setTextAnimation('scrolling','1')">SCROLLING</button>	
+					<button class="btn btn-sm btn-purple" type="button" onclick="setTextAnimation('static','1')">RESET</button>
+				</form>
+			</div>
 		</div>
 	</div>
 
@@ -212,15 +236,6 @@
 				</button>		
 			</div>
 		</div>
-
-		<hr class="minor">
-
-		<div class="row">
-			<div class="col-sm">
-				<button class="btn btn-sm btn-purple" type="button" id="oddBoardBtn">ODD-SIZED BOARD SETTINGS</button>
-			</div>
-		</div>
-
 	</div>
 
 <!-- Modals -->
@@ -319,60 +334,6 @@
 			<input id="titleInput" class="form-control form-control-lg" type="text" placeholder="title">
 			<button id="sendColorBtn" type="button" class="btn btn-purple" onclick="setPageTitle()">SET PAGE TITLE</button>
 
-		</div>
-	</div>
-</div>
-
-<div id="oddBoardModal" class="modal">
-	<div class="modal-content">
-		<div class="modal-header">
-			<span id="oddboardclose" class="close">&times;</span>
-			<div class="col-sm text-left">
-				<h4>CONFIGURE ODD BOARDS</h4>
-			</div>
-		</div>
-		<div class="modal-body txt-white">
-			BOARD TYPE (will take effect during next reboot):
-			<select id="boardType" onchange="openXLSettings()">
-				<option value="normal">Normal</option>
-				<option value="xl">XL</option>
-			</select>
-			<button class="btn btn-sm btn-purple" type="button" onclick="sendBoardType()">SET</button>
-			<div class="xl-settings" id="xl-settings">
-				<br><hr class="minor"><br>
-				NUMBER OF LINES: 
-				<select id="lineCount" onchange="openLineSettings()">
-					<option value="1">1</option>
-					<option value="2">2</option>
-				</select><br><br>
-				<div class="line-settings" id="line-settings">
-					Line 1:
-					<form>
-						<input type="checkbox" name="time" id="line1time" onclick="setContent('time')" checked>Time
-						<button id="configureTimeBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
-						<input type="checkbox" name="date" id="line1date" onclick="setContent('date')">Date<br>
-						<input type="checkbox" name="weather" id="line1weather" onclick="setContent('weather')">Weather  
-						<button id="configureWeatherBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
-						<input type="checkbox" name="text" id="line1text" onclick="setContent('text')">Custom Text
-						<button id="configureTextBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button>
-						<input id="line1SpeedInput" class="form-control form-control-sm" type="text" placeholder="line 1 speed" min="0">
-					</form>
-					<br>
-					Line 2:
-					<form>
-						<input type="checkbox" name="time" id="line2time" onclick="setContent('time')" checked>Time
-						<button id="configureTimeBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
-						<input type="checkbox" name="date" id="line2date" onclick="setContent('date')">Date<br>
-						<input type="checkbox" name="weather" id="line2weather" onclick="setContent('weather')">Weather  
-						<button id="configureWeatherBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
-						<input type="checkbox" name="text" id="line2text" onclick="setContent('text')">Custom Text
-						<button id="configureTextBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button>
-						<input id="line2SpeedInput" class="form-control form-control-sm" type="text" placeholder="line 2 speed" min="0">
-					</form>
-					<br>
-				</div>
-				<button class="btn btn-purple" type="button" onclick="sendXLSettings()">SEND SETTINGS</button>
-			</div>
 		</div>
 	</div>
 </div>

@@ -69,7 +69,8 @@ def setFont():
 @app.route("/api/textanimation", methods=['POST'])
 def setTextAnimation():
 	# Read the values from the POST
-	animation = request.form['animation']
+	animation = str(request.form['animation'])
+	lineNum = int(request.form['lineNum'])
 
 	if animation == "static":
 		if PPB.boardType == 'normal':
@@ -80,10 +81,10 @@ def setTextAnimation():
 			elif PPB.lineCount == 2:
 				PPB.textOrigin[0] = [4,1]
 				PPB.textOrigin[1] = [1,7]
-		PPB.animationSpeed = 0
+		PPB.animationSpeed[lineNum] = 0
 	if animation == "scrolling":
 		speed = float(request.form['speed'])
-		PPB.animationSpeed = speed
+		PPB.animationSpeed[lineNum] = speed
 
 	# Wipe the screen
 	PPB.textStateWipe()
@@ -94,12 +95,15 @@ def setTextAnimation():
 def setContent():
 	# Read the values from the POST
 	content = str(request.form['content'])
+	lineNum = str(request.form['lineNum'])
 	checked = str(request.form['checked'])
 
-	if checked == 'true' and (content in PPB.content) == False:
-		PPB.content.append(content)
-	elif checked == 'false' and (content in PPB.content) == True:
-		PPB.content.remove(content)
+	contentChunk = content + ' ' + lineNum
+
+	if checked == 'true' and (contentChunk in PPB.content) == False:
+		PPB.content.append(contentChunk)
+	elif checked == 'false' and (contentChunk in PPB.content) == True:
+		PPB.content.remove(contentChunk)
 
 	print PPB.content
 	PPB.textStateWipe()
@@ -208,5 +212,4 @@ def setXLSettings():
 	# Perform a reset of the board to eliminate the ghost text balls
 	PPB.colorFill(Color(0,0,0), True)
 
-	print PPB.textOrigin
 	return ""

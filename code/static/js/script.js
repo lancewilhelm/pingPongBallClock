@@ -133,12 +133,12 @@ function setFont(font){
 	xhttp.send("font="+font);
 }
 
-function setContent(content){
+function setContent(id, content, lineNum){
 	var xhttp = new XMLHttpRequest();
-	var checked = document.getElementById(content).checked;
+	var checked = document.getElementById(id).checked;
 	xhttp.open("POST", "/api/setcontent", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("content="+content+"&checked="+checked);
+	xhttp.send("content="+content+"&lineNum="+lineNum+"&checked="+checked);
 }
 
 function configureTime(){
@@ -186,16 +186,22 @@ function settings(action){
 	xhttp.send("action="+action);
 }
 
-function setTextAnimation(animation){
+function setTextAnimation(animation, lineNum){
 	var xhttp = new XMLHttpRequest();
-	var speed = document.getElementById('speedInput').value;
+
+	if (lineNum == 0){
+		var speed = document.getElementById('line1SpeedInput').value;
+	} else if (lineNum == 1) {
+		var speed = document.getElementById('line2SpeedInput').value;
+	}
+	
 	if (speed == ''){
 		speed = 5;
 	}
 	console.log(speed);
 	xhttp.open("POST", "/api/textanimation", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("animation="+animation+"&speed="+speed);
+	xhttp.send("animation="+animation+"&speed="+speed+"&lineNum="+lineNum);
 }
 
 function openXLSettings(){
@@ -210,14 +216,20 @@ function openXLSettings(){
 function openLineSettings(){
 	var lineCount = document.getElementById('lineCount').value
 	if(lineCount == 2){
-		document.getElementById('line-settings').style.display = 'block';
+		document.getElementById('line2-settings').style.display = 'block';
 	} else {
-		document.getElementById('line-settings').style.display = 'none';
+		document.getElementById('line2-settings').style.display = 'none';
 	}
 }
 
 function sendBoardType(){
 	var boardType = document.getElementById('boardType').value
+	console.log(boardType)
+	if (boardType == 'normal'){
+		document.getElementById('lineCount').value = 1;
+		openLineSettings();
+		sendXLSettings();
+	}
 	var xhttp = new XMLHttpRequest();
 	xhttp.open("POST", "/api/boardtype", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -230,6 +242,8 @@ function sendXLSettings(){
 	xhttp.open("POST", "/api/xlsettings", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("lineCount="+lineCount);
+
+	openLineSettings();
 }
 // Color picker
 function setBGRgb () {
@@ -339,24 +353,4 @@ pageSettingsBtn.onclick = function() {
 // When the user clicks on <span> (x), close the modal
 pageSettingsSpan.onclick = function() {
 	pageSettingsModal.style.display = "none";
-}
-
-// Odd-Sized Board Modal
-// Get the modal
-var oddBoardModal = document.getElementById("oddBoardModal");
-
-// Get the button that opens the modal
-var oddBoardBtn = document.getElementById("oddBoardBtn");
-
-// Get the <span> element that closes the modal
-var oddBoardSpan = document.getElementById("oddboardclose");
-
-// When the user clicks on the button, open the modal
-oddBoardBtn.onclick = function() {
-	oddBoardModal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-oddBoardSpan.onclick = function() {
-	oddBoardModal.style.display = "none";
 }
