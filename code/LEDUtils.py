@@ -219,6 +219,8 @@ class PingPongBoard:
 
 		# If the time elapsed is >= the time one frame should take for our set speed, do the things
 		if self.animationTimeElapsed[lineNum] >= 1/self.animationSpeed[lineNum] and self.animationSpeed[lineNum] != 0:
+			if lineNum == 1:
+				print "updating line 2 animation"
 			#Indicate the display has changed
 			self.textOriginMoved = True
 
