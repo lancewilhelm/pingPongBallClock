@@ -17,8 +17,8 @@ if __name__ == '__main__':
 	while(True):
 
 		# Reset the string at the beginning of each loop
-		PPB.displayStringLine1 = ''
-		PPB.displayStringLine2 = ''
+		PPB.displayString[0] = ''
+		PPB.displayString[1] = ''
 
 		# Get the display string components
 		for x in PPB.content:
