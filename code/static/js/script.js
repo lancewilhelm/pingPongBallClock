@@ -224,6 +224,11 @@ function openLineSettings(){
 
 function sendBoardType(){
 	var boardType = document.getElementById('boardType').value
+	if (boardType = 'normal'){
+		document.getElementById('lineCount').value = 1;
+		openLineSettings();
+		sendXLSettings();
+	}
 	var xhttp = new XMLHttpRequest();
 	xhttp.open("POST", "/api/boardtype", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
