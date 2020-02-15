@@ -224,6 +224,7 @@ function openLineSettings(){
 
 function sendBoardType(){
 	var boardType = document.getElementById('boardType').value
+	console.log(boardType)
 	if (boardType == 'normal'){
 		document.getElementById('lineCount').value = 1;
 		openLineSettings();
