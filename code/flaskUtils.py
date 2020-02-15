@@ -69,8 +69,8 @@ def setFont():
 @app.route("/api/textanimation", methods=['POST'])
 def setTextAnimation():
 	# Read the values from the POST
-	animation = request.form['animation']
-	lineNum = request.form['lineNum']
+	animation = str(request.form['animation'])
+	lineNum = int(request.form['lineNum'])
 
 	if animation == "static":
 		if PPB.boardType == 'normal':
