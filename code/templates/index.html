@@ -122,12 +122,8 @@
 
 			<div class="col-sm">
 				<form>
-					<button class="btn btn-lg btn-purple" type="button" onclick="setTextAnimation('scrolling')">
-						SCROLLING
-					</button>	
-					<button class="btn btn-lg btn-purple" type="button" onclick="setTextAnimation('static')">
-						RESET
-					</button>
+					<button class="btn btn-lg btn-purple" type="button" onclick="setTextAnimation('scrolling')">SCROLLING</button>	
+					<button class="btn btn-lg btn-purple" type="button" onclick="setTextAnimation('static')">RESET</button>
 					<P>SPEED INPUT (balls/s):</P>
 					<input id="speedInput" class="form-control form-control-lg" type="text" placeholder="5" min="0">	
 				</form>
@@ -191,6 +187,8 @@
 					<input type="checkbox" name="text" id="line1text" onclick="setContent('line1text','text','0')">Custom Text
 					<button id="configureTextBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button>
 					<input id="line1SpeedInput" class="form-control form-control-sm" type="text" placeholder="line 1 speed" min="0">
+					<button class="btn btn-sm btn-purple" type="button" onclick="setTextAnimation('scrolling','0')">SCROLLING</button>	
+					<button class="btn btn-sm btn-purple" type="button" onclick="setTextAnimation('static','0')">RESET</button>
 				</form>
 			</div>
 	
@@ -205,6 +203,8 @@
 					<input type="checkbox" name="text" id="line2text" onclick="setContent('line2text','text','1')">Custom Text
 					<button id="configureTextBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button>
 					<input id="line2SpeedInput" class="form-control form-control-sm" type="text" placeholder="line 2 speed" min="0">
+					<button class="btn btn-sm btn-purple" type="button" onclick="setTextAnimation('scrolling','1')">SCROLLING</button>	
+					<button class="btn btn-sm btn-purple" type="button" onclick="setTextAnimation('static','1')">RESET</button>
 				</form>
 			</div>
 		</div>

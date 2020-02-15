@@ -70,6 +70,7 @@ def setFont():
 def setTextAnimation():
 	# Read the values from the POST
 	animation = request.form['animation']
+	lineNum = request.form['lineNum']
 
 	if animation == "static":
 		if PPB.boardType == 'normal':
@@ -80,10 +81,10 @@ def setTextAnimation():
 			elif PPB.lineCount == 2:
 				PPB.textOrigin[0] = [4,1]
 				PPB.textOrigin[1] = [1,7]
-		PPB.animationSpeed[0] = 0
+		PPB.animationSpeed[lineNum] = 0
 	if animation == "scrolling":
 		speed = float(request.form['speed'])
-		PPB.animationSpeed[0] = speed
+		PPB.animationSpeed[lineNum] = speed
 
 	# Wipe the screen
 	PPB.textStateWipe()

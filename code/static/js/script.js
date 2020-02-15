@@ -186,9 +186,15 @@ function settings(action){
 	xhttp.send("action="+action);
 }
 
-function setTextAnimation(animation){
+function setTextAnimation(animation, lineNum){
 	var xhttp = new XMLHttpRequest();
-	var speed = document.getElementById('speedInput').value;
+
+	if (lineNum == 0){
+		var speed = document.getElementById('line1speedInput').value;
+	} else if (lineNum == 1) {
+		var speed = document.getElementById('line2speedInput').value;
+	}
+	
 	if (speed == ''){
 		speed = 5;
 	}
@@ -198,7 +204,7 @@ function setTextAnimation(animation){
 	console.log(speed);
 	xhttp.open("POST", "/api/textanimation", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("animation="+animation+"&speed="+speed);
+	xhttp.send("animation="+animation+"&speed="+speed+"&lineNum="+lineNum);
 }
 
 function openXLSettings(){
