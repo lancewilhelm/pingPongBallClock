@@ -2,16 +2,73 @@ function loadWebSettings(){
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
+			// Get the settings JSON and parse it out
 			webPageSettings = JSON.parse(this.responseText)
+
+			// Set the page title
 			document.getElementById("pageTitle").innerHTML = webPageSettings.title;
 			document.title = webPageSettings.title;
+
+			// BG Color
 			document.documentElement.style.setProperty('--main-bg-color', webPageSettings.mainBGColor);
+			
+			// Board Type
+			document.getElementById('boardType').value = webPageSettings.boardType;
+
+			// Line Count
+			document.getElementById('lineCount').value = webPageSettings.lineCount;
+
+			// Brightness
+			document.getElementById('brightnessSlider').value = webPageSettings.brightness;
+
+			//Line 1 Content
+			document.getElementById('line1time').checked = webPageSettings.line1time;
+			document.getElementById('line1date').checked = webPageSettings.line1date;
+			document.getElementById('line1weather').checked = webPageSettings.line1weather;
+			document.getElementById('line1text').checked = webPageSettings.line1text;
+
+			//Line 2 Content
+			document.getElementById('line2time').checked = webPageSettings.line2time;
+			document.getElementById('line2date').checked = webPageSettings.line2date;
+			document.getElementById('line2weather').checked = webPageSettings.line2weather;
+			document.getElementById('line2text').checked = webPageSettings.line2text;
 		}
 	};
 
 	xhttp.open("GET", "/api/webpagesettings", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("");
+}
+
+function sendWebPageSettings(){
+	var xhttp = new XMLHttpRequest();
+
+	var settings = {
+		title: document.getElementById("pageTitle").innerHTML,
+		mainBGColor: document.querySelector('.page-color-preview').style.background,
+		boardType: document.getElementById('boardType').value,
+		lineCount: document.getElementById('lineCount').value,
+		brightness: document.getElementById('brightnessSlider').value,
+
+		//Line 1 Content
+		line1time: document.getElementById('line1time').checked,
+		line1date: document.getElementById('line1date').checked,
+		line1weather: document.getElementById('line1weather').checked,
+		line1text: document.getElementById('line1text').checked,
+
+		//Line 2 Content
+		line2time: document.getElementById('line2time').checked,
+		line2date: document.getElementById('line2date').checked,
+		line2weather: document.getElementById('line2weather').checked,
+		line2text: document.getElementById('line2text').checked
+	}
+
+	settingsString = JSON.stringify(settings)
+	console.log(settingsString)
+
+	xhttp.open("POST", "/api/webpagesettings", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhttp.send("settings="+settingsString);
 }
 
 function setPageTitle(){
@@ -28,22 +85,6 @@ function setCustomPageColor(){
 	console.log("set the color to " + color);
 
 	sendWebPageSettings();
-}
-
-function sendWebPageSettings(){
-	var xhttp = new XMLHttpRequest();
-
-	var settings = {
-		title: document.getElementById("pageTitle").innerHTML,
-		mainBGColor: document.querySelector('.page-color-preview').style.background
-	}
-
-	settingsString = JSON.stringify(settings)
-	console.log(settingsString)
-
-	xhttp.open("POST", "/api/webpagesettings", true);
-	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("settings="+settingsString);
 }
 
 function setCustomBGColor(color){
