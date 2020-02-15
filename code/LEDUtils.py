@@ -398,7 +398,7 @@ class PingPongBoard:
 			hourStr = str(hours)
 
 		# Used to determine colon lit state
-		if secs % 2 == 1 and self.animationSpeed[lineNum] <= 5.0:
+		if secs % 2 == 1 and self.animationSpeed[lineNum] <= 5.0 and self.lineCount == 1:
 			# Even seconds, concatenate the strings with a colon in the middle
 			timeStr = hourStr + ';' + minStr
 		else:
