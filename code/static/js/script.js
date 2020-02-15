@@ -192,6 +192,9 @@ function setTextAnimation(animation){
 	if (speed == ''){
 		speed = 5;
 	}
+	if (animation == 'static'){
+		document.getElementById('speedInput').value = 0;
+	}
 	console.log(speed);
 	xhttp.open("POST", "/api/textanimation", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
