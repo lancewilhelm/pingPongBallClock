@@ -112,21 +112,23 @@ class PingPongBoard:
 
 	# Writes the display string if some conditions are met. 
 	def updateDisplayString(self):
-		#Write the string IF the display stirng is different then it last was OR it has moved location OR the font has changed
-		if self.displayString[0] != self.displayStringPrev[0] or self.textOriginMoved or self.fontChanged:
-			x = self.textOrigin[0][0] 
-			y = self.textOrigin[0][1]
-			for i in range(len(self.displayString[0])):
-				distanceToNext = self.writeChar(x,y,self.displayString[0][i])
-				x += distanceToNext
+		# Iterate across the line numbers
+		for i in range(self.lineCount):
+			#Write the string IF the display stirng is different then it last was OR it has moved location OR the font has changed
+			if self.displayString[i] != self.displayStringPrev[i] or self.textOriginMoved or self.fontChanged:
+				x = self.textOrigin[i][0] 
+				y = self.textOrigin[i][1]
+				for i in range(len(self.displayString[i])):
+					distanceToNext = self.writeChar(x,y,self.displayString[i][i])
+					x += distanceToNext
 
-			# After we write a new string, reset/set booleans and set the prev variable to the current string
-			self.textOriginMoved = False						# We just addressed this change, so change it back to false
-			self.fontChanged = False							# We just addressed this change, so change it back to false
-			self.textDisplayChanged = True						# We have written a new string, so the display has changed
-			self.bgDisplayChanged = True						# Since we have update the string, the bg needs to be updated to write over the old text balls now as well
-			self.displayStringPrev[0] = self.displayString[0]			# Set the displayStringPrev[0] to the current string
-			self.displayStringLength[0] = x - self.textOrigin[0][0]	# This so happens to show up after we are done here. Useful for the animation scroll
+				# After we write a new string, reset/set booleans and set the prev variable to the current string
+				self.textOriginMoved = False						# We just addressed this change, so change it back to false
+				self.fontChanged = False							# We just addressed this change, so change it back to false
+				self.textDisplayChanged = True						# We have written a new string, so the display has changed
+				self.bgDisplayChanged = True						# Since we have update the string, the bg needs to be updated to write over the old text balls now as well
+				self.displayStringPrev[i] = self.displayString[i]			# Set the displayStringPrev[0] to the current string
+				self.displayStringLength[i] = x - self.textOrigin[i][0]	# This so happens to show up after we are done here. Useful for the animation scroll
 
 	# This steps the animation frame by one. If the animation frame has reached animationEnd, reset the frame to 0
 	def updateFrame(self, animationEnd):
