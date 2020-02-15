@@ -79,15 +79,19 @@ def setTextAnimation():
 			if PPB.lineCount == 1:
 				PPB.textOrigin[0] = [2,4]
 			elif PPB.lineCount == 2:
-				PPB.textOrigin[0] = [4,1]
-				PPB.textOrigin[1] = [1,7]
+				if lineNum == 0:
+					PPB.textOrigin[lineNum] = [4,1]
+				elif lineNum == 1:
+					PPB.textOrigin[lineNum] = [1,7]
 		PPB.animationSpeed[lineNum] = 0
 	if animation == "scrolling":
 		speed = float(request.form['speed'])
 		PPB.animationSpeed[lineNum] = speed
 
-	# Wipe the screen
+	# Reset the text on the screen
 	PPB.textStateWipe()
+	PPB.textOriginMoved = [True, True]
+	PPB.updateDisplayString()
 	return ""
 
 # Flask Select Content API

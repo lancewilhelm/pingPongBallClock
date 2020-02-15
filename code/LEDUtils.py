@@ -17,17 +17,17 @@ class PingPongBoard:
 		self.num_rows = NUM_ROWS		# Needed for changing board type
 		self.num_cols = NUM_COLS		# Needed for changing board type
 
-		self.animationFrame = 0			# Used for animations, start at 0
-		self.animationEnd = 1			# Default animation end frame. This is always changed
-		self.animationStartTime = 0		# Used for animations and when to move the string
-		self.animationTimeElapsed = 0	# Used for animations and when to move the string
-		self.breathColor = None			# Necessary for the breathing animation
-		self.twinkleStartTime = 0		# Used for timing when to initate a twinkle
-		self.twinkleTimeElapsed = 0		# Used for timing when to initate a twinkle
+		self.animationFrame = 0				# Used for animations, start at 0
+		self.animationEnd = 1				# Default animation end frame. This is always changed
+		self.animationStartTime = [0,0]		# Used for animations and when to move the string
+		self.animationTimeElapsed = [0,0]	# Used for animations and when to move the string
+		self.breathColor = None				# Necessary for the breathing animation
+		self.twinkleStartTime = 0			# Used for timing when to initate a twinkle
+		self.twinkleTimeElapsed = 0			# Used for timing when to initate a twinkle
 		self.twinkleWaitTime = 0
 
 		self.fontChanged = False				# Store whether or not the font has changed
-		self.textOriginMoved = False			# Store whether or not the origin of the display string has changed
+		self.textOriginMoved = [False, False]	# Store whether or not the origin of the display string has changed
 		self.displayString = ['', '']			# This is the string that will be ultimately displayed on screen
 		self.displayStringPrev = ['', '']		# This is what the display string was during the previous loop
 		self.displayStringLength = [0, 0]		# This is calculated and used to determine when we have cycled through an entire string during animations
@@ -115,7 +115,7 @@ class PingPongBoard:
 		# Iterate across the line numbers
 		for i in range(self.lineCount):
 			#Write the string IF the display stirng is different then it last was OR it has moved location OR the font has changed
-			if self.displayString[i] != self.displayStringPrev[i] or self.textOriginMoved or self.fontChanged:
+			if self.displayString[i] != self.displayStringPrev[i] or self.textOriginMoved[i] or self.fontChanged:
 				x = self.textOrigin[i][0] 
 				y = self.textOrigin[i][1]
 				for j in range(len(self.displayString[i])):
@@ -123,7 +123,7 @@ class PingPongBoard:
 					x += distanceToNext
 
 				# After we write a new string, reset/set booleans and set the prev variable to the current string
-				self.textOriginMoved = False							# We just addressed this change, so change it back to false
+				self.textOriginMoved[i] = False							# We just addressed this change, so change it back to false
 				self.fontChanged = False								# We just addressed this change, so change it back to false
 				self.textDisplayChanged = True							# We have written a new string, so the display has changed
 				self.bgDisplayChanged = True							# Since we have update the string, the bg needs to be updated to write over the old text balls now as well
@@ -207,30 +207,30 @@ class PingPongBoard:
 		self.textDisplayChanged = False
 
 	# Used to move the string during an animation.
-	def updateTextAnimation(self):
+	def updateTextAnimation(self, lineNum):
 		# If start time has not been defined, do so
-		if self.animationStartTime == 0:
-			self.animationStartTime = time.time()
+		if self.animationStartTime[lineNum] == 0:
+			self.animationStartTime[lineNum] = time.time()
 		
 		nowTime = time.time()
 
 		# Determine the time elapsed since the start time
-		self.animationTimeElapsed = nowTime - self.animationStartTime
+		self.animationTimeElapsed[lineNum]= nowTime - self.animationStartTime[lineNum]
 
 		# If the time elapsed is >= the time one frame should take for our set speed, do the things
-		if self.animationTimeElapsed >= 1/self.animationSpeed[0] and self.animationSpeed[0] != 0:
+		if self.animationTimeElapsed[lineNum] >= 1/self.animationSpeed[lineNum] and self.animationSpeed[lineNum] != 0:
 			#Indicate the display has changed
-			self.textOriginMoved = True
+			self.textOriginMoved[lineNum] = True
 
 			# Move the text one space to the left
-			self.textOrigin[0][0] -= 1
+			self.textOrigin[lineNum][0] -= 1
 
 			# Reset the x text origin to 20 if it gets through the screen
-			if self.textOrigin[0][0] < -1 * self.displayStringLength[0]:
-				self.textOrigin[0][0] = 20
+			if self.textOrigin[lineNum][0] < -1 * self.displayStringLength[lineNum]:
+				self.textOrigin[lineNum][0] = 23
 
 			# Set the start time to this time now
-			self.animationStartTime = nowTime
+			self.animationStartTime[lineNum] = nowTime
 
 # COLOR ANIMATIONS ---------------------------------------------------------------------
 	# Used in rainbow and rainbowCycle to determine the color during the cycle. Makes for nice smooth transitions
