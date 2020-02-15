@@ -35,6 +35,15 @@ function loadWebSettings(){
 			document.getElementById('line2weather').checked = webPageSettings.line2weather;
 			document.getElementById('line2text').checked = webPageSettings.line2text;
 
+			// Line 1 Speed Input
+			document.getElementById('line1SpeedInput').value;
+
+			// Line 2 Speed Input
+			document.getElementById('line2SpeedInput').value;
+
+			// Custom Text Input
+			document.getElementById('textInput').value;
+
 			openLineSettings();
 			openXLSettings();
 		}
