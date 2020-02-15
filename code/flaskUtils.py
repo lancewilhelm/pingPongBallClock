@@ -88,6 +88,7 @@ def setTextAnimation():
 		speed = float(request.form['speed'])
 		PPB.animationSpeed[lineNum] = speed
 
+	print PPB.animationSpeed
 	# # Wipe the screen
 	# PPB.textStateWipe()
 	return ""
