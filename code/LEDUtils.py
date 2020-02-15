@@ -519,8 +519,7 @@ class PingPongBoard:
 	def dumpSettings(self):
 		# Create a settings dictionary
 		settings = {
-			'animationSpeedLine1' : self.animationSpeedLine1,		# Balls/s for animations. Needs to be a float (.0). Static default
-			'animationSpeedLine2' : self.animationSpeedLine2,		# Balls/s for animations. Needs to be a float (.0). Static default
+			'animationSpeed' : self.animationSpeed,		# Balls/s for animations. Needs to be a float (.0). Static default
 			'textColor' : self.textColor,
 			'fontName' : self.fontName,
 			'textSpacing' : self.textSpacing,
@@ -554,8 +553,7 @@ class PingPongBoard:
 		self.openWeatherKey = apikeys['openweather']
 
 		# Set variables from the settings 
-		self.animationSpeedLine1 = settings['animationSpeedLine1']
-		self.animationSpeedLine2 = settings['animationSpeedLine2']										 # Balls/s for animations. Needs to be a float (.0). Static default
+		self.animationSpeed = settings['animationSpeed']									 # Balls/s for animations. Needs to be a float (.0). Static default
 		self.textColor = settings['textColor']
 		self.fontName = settings['fontName']
 		self.textSpacing = settings['textSpacing']
@@ -569,6 +567,8 @@ class PingPongBoard:
 		self.timeFormat = settings['timeFormat']
 		self.boardType = settings['boardType']
 		self.lineCount = settings['lineCount']
+
+		print self.animationSpeed 
 
 		# Since we have loaded new settings, assume the displays have changed
 		self.bgDisplayChanged = True

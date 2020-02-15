@@ -80,10 +80,10 @@ def setTextAnimation():
 			elif PPB.lineCount == 2:
 				PPB.textOrigin[0] = [4,1]
 				PPB.textOrigin[1] = [1,7]
-		PPB.animationSpeedLine1 = 0
+		PPB.animationSpeed[0] = 0
 	if animation == "scrolling":
 		speed = float(request.form['speed'])
-		PPB.animationSpeedLine1 = speed
+		PPB.animationSpeed[0] = speed
 
 	# Wipe the screen
 	PPB.textStateWipe()
