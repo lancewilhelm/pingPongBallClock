@@ -213,9 +213,9 @@ function openXLSettings(){
 function openLineSettings(){
 	var lineCount = document.getElementById('lineCount').value
 	if(lineCount == 2){
-		document.getElementById('line-settings').style.display = 'block';
+		document.getElementById('line2-settings').style.display = 'block';
 	} else {
-		document.getElementById('line-settings').style.display = 'none';
+		document.getElementById('line2-settings').style.display = 'none';
 	}
 }
 
@@ -342,24 +342,4 @@ pageSettingsBtn.onclick = function() {
 // When the user clicks on <span> (x), close the modal
 pageSettingsSpan.onclick = function() {
 	pageSettingsModal.style.display = "none";
-}
-
-// Odd-Sized Board Modal
-// Get the modal
-var oddBoardModal = document.getElementById("oddBoardModal");
-
-// Get the button that opens the modal
-var oddBoardBtn = document.getElementById("oddBoardBtn");
-
-// Get the <span> element that closes the modal
-var oddBoardSpan = document.getElementById("oddboardclose");
-
-// When the user clicks on the button, open the modal
-oddBoardBtn.onclick = function() {
-	oddBoardModal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-oddBoardSpan.onclick = function() {
-	oddBoardModal.style.display = "none";
 }
