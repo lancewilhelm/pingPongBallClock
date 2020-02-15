@@ -123,11 +123,11 @@ class PingPongBoard:
 					x += distanceToNext
 
 				# After we write a new string, reset/set booleans and set the prev variable to the current string
-				self.textOriginMoved = False						# We just addressed this change, so change it back to false
-				self.fontChanged = False							# We just addressed this change, so change it back to false
-				self.textDisplayChanged = True						# We have written a new string, so the display has changed
-				self.bgDisplayChanged = True						# Since we have update the string, the bg needs to be updated to write over the old text balls now as well
-				self.displayStringPrev[i] = self.displayString[i]			# Set the displayStringPrev[i] to the current string
+				self.textOriginMoved = False							# We just addressed this change, so change it back to false
+				self.fontChanged = False								# We just addressed this change, so change it back to false
+				self.textDisplayChanged = True							# We have written a new string, so the display has changed
+				self.bgDisplayChanged = True							# Since we have update the string, the bg needs to be updated to write over the old text balls now as well
+				self.displayStringPrev[i] = self.displayString[i]		# Set the displayStringPrev[i] to the current string
 				self.displayStringLength[i] = x - self.textOrigin[i][0]	# This so happens to show up after we are done here. Useful for the animation scroll
 
 	# This steps the animation frame by one. If the animation frame has reached animationEnd, reset the frame to 0
