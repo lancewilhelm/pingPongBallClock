@@ -17,17 +17,19 @@ if __name__ == '__main__':
 	while(True):
 
 		# Reset the string at the beginning of each loop
-		PPB.displayString = ''
+		PPB.displayStringLine1 = ''
+		PPB.displayStringLine2 = ''
 
 		# Get the display string components
 		for x in PPB.content:
-			if x == 'time':
+			print x[0]
+			if x[0] == 'time':
 				PPB.time()
-			elif x == 'date':
+			elif x[0] == 'date':
 				PPB.date()
-			elif x == 'text':
+			elif x[0] == 'text':
 				PPB.text()
-			elif x == 'weather':
+			elif x[0] == 'weather':
 				PPB.weather()
 
 		# If the animation speed is not 0, then update the animation
