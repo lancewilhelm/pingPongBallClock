@@ -89,6 +89,7 @@ def setTextAnimation():
 		PPB.animationSpeed[lineNum] = speed
 
 	# Reset the text on the screen
+	PPB.textStateWipe()
 	PPB.textOriginMoved[lineNum] = True
 	return ""
 
