@@ -36,13 +36,13 @@ function loadWebSettings(){
 			document.getElementById('line2text').checked = webPageSettings.line2text;
 
 			// Line 1 Speed Input
-			document.getElementById('line1SpeedInput').value;
+			document.getElementById('line1SpeedInput').value = webPageSettings.line1Speed;
 
 			// Line 2 Speed Input
-			document.getElementById('line2SpeedInput').value;
+			document.getElementById('line2SpeedInput').value = webPageSettings.line2Speed;
 
 			// Custom Text Input
-			document.getElementById('textInput').value;
+			document.getElementById('textInput').value = webPageSettings.customText;
 
 			openLineSettings();
 			openXLSettings();
