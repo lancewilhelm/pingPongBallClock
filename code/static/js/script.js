@@ -93,6 +93,7 @@ function setPageTitle(){
 	document.title = title;
 
 	sendWebPageSettings();
+	settings('save');
 }
 
 function setCustomPageColor(){
@@ -100,6 +101,7 @@ function setCustomPageColor(){
 	document.documentElement.style.setProperty('--main-bg-color', color);
 
 	sendWebPageSettings();
+	settings('save');
 }
 
 function setCustomBGColor(color){
@@ -196,6 +198,7 @@ function setContent(id, content, lineNum){
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("content="+content+"&lineNum="+lineNum+"&checked="+checked);
 	sendWebPageSettings();
+	settings('save');
 }
 
 function configureTime(){
@@ -223,6 +226,7 @@ function setCustomText(){
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("text="+text);
 	sendWebPageSettings();
+	settings('save');
 }
 
 function setBrightness(brightness){
@@ -236,6 +240,7 @@ function setBrightness(brightness){
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("brightness="+brightness);
 	sendWebPageSettings();
+	settings('save');
 }
 
 function settings(action){
@@ -270,6 +275,7 @@ function setTextAnimation(animation, lineNum){
 	xhttp.send("animation="+animation+"&speed="+speed+"&lineNum="+lineNum);
 
 	sendWebPageSettings();
+	settings('save');
 }
 
 function openXLSettings(){
@@ -303,6 +309,7 @@ function sendBoardType(){
 	xhttp.send("boardType="+boardType);
 
 	sendWebPageSettings();
+	settings('save');
 }
 
 function sendXLSettings(){
@@ -313,6 +320,7 @@ function sendXLSettings(){
 	xhttp.send("lineCount="+lineCount);
 
 	sendWebPageSettings();
+	settings('save');
 	openLineSettings();
 }
 
