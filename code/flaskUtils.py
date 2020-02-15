@@ -88,8 +88,8 @@ def setTextAnimation():
 		speed = float(request.form['speed'])
 		PPB.animationSpeed[lineNum] = speed
 
-	# # Wipe the screen
-	# PPB.textStateWipe()
+	# Reset the text on the screen
+	PPB.textOriginMoved[lineNum] = True
 	return ""
 
 # Flask Select Content API
