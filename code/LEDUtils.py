@@ -407,7 +407,7 @@ class PingPongBoard:
 		if lineNum == 0:
 			self.displayString[0] += timeStr + ' '
 		elif lineNum == 1:
-			self.displayStringLine2 += timeStr + ' '
+			self.displayString[1] += timeStr + ' '
 
 		# Check to see if the minute has changed this is to update the weather. 
 		if mins != self.minsPrev:
@@ -433,7 +433,7 @@ class PingPongBoard:
 		if lineNum == 0:
 			self.displayString[0] += dateStr + ' '
 		elif lineNum == 1:
-			self.displayStringLine2 += dateStr + ' '
+			self.displayString[1] += dateStr + ' '
 
 	# This function concatenates the custom text to the display string
 	def text(self, lineNum):
@@ -442,7 +442,7 @@ class PingPongBoard:
 		if lineNum == 0:
 			self.displayString[0] += textStr + ' '
 		elif lineNum == 1:
-			self.displayStringLine2 += textStr + ' '
+			self.displayString[1] += textStr + ' '
 
 	# This function obtains the weather and concatenates it to the display string
 	def weather(self, lineNum):
@@ -508,7 +508,7 @@ class PingPongBoard:
 		if lineNum == 0:
 			self.displayString[0] += weatherStr + ' '
 		elif lineNum == 1:
-			self.displayStringLine2 += weatherStr + ' '
+			self.displayString[1] += weatherStr + ' '
 
 # SETTING HANDLING -------------------------------------------------------------------
 
