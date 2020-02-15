@@ -133,12 +133,12 @@ function setFont(font){
 	xhttp.send("font="+font);
 }
 
-function setContent(content){
+function setContent(content, lineNum){
 	var xhttp = new XMLHttpRequest();
 	var checked = document.getElementById(content).checked;
 	xhttp.open("POST", "/api/setcontent", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("content="+content+"&checked="+checked);
+	xhttp.send("content="+content+"&lineNum="+lineNum+"&checked="+checked);
 }
 
 function configureTime(){

@@ -366,7 +366,7 @@ class PingPongBoard:
 # CONTENT GENERATION --------------------------------------------------------------------
 
 	# This function obtains the time and concatenates it to the display string
-	def time(self):
+	def time(self, lineNum):
 		# Get the current local time and parse it out to usable variables
 		t = time.localtime()
 		hours = t.tm_hour
@@ -407,7 +407,10 @@ class PingPongBoard:
 			timeStr = hourStr + ':' + minStr 
 
 		# Concatenate the date string to the master string with a space termination
-		self.displayStringLine1 += timeStr + ' '
+		if lineNum == 1:
+			self.displayStringLine1 += timeStr + ' '
+		elif lineNum == 2:
+			self.displayStringLine2 += timeStr + ' '
 
 		# Check to see if the minute has changed this is to update the weather. 
 		if mins != self.minsPrev:
@@ -415,7 +418,7 @@ class PingPongBoard:
 			self.minsPrev = mins
 
 	# This function obtains the date and concatenates it to the display string
-	def date(self):
+	def date(self, lineNum):
 		# Get the current local time and parse it out to usable variables
 		t = time.localtime()
 		mon = t.tm_mon
@@ -430,16 +433,22 @@ class PingPongBoard:
 		dateStr = monStr + '-' + dayStr + '-' + yearStr[-2:]
 		
 		# Concatenate the date string to the master string with a space termination
-		self.displayStringLine1 += dateStr + ' '
+		if lineNum == 1:
+			self.displayStringLine1 += dateStr + ' '
+		elif lineNum == 2:
+			self.displayStringLine2 += dateStr + ' '
 
 	# This function concatenates the custom text to the display string
-	def text(self):
+	def text(self, lineNum):
 		textStr = self.customText.upper()
 
-		self.displayStringLine1 += textStr + ' '
+		if lineNum == 1:
+			self.displayStringLine1 += textStr + ' '
+		elif lineNum == 2:
+			self.displayStringLine2 += textStr + ' '
 
 	# This function obtains the weather and concatenates it to the display string
-	def weather(self):
+	def weather(self, lineNum):
 		# In case we are not displaying the time, check the time to see if we need to update the weather
 		# Get the current local time and parse it out to usable variables
 		t = time.localtime()
@@ -499,7 +508,10 @@ class PingPongBoard:
 		# Concatenate the weather string to the display string
 		weatherStr = weatherStr.upper() 	# Uppercase the string
 
-		self.displayStringLine1 += weatherStr + ' '
+		if lineNum == 1:
+			self.displayStringLine1 += weatherStr + ' '
+		elif lineNum == 2:
+			self.displayStringLine2 += weatherStr + ' '
 
 # SETTING HANDLING -------------------------------------------------------------------
 
