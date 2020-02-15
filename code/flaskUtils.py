@@ -94,12 +94,15 @@ def setTextAnimation():
 def setContent():
 	# Read the values from the POST
 	content = str(request.form['content'])
+	lineNum = str(request.form['lineNum'])
 	checked = str(request.form['checked'])
 
-	if checked == 'true' and (content in PPB.content) == False:
-		PPB.content.append(content)
-	elif checked == 'false' and (content in PPB.content) == True:
-		PPB.content.remove(content)
+	contentChunk = content + ' ' + lineNum
+
+	if checked == 'true' and (contentChunk in PPB.content) == False:
+		PPB.content.append(contentChunk)
+	elif checked == 'false' and (contentChunk in PPB.content) == True:
+		PPB.content.remove(contentChunk)
 
 	print PPB.content
 	PPB.textStateWipe()
