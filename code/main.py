@@ -22,6 +22,7 @@ if __name__ == '__main__':
 
 		# Get the display string components
 		for x in PPB.content:
+			x = list(x.split(' '))
 			print x[0]
 			if x[0] == 'time':
 				PPB.time()
