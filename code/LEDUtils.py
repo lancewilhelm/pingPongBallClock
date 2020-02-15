@@ -17,13 +17,13 @@ class PingPongBoard:
 		self.num_rows = NUM_ROWS		# Needed for changing board type
 		self.num_cols = NUM_COLS		# Needed for changing board type
 
-		self.animationFrame = 0			# Used for animations, start at 0
-		self.animationEnd = 1			# Default animation end frame. This is always changed
-		self.animationStartTime = 0		# Used for animations and when to move the string
-		self.animationTimeElapsed = 0	# Used for animations and when to move the string
-		self.breathColor = None			# Necessary for the breathing animation
-		self.twinkleStartTime = 0		# Used for timing when to initate a twinkle
-		self.twinkleTimeElapsed = 0		# Used for timing when to initate a twinkle
+		self.animationFrame = 0				# Used for animations, start at 0
+		self.animationEnd = 1				# Default animation end frame. This is always changed
+		self.animationStartTime = [0,0]		# Used for animations and when to move the string
+		self.animationTimeElapsed = [0,0]	# Used for animations and when to move the string
+		self.breathColor = None				# Necessary for the breathing animation
+		self.twinkleStartTime = 0			# Used for timing when to initate a twinkle
+		self.twinkleTimeElapsed = 0			# Used for timing when to initate a twinkle
 		self.twinkleWaitTime = 0
 
 		self.fontChanged = False				# Store whether or not the font has changed
@@ -209,28 +209,30 @@ class PingPongBoard:
 	# Used to move the string during an animation.
 	def updateTextAnimation(self):
 		# If start time has not been defined, do so
-		if self.animationStartTime == 0:
-			self.animationStartTime = time.time()
+		for i in range(self.lineCount):
+			if self.animationStartTime[i] == 0:
+				self.animationStartTime[i] = time.time()
 		
 		nowTime = time.time()
 
-		# Determine the time elapsed since the start time
-		self.animationTimeElapsed = nowTime - self.animationStartTime
+		for i in range(self.lineCount):
+			# Determine the time elapsed since the start time
+			self.animationTimeElapsed[i]= nowTime - self.animationStartTime[i]
 
-		# If the time elapsed is >= the time one frame should take for our set speed, do the things
-		if self.animationTimeElapsed >= 1/self.animationSpeed[0] and self.animationSpeed[0] != 0:
-			#Indicate the display has changed
-			self.textOriginMoved = True
+			# If the time elapsed is >= the time one frame should take for our set speed, do the things
+			if self.animationTimeElapsed[i]>= 1/self.animationSpeed[i] and self.animationSpeed[i] != 0:
+				#Indicate the display has changed
+				self.textOriginMoved = True
 
-			# Move the text one space to the left
-			self.textOrigin[0][0] -= 1
+				# Move the text one space to the left
+				self.textOrigin[i][0] -= 1
 
-			# Reset the x text origin to 20 if it gets through the screen
-			if self.textOrigin[0][0] < -1 * self.displayStringLength[0]:
-				self.textOrigin[0][0] = 20
+				# Reset the x text origin to 20 if it gets through the screen
+				if self.textOrigin[i][0] < -1 * self.displayStringLength[i]:
+					self.textOrigin[i][0] = 20
 
-			# Set the start time to this time now
-			self.animationStartTime = nowTime
+				# Set the start time to this time now
+				self.animationStartTime[i] = nowTime
 
 # COLOR ANIMATIONS ---------------------------------------------------------------------
 	# Used in rainbow and rainbowCycle to determine the color during the cycle. Makes for nice smooth transitions
