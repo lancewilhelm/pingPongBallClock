@@ -11,6 +11,7 @@ function loadWebSettings(){
 
 			// BG Color
 			document.documentElement.style.setProperty('--main-bg-color', webPageSettings.mainBGColor);
+			document.querySelector('.page-color-preview').style.background = webPageSettings.mainBGColor;
 			
 			// Board Type
 			document.getElementById('boardType').value = webPageSettings.boardType;
@@ -32,6 +33,9 @@ function loadWebSettings(){
 			document.getElementById('line2date').checked = webPageSettings.line2date;
 			document.getElementById('line2weather').checked = webPageSettings.line2weather;
 			document.getElementById('line2text').checked = webPageSettings.line2text;
+
+			openLineSettings();
+			openXLSettings();
 		}
 	};
 
