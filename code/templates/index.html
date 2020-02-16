@@ -212,6 +212,15 @@
 		</div>
 		<div class="row">
 			<div class="col-sm">
+				<h5>MANAGE BOARD CONFIGS</h5>
+				<select id="savedConfigs">
+				</select><br><br>
+				<button class="btn btn-purple" type="button">SAVE</button>	
+				<button class="btn btn-purple" type="button" onclick="updateConfiguration('load','get')">LOAD</button>
+				<button class="btn btn-red" type="button" onclick="updateConfiguration('delete','get')">DELETE</button>
+			</div>
+				
+			<div class="col-sm">
 				<h5>SET DISPLAY BRIGHTNESS:</h5>
 				<div class="sliders">
 					0 <input class="brightness-slider brightness-slider" type="range" id="brightnessSlider" value="125" max="255" onclick="setBrightness()"/> 100

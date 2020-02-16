@@ -37,7 +37,7 @@ class PingPongBoard:
 		self.minsPrev = None			# Used to calculate when a minute has elapsed. This is useful to only update the weather once a minute TODO Change this
 
 		# Load settings that are saved to files 
-		self.loadSettings()
+		self.loadSettings('settings',True)
 
 		# Set up the ball objects
 		self.balls = []
@@ -535,22 +535,33 @@ class PingPongBoard:
 		}
 
 		basePath = '/home/pi/pingPongBallClock/code/'
-
 		fullPath = basePath + filename + '.txt'
 
 		# Dump the settings to settings.txt
 		with open(fullPath, 'w') as filehandle:
 			json.dump(settings, filehandle)
 
+		# Dump the configs to configs_list.txt
+		with open('/home/pi/pingPongBallClock/code/configurations/configs_list.txt', 'w') as filehandle:
+			json.dump(self.configs, filehandle)
+
 	# This will load the settings from settings.txt
-	def loadSettings(self,bootup=True):
-		# Get the settings dictionary from settings.txt
-		with open('/home/pi/pingPongBallClock/code/settings.txt', 'r') as filehandle:
+	def loadSettings(self,filename,bootup=True):
+
+		basePath = '/home/pi/pingPongBallClock/code/'
+		fullPath = basePath + filename + '.txt'
+
+		# Get the settings dictionary from the specified file
+		with open(fullPath, 'r') as filehandle:
 			settings = json.load(filehandle)
 
 		# Get the API keys from apikeys.txt
 		with open('/home/pi/pingPongBallClock/code/apikeys.txt', 'r') as filehandle:
 			apikeys = json.load(filehandle)
+
+		# Get the configs from configs_list.txt
+		with open('/home/pi/pingPongBallClock/code/configurations/configs_list.txt', 'r') as filehandle:
+			self.configs = json.load(filehandle)['configs']
 		
 		# Set the API Key variables
 		self.openWeatherKey = apikeys['openweather']

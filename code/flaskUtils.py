@@ -138,13 +138,34 @@ def setWeather():
 def updateSettings():
 	# Read the values from the POST
 	action = str(request.form['action'])
-	filename = str(request.form['filename'])
 
 	if action == 'save':
-		PPB.dumpSettings(filename)
-	elif action == 'load':
-		PPB.loadSettings(False)
+		PPB.dumpSettings('settings')
 
+	return ""
+
+# Flask Board Config API
+@app.route("/api/configuration", methods=['GET','POST'])
+def updateConfiguration():
+	# Read the values from the POST
+	action = str(request.form['action'])
+	filename = str(request.form['filename'])
+
+	if request.method == 'POST':
+		if action == 'save':
+			PPB.configs.append(filename)
+			PPB.dumpSettings(filename)
+		elif action == 'load':
+			PPB.loadSettings(filename, False)
+		elif action == 'delete':
+			PPB.configs.remove(filename)
+			os.remove('configurations/' + filename + '.txt')
+	
+	elif request.method == 'GET':
+		# Get the configs list from configs_list.txt and return it
+		with open('/home/pi/pingPongBallClock/code/configurations/configs_list.txt', 'r') as filehandle:
+			return filehandle.read()
+	
 	return ""
 
 # Flask Set Brightness API
