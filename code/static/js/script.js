@@ -326,6 +326,7 @@ function getConfigsList() {
 				var textnode = document.createTextNode(item);
 				node.appendChild(textnode);
 				document.getElementById("savedConfigs").appendChild(node);
+				console.log(item);
             });
         }
 	};
