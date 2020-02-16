@@ -322,12 +322,11 @@ function getConfigsList() {
             configs = JSON.parse(this.responseText).configs;
 
             configs.forEach(function(item) {
-				var node = document.createElement("LI");
-				var textnode = document.createTextNode(item);
-				node.appendChild(textnode);
-				document.getElementById("savedConfigs").appendChild(node);
+				newLine = "<li id=" + item + ">" + item + "</li>\n";
+				newContent += newLine;
 				console.log(item);
-            });
+			});
+			document.getElementById("savedConfigs").innerHTML = newContent;
         }
 	};
 	xhttp.open("GET", "/api/configuration", true);
