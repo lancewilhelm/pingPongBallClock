@@ -515,7 +515,7 @@ class PingPongBoard:
 # SETTING HANDLING -------------------------------------------------------------------
 
 	# This will dump the current settings to settings.txt
-	def dumpSettings(self):
+	def dumpSettings(self, filename):
 		# Create a settings dictionary
 		settings = {
 			'animationSpeed' : self.animationSpeed,		# Balls/s for animations. Needs to be a float (.0). Static default
@@ -534,8 +534,12 @@ class PingPongBoard:
 			'lineCount'  : self.lineCount
 		}
 
+		basePath = '/home/pi/pingPongBallClock/code/'
+
+		fullPath = basePath + filename + '.txt'
+
 		# Dump the settings to settings.txt
-		with open('/home/pi/pingPongBallClock/code/settings.txt', 'w') as filehandle:
+		with open(fullPath, 'w') as filehandle:
 			json.dump(settings, filehandle)
 
 	# This will load the settings from settings.txt

@@ -138,9 +138,10 @@ def setWeather():
 def updateSettings():
 	# Read the values from the POST
 	action = str(request.form['action'])
+	filename = str(request.form['filename'])
 
 	if action == 'save':
-		PPB.dumpSettings()
+		PPB.dumpSettings(filename)
 	elif action == 'load':
 		PPB.loadSettings(False)
 

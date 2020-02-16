@@ -93,7 +93,7 @@ function setPageTitle(){
 	document.title = title;
 
 	sendWebPageSettings();
-	settings('save');
+	settings('save','settings');
 }
 
 function setCustomPageColor(){
@@ -101,7 +101,7 @@ function setCustomPageColor(){
 	document.documentElement.style.setProperty('--main-bg-color', color);
 
 	sendWebPageSettings();
-	settings('save');
+	settings('save','settings');
 }
 
 function setCustomBGColor(color){
@@ -113,7 +113,7 @@ function setCustomBGColor(color){
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color="+color+"&red="+red+"&green="+green+"&blue="+blue);
 	
-	settings('save');
+	settings('save','settings');
 }
 
 function setCustomTextColor(color){
@@ -125,7 +125,7 @@ function setCustomTextColor(color){
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color="+color+"&red="+red+"&green="+green+"&blue="+blue);
 
-	settings('save');
+	settings('save','settings');
 }
 
 function setBGGreen(){
@@ -137,7 +137,7 @@ function setBGGreen(){
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
 
-	settings('save');
+	settings('save','settings');
 }
 
 function setBGRed(){
@@ -149,7 +149,7 @@ function setBGRed(){
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
 
-	settings('save');
+	settings('save','settings');
 }
 
 function setBGBlue(){
@@ -161,7 +161,7 @@ function setBGBlue(){
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
 
-	settings('save');
+	settings('save','settings');
 }
 
 function setBGBlack(){
@@ -173,7 +173,7 @@ function setBGBlack(){
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
 
-	settings('save');
+	settings('save','settings');
 }
 
 function setTextWhite(){
@@ -185,7 +185,7 @@ function setTextWhite(){
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
 
-	settings('save');
+	settings('save','settings');
 }
 
 function setTextBlack(){
@@ -197,7 +197,7 @@ function setTextBlack(){
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("color=solid&red="+red+"&green="+green+"&blue="+blue);
 
-	settings('save');
+	settings('save','settings');
 }
 
 function setFont(font){
@@ -206,7 +206,7 @@ function setFont(font){
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("font="+font);
 
-	settings('save');
+	settings('save','settings');
 }
 
 function setContent(id, content, lineNum){
@@ -217,7 +217,7 @@ function setContent(id, content, lineNum){
 	xhttp.send("content="+content+"&lineNum="+lineNum+"&checked="+checked);
 
 	sendWebPageSettings();
-	settings('save');
+	settings('save','settings');
 }
 
 function configureTime(){
@@ -227,7 +227,7 @@ function configureTime(){
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("timeFormat="+timeFormat);
 
-	settings('save');
+	settings('save','settings');
 }
 
 function setWeather(){
@@ -239,7 +239,7 @@ function setWeather(){
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	xhttp.send("unit="+unit+"&zip="+zip+"&city="+city);
 
-	settings('save');
+	settings('save','settings');
 }
 
 function setCustomText(){
@@ -250,7 +250,7 @@ function setCustomText(){
 	xhttp.send("text="+text);
 
 	sendWebPageSettings();
-	settings('save');
+	settings('save','settings');
 }
 
 function setBrightness(brightness){
@@ -265,14 +265,14 @@ function setBrightness(brightness){
 	xhttp.send("brightness="+brightness);
 	
 	sendWebPageSettings();
-	settings('save');
+	settings('save','settings');
 }
 
-function settings(action){
+function settings(action, filename){
 	var xhttp = new XMLHttpRequest();
 	xhttp.open("POST", "/api/settings", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhttp.send("action="+action);
+	xhttp.send("action="+action+"&filename="+filename);
 }
 
 function setTextAnimation(animation, lineNum){
@@ -300,7 +300,7 @@ function setTextAnimation(animation, lineNum){
 	xhttp.send("animation="+animation+"&speed="+speed+"&lineNum="+lineNum);
 
 	sendWebPageSettings();
-	settings('save');
+	settings('save','settings');
 }
 
 function openXLSettings(){
@@ -334,7 +334,7 @@ function sendBoardType(){
 	xhttp.send("boardType="+boardType);
 
 	sendWebPageSettings();
-	settings('save');
+	settings('save','settings');
 }
 
 function sendXLSettings(){
@@ -345,7 +345,7 @@ function sendXLSettings(){
 	xhttp.send("lineCount="+lineCount);
 
 	sendWebPageSettings();
-	settings('save');
+	settings('save','settings');
 	openLineSettings();
 }
 
