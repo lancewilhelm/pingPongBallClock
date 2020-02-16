@@ -321,6 +321,8 @@ function getConfigsList() {
             // Get the settings JSON and parse it out
             configs = JSON.parse(this.responseText).configs;
 
+			var newContent;
+			
             configs.forEach(function(item) {
 				newLine = "<option value=" + item + ">" + item + "</option>\n";
 				newContent += newLine;
