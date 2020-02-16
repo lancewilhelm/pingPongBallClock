@@ -322,7 +322,7 @@ function getConfigsList() {
             configs = JSON.parse(this.responseText).configs;
 
             configs.forEach(function(item) {
-				newLine = "<li id=" + item + ">" + item + "</li>\n";
+				newLine = "<option value=" + item + ">" + item + "</option>\n";
 				newContent += newLine;
 				console.log(item);
 			});
