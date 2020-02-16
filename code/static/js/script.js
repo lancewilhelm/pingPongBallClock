@@ -321,8 +321,12 @@ function getConfigsList() {
             // Get the settings JSON and parse it out
             configs = JSON.parse(this.responseText).configs;
 
-            configs.forEach(function(item, index) {
-                console.log(item, index);
+            configs.forEach(function(item) {
+				var node = document.createElement("LI");
+				var textnode = document.createTextNode(item);
+				node.appendChild(textnode);
+				node.value = item
+				document.getElementById("savedConfigs").appendChild(node);
             });
         }
 	};
