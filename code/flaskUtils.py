@@ -160,13 +160,14 @@ def updateConfiguration():
 		elif action == 'delete':
 			PPB.configs.remove(filename)
 			os.remove('configurations/' + filename + '.txt')
+
+		return ""
 	
 	elif request.method == 'GET':
 		# Get the configs list from configs_list.txt and return it
 		with open('/home/pi/pingPongBallClock/code/configurations/configs_list.txt', 'r') as filehandle:
 			return filehandle.read()
 	
-	return ""
 
 # Flask Set Brightness API
 @app.route("/api/brightness", methods=['POST'])
