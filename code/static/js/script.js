@@ -325,7 +325,6 @@ function getConfigsList() {
 				var node = document.createElement("LI");
 				var textnode = document.createTextNode(item);
 				node.appendChild(textnode);
-				node.value = item
 				document.getElementById("savedConfigs").appendChild(node);
             });
         }
