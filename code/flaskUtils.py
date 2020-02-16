@@ -147,11 +147,12 @@ def updateSettings():
 # Flask Board Config API
 @app.route("/api/configuration", methods=['GET','POST'])
 def updateConfiguration():
-	# Read the values from the POST
-	action = str(request.form['action'])
-	filename = str(request.form['filename'])
 
 	if request.method == 'POST':
+		# Read the values from the POST
+		action = str(request.form['action'])
+		filename = str(request.form['filename'])
+		
 		if action == 'save':
 			PPB.configs.append(filename)
 			PPB.dumpSettings(filename)
