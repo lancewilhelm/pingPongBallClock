@@ -156,7 +156,7 @@ def updateConfiguration():
 		print PPB.configs
 		if action == 'save':
 			PPB.configs.append(filename)
-			PPB.dumpSettings(filename)
+			PPB.dumpSettings('configurations/' + filename)
 		elif action == 'load':
 			PPB.loadSettings(filename, False)
 		elif action == 'delete':
