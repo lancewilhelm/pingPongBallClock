@@ -318,7 +318,7 @@ function updateConfiguration(action) {
     xhttp.send("action=" + action + "&filename=" + filename);
 
     // Close the modal and get the new list of configs from the server
-    document.getElementById("customConfigModal").style.display = none;
+    document.getElementById("customConfigModal").style.display = "none";
     getConfigsList();
 }
 
