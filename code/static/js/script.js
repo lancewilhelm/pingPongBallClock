@@ -317,6 +317,8 @@ function updateConfiguration(action) {
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("action=" + action + "&filename=" + filename);
 
+    // Close the modal and get the new list of configs from the server
+    document.getElementById("customConfigModal").style.display = none;
     getConfigsList();
 }
 
@@ -561,10 +563,5 @@ customConfigBtn.onclick = function() {
 
 // When the user clicks on <span> (x), close the modal
 customConfigSpan.onclick = function() {
-    customConfigModal.style.display = "none";
-};
-
-// When the user clicks on save, close the modal. 
-sendConfigBtn.onclick = function() {
     customConfigModal.style.display = "none";
 };
