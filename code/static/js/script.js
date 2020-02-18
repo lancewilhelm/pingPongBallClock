@@ -313,7 +313,7 @@ function updateConfiguration(action) {
     if (action == 'save') {
         var filename = document.getElementById("configInput").value;
     } else if (action == 'load' || action == 'delete') {
-
+        var filename = document.getElementById("savedConfigs").value;
     }
     xhttp.open("POST", "/api/configuration", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
