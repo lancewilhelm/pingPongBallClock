@@ -159,8 +159,10 @@ def updateConfiguration():
 			PPB.dumpSettings('configurations/' + filename)
 		elif action == 'load':
 			PPB.loadSettings(filename, False)
+			PPB.dumpSettings('settings')
 		elif action == 'delete':
 			PPB.configs.remove(filename)
+			PPB.dumpSettings('settings')
 			os.remove('configurations/' + filename + '.txt')
 
 		return ""
