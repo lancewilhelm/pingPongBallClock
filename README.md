@@ -11,7 +11,7 @@ Author: PlanetaryMotion
 
 ## Video
 
-I will be creating a YouTube video documenting the build. It will likely only brush over the firmware. When finished I will post that link here.
+https://www.youtube.com/watch?v=jIoWmhVCPb4&feature=youtu.be
 
 ## Inspiration
 
