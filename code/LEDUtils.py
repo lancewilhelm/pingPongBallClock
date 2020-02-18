@@ -537,6 +537,8 @@ class PingPongBoard:
 		basePath = '/home/pi/pingPongBallClock/code/'
 		fullPath = basePath + filename + '.txt'
 
+		print "dumping settings to ", fullPath
+		
 		# Dump the settings to settings.txt
 		with open(fullPath, 'w') as filehandle:
 			json.dump(settings, filehandle)
