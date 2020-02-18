@@ -309,9 +309,12 @@ function settings(action) {
 
 function updateConfiguration(action) {
     var xhttp = new XMLHttpRequest();
+    var filename = document.getElementById("configInput").value;
     xhttp.open("POST", "/api/configuration", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send("action=" + action + "&filename=" + filename);
+    
+    getConfigsList();
 }
 
 function getConfigsList() {
