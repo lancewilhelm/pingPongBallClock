@@ -322,7 +322,7 @@ function getConfigsList() {
             configs = JSON.parse(this.responseText).configs;
 
 			var newContent;
-			
+
             configs.forEach(function(item) {
 				newLine = "<option value=" + item + ">" + item + "</option>\n";
 				newContent += newLine;
@@ -533,4 +533,32 @@ pageSettingsBtn.onclick = function() {
 // When the user clicks on <span> (x), close the modal
 pageSettingsSpan.onclick = function() {
     pageSettingsModal.style.display = "none";
+};
+
+// Custom Config Modal
+// Get the modal
+var customConfigModal = document.getElementById("customConfigModal");
+
+// Get the button that opens the modal
+var customConfigBtn = document.getElementById("saveConfigButton");
+
+// Get the send button
+var sendConfigBtn = document.getElementById("sendConfigBtn");
+
+// Get the <span> element that closes the modal
+var customConfigSpan = document.getElementById("configclose");
+
+// When the user clicks on the button, open the modal
+customConfigBtn.onclick = function() {
+    customConfigModal.style.display = "block";
+};
+
+// When the user clicks on <span> (x), close the modal
+customConfigSpan.onclick = function() {
+    customConfigModal.style.display = "none";
+};
+
+// When the user clicks on save, close the modal. 
+sendConfigBtn.onclick = function() {
+    customConfigModal.style.display = "none";
 };

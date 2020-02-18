@@ -541,9 +541,13 @@ class PingPongBoard:
 		with open(fullPath, 'w') as filehandle:
 			json.dump(settings, filehandle)
 
+		configs = {
+			'configs' : self.configs
+		}
+
 		# Dump the configs to configs_list.txt
 		with open('/home/pi/pingPongBallClock/code/configurations/configs_list.txt', 'w') as filehandle:
-			json.dump(self.configs, filehandle)
+			json.dump(configs, filehandle)
 
 	# This will load the settings from settings.txt
 	def loadSettings(self,filename,bootup=True):

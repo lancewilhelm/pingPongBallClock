@@ -215,7 +215,7 @@
 				<h5>MANAGE BOARD CONFIGS</h5>
 				<select id="savedConfigs">
 				</select><br><br>
-				<button class="btn btn-purple" type="button">SAVE</button>	
+				<button id="saveConfigButton" class="btn btn-purple" type="button">SAVE</button>	
 				<button class="btn btn-purple" type="button" onclick="updateConfiguration('load','get')">LOAD</button>
 				<button class="btn btn-red" type="button" onclick="updateConfiguration('delete','get')">DELETE</button>
 			</div>
@@ -330,6 +330,23 @@
 			<input id="titleInput" class="form-control form-control-lg" type="text" placeholder="title">
 			<button id="sendColorBtn" type="button" class="btn btn-purple" onclick="setPageTitle()">SET PAGE TITLE</button>
 
+		</div>
+	</div>
+</div>
+
+<div id="customConfigModal" class="modal">
+	<div class="modal-content">
+		<div class="modal-header">
+			<span id="configclose" class="close">&times;</span>
+			<div class="col-sm text-left">
+				<h4>ENTER CONFIGURATION NAME</h4>
+			</div>
+		</div>
+		<div class="modal-body">
+			<form>
+				<input id="configInput" class="form-control form-control-lg" type="text">
+				<button id="sendConfigBtn" type="button" class="btn btn-white txt-purple" onclick="updateConfiguration('save','get')"><b>SAVE</b></button>
+			</form>	
 		</div>
 	</div>
 </div>
