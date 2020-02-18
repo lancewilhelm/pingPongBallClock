@@ -307,6 +307,13 @@ function settings(action) {
     xhttp.send("action=" + action);
 }
 
+function reset() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/api/reset", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("");
+}
+
 function updateConfiguration(action) {
     var xhttp = new XMLHttpRequest();
 

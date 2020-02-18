@@ -144,6 +144,14 @@ def updateSettings():
 
 	return ""
 
+# Flask Reset Board API
+@app.route("/api/reset", methods=['POST'])
+def reset():
+
+	PPB.textStateWipe()
+
+	return ""
+
 # Flask Board Config API
 @app.route("/api/configuration", methods=['GET','POST'])
 def updateConfiguration():
