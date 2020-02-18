@@ -312,6 +312,8 @@ function updateConfiguration(action) {
 
     if (action == 'save') {
         var filename = document.getElementById("configInput").value;
+    } else if (action == 'load' || action == 'delete') {
+
     }
     xhttp.open("POST", "/api/configuration", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

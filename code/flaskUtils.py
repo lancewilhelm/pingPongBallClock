@@ -153,6 +153,7 @@ def updateConfiguration():
 		action = str(request.form['action'])
 		filename = str(request.form['filename'])
 		
+		print PPB.configs
 		if action == 'save':
 			PPB.configs.append(filename)
 			PPB.dumpSettings(filename)
