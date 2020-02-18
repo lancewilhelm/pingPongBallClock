@@ -566,6 +566,10 @@ class PingPongBoard:
 		# Get the configs from configs_list.txt
 		with open('/home/pi/pingPongBallClock/code/configurations/configs_list.txt', 'r') as filehandle:
 			self.configs = json.load(filehandle)['configs']
+
+		# Fix unicode content list
+		for i in range(len(self.configs)):
+			self.configs[i] = str(self.configs[i])
 		
 		# Set the API Key variables
 		self.openWeatherKey = apikeys['openweather']
