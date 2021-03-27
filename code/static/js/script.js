@@ -319,7 +319,9 @@ function updateConfiguration(action) {
 
     if (action == 'save') {
         var filename = document.getElementById("configInput").value;
-    } else if (action == 'load' || action == 'delete') {
+    } else if (action == 'load') {
+        var filename = document.getElementById("savedConfigs").value;
+    } else if (action == 'delete') {
         var filename = document.getElementById("savedConfigs").value;
     }
     xhttp.open("POST", "/api/configuration", true);
@@ -343,7 +345,6 @@ function getConfigsList() {
             configs.forEach(function(item) {
 				newLine = "<option value=" + item + ">" + item + "</option>\n";
 				newContent += newLine;
-				console.log(item);
 			});
 			document.getElementById("savedConfigs").innerHTML = newContent;
         }
