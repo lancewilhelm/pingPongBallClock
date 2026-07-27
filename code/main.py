@@ -6,7 +6,6 @@ import time
 from flask import Flask
 from flaskUtils import app
 from LEDUtils import PPB
-from neopixel import *
 
 if __name__ == '__main__':
 	# Start the flask server
