@@ -10,7 +10,8 @@ NUM_ROWS		= 7					# How many rows of balls are on your board
 NUM_COLS		= 20				# How many effective columns are on your board. This is equal to your widest row.
 PIXEL_DENSITY	= 60				# This is how dense your strip is with pixels. 30 is the ideal density to buy (LEDs/meter)
 
-PIXEL_RATIO		= PIXEL_DENSITY/30	# Needed for the odd strips like mine
+# Python 3's / operator returns a float; LED indexes must remain integers.
+PIXEL_RATIO		= PIXEL_DENSITY // 30	# Needed for the odd strips like mine
 LED_PIN        	= 18      			# GPIO pin connected to the pixels (18 uses PWM!).
 LED_FREQ_HZ    	= 800000  			# LED signal frequency in hertz (usually 800khz)
 LED_DMA        	= 10       			# DMA channel to use for generating signal (try 5)
