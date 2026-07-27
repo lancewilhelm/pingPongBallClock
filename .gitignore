@@ -2,3 +2,6 @@
 .vscode/c_cpp_properties.json
 code/lanceapikeys
 .vscode/settings.json
+.venv/
+__pycache__/
+*.py[cod]

@@ -57,9 +57,43 @@ The ground wire can be run to any of the ground pins on the pi (black circles be
 
 ## Build
 
-You must first make sure that git is installed on your raspberry pi so that you can clone the repo. First run `sudo apt-get update` to make sure that you have the correct package directory listings. Then run `sudo apt-get install git`. You then should be able to clone this repo by running `git clone https://github.com/PlanetaryMotion/pingPongBallClock.git`.
+You must first make sure that git is installed on your Raspberry Pi so that you can clone the repo:
 
-You should be able to build this by running `sudo sh setup.sh` from the `code` directory. After that you should be able to run `sudo python main.py` from the `code` directory to start the program. If you get errors, you may need to debug from the error logs to see what packages need installing. They should all be found in `setup.sh`. One known error right now is that the crontab script does not copy properly. You can manually copy the crontab script to the root crontab file by running `sudo cp ~/pingPongBallClock/code/crontabScript /var/spool/cron/crontabs/root` followed by `sudo chmod 600 /var/spool/cron/crontabs/root`. This allows the clock code to run when the raspberry pi boots up.
+```sh
+sudo apt-get update
+sudo apt-get install --yes git
+git clone https://github.com/PlanetaryMotion/pingPongBallClock.git
+cd pingPongBallClock/code
+./setup.sh
+```
+
+Run `setup.sh` as your regular login user, not with `sudo`. It asks for `sudo` only when installing the OS prerequisites and the service. The script creates a project-local `.venv`, installs Flask, Requests, and `rpi-ws281x` there, then installs and starts a `systemd` service. This is required on current Raspberry Pi OS releases, which intentionally block system-wide `pip` installs.
+
+The service runs at boot and restarts after a crash. Its logs are available through the journal:
+
+```sh
+sudo systemctl status pingpongballclock
+journalctl -u pingpongballclock -f
+```
+
+Useful service commands:
+
+```sh
+sudo systemctl restart pingpongballclock
+sudo systemctl stop pingpongballclock
+sudo systemctl disable --now pingpongballclock
+```
+
+The application uses the GPIO 18 PWM/DMA backend and therefore the service runs as `root`; do not expose the web UI beyond a trusted local network. The installer generates the unit with the path to this specific checkout, so rerun `./setup.sh` after moving the repo or changing Python dependencies.
+
+To run it manually for diagnosis, stop the service first, then use the project virtual environment:
+
+```sh
+sudo systemctl stop pingpongballclock
+sudo ../.venv/bin/python main.py
+```
+
+Start the service again afterwards with `sudo systemctl start pingpongballclock`.
 
 The webpage will be located at the local IP address of your Raspberry Pi and at port 5000. For instance, my local address for the clock was `192.168.1.22:5000`. If you need help finding the IP address of your Raspberry Pi, you can reference this [article](https://www.raspberrypi.org/documentation/remote-access/ip-address.md). I imagine that if you got this far, you can find it on your own though ;]
 

@@ -5,10 +5,13 @@ import random
 import signal
 import sys
 import time
+from pathlib import Path
 
 import requests
-from neopixel import *
+from rpi_ws281x import Color, PixelStrip
 from Utils import *
+
+CODE_DIR = Path(__file__).resolve().parent
 
 # This is the PingPongBoard class that drives everything. All functions related to lighting and writing are in here. 
 class PingPongBoard:
@@ -48,7 +51,7 @@ class PingPongBoard:
 		self.setupBalls()
 
 		#Intialize the strip
-		self.strip = Adafruit_NeoPixel(self.led_count, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, self.brightness, LED_CHANNEL, LED_STRIP)
+		self.strip = PixelStrip(self.led_count, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, self.brightness, LED_CHANNEL, LED_STRIP)
 		self.strip.begin()
 
 	# Sets up a ball object for every single ball on the board. The ball object definition can be found in Utils
@@ -459,7 +462,7 @@ class PingPongBoard:
 			self.minsPrev = mins		
 
 		# base_url variable to store url //
-		base_url = "http://api.openweathermap.org/data/2.5/weather?"
+		base_url = "https://api.openweathermap.org/data/2.5/weather?"
 
 		# If the zip code field is not empty then use the zip code. Otherwise use the filled city name
 		if self.weatherZipLocation != '':
@@ -469,8 +472,8 @@ class PingPongBoard:
 
 		if self.updateWeather:
 			try:
-				response = requests.get(complete_url)
-			except:
+				response = requests.get(complete_url, timeout=10)
+			except requests.RequestException:
 				return
 
 			self.weatherResponse = response.json()
@@ -535,17 +538,17 @@ class PingPongBoard:
 		}
 
 		# Dump the settings to settings.txt
-		with open('/home/pi/pingPongBallClock/code/settings.txt', 'w') as filehandle:
+		with (CODE_DIR / 'settings.txt').open('w') as filehandle:
 			json.dump(settings, filehandle)
 
 	# This will load the settings from settings.txt
 	def loadSettings(self,bootup=True):
 		# Get the settings dictionary from settings.txt
-		with open('/home/pi/pingPongBallClock/code/settings.txt', 'r') as filehandle:
+		with (CODE_DIR / 'settings.txt').open('r') as filehandle:
 			settings = json.load(filehandle)
 
 		# Get the API keys from apikeys.txt
-		with open('/home/pi/pingPongBallClock/code/apikeys.txt', 'r') as filehandle:
+		with (CODE_DIR / 'apikeys.txt').open('r') as filehandle:
 			apikeys = json.load(filehandle)
 		
 		# Set the API Key variables

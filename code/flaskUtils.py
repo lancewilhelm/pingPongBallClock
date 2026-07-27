@@ -1,5 +1,4 @@
-import os
-import sys
+from pathlib import Path
 
 from flask import Flask, render_template, request
 from LEDUtils import *
@@ -7,6 +6,7 @@ from Utils import *
 
 #Setup the flask object and get it going
 app = Flask(__name__)
+CODE_DIR = Path(__file__).resolve().parent
 
 # Flask Index
 @app.route("/", methods=['GET'])
@@ -109,7 +109,7 @@ def setContent():
 	elif checked == 'false' and (contentChunk in PPB.content) == True:
 		PPB.content.remove(contentChunk)
 
-	print PPB.content
+	print(PPB.content)
 	PPB.textStateWipe()
 	return ""
 
@@ -171,13 +171,13 @@ def setTimeFormat():
 def updateWebPageSettings():
 	if request.method == 'GET':
 		# Get the web page settings from webpagesettings.txt
-		with open('/home/pi/pingPongBallClock/code/webpagesettings.txt', 'r') as filehandle:
+		with (CODE_DIR / 'webpagesettings.txt').open('r') as filehandle:
 			return filehandle.read()
 	
 	elif request.method == 'POST':
 		settings = str(request.form['settings'])
 		# Write the settings to webpagesettings.txt
-		with open('/home/pi/pingPongBallClock/code/webpagesettings.txt', 'w') as filehandle:
+		with (CODE_DIR / 'webpagesettings.txt').open('w') as filehandle:
 			filehandle.write(settings)
 		return ""
 
@@ -211,7 +211,7 @@ def setXLSettings():
 			PPB.textOrigin[0] = [4,1]
 			PPB.textOrigin[1] = [1,7]
 	else: 
-		print "Board is not set to XL"
+		print("Board is not set to XL")
 
 	# Perform a reset of the board to eliminate the ghost text balls
 	PPB.colorFill(Color(0,0,0), True)

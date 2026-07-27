@@ -1,0 +1,16 @@
+[Unit]
+Description=Ping Pong Ball Clock web controller
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+# PWM/DMA access used by rpi-ws281x requires elevated hardware access.
+User=root
+WorkingDirectory=__WORKING_DIRECTORY__
+ExecStart=__PYTHON_EXECUTABLE__ -u main.py
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
