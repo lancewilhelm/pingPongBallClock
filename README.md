@@ -49,7 +49,7 @@ Other things that serve the web app are found in [templates](code/templates/), [
 
 It is worth considering running a separate 5V power supply to power just the LEDs since you will be powering at least 128 of them. Then the only two wires that run to the raspberry pi from the LEDs are the data and ground wires. If you use a separate power supply, you must run a ground wire from the ground of the power supply to the raspberry pi ground so that logic is consistent, otherwise the LEDs will not light properly.  
 
-The data wire should be run to pin "18" as indicated below. This is how the code is set up currently. If you want to change the pin, make sure that you adjust the "LED_PIN" value in [Utils](code/Utils.py). 
+Connect the data wire to BCM GPIO 18, physical header pin 12. This is how the code is set up currently. If you want to change the pin, make sure that you adjust the "LED_PIN" value in [Utils](code/Utils.py).
 
 The ground wire can be run to any of the ground pins on the pi (black circles below). You can use the 5V pins to test short strands of LEDs but you **should not try to power the full length of LEDs with it. This has the potential to damage your pi.** Most noticible though, it will change the color of your LEDs throughout the strip because of the lack of power.
 
@@ -67,7 +67,9 @@ cd pingPongBallClock/code
 ./setup.sh
 ```
 
-Run `setup.sh` as your regular login user, not with `sudo`. It asks for `sudo` only when installing the OS prerequisites and the service. The script creates a project-local `.venv`, installs Flask, Requests, and `rpi-ws281x` there, then installs and starts a `systemd` service. This is required on current Raspberry Pi OS releases, which intentionally block system-wide `pip` installs.
+Run `setup.sh` as your regular login user, not with `sudo`. It asks for `sudo` only when installing the OS prerequisites and the service. The checkout path must use only ASCII letters, digits, `/`, `.`, `_`, and `-`. The script creates a project-local `.venv`, installs Flask, Requests, and `rpi-ws281x` there, then installs and starts a `systemd` service. This avoids installing Python packages into the system environment.
+
+On the first run, setup prints the browser username and generated password. It stores them in `code/.local/auth.json` with owner-only permissions. Rerunning setup preserves the credentials. If you missed them, read that file on the Pi. Keep it private.
 
 The service runs at boot and restarts after a crash. Its logs are available through the journal:
 
@@ -84,7 +86,7 @@ sudo systemctl stop pingpongballclock
 sudo systemctl disable --now pingpongballclock
 ```
 
-The application uses the GPIO 18 PWM/DMA backend and therefore the service runs as `root`; do not expose the web UI beyond a trusted local network. The installer generates the unit with the path to this specific checkout, so rerun `./setup.sh` after moving the repo or changing Python dependencies.
+The application uses the GPIO 18 PWM/DMA backend and therefore the service runs as `root`; HTTP Basic authentication sends credentials without encryption over plain HTTP. Use a trusted local network or Tailscale, and do not expose the web UI publicly. The installer generates the unit with the path to this specific checkout, so rerun `./setup.sh` after moving the repo or changing Python dependencies.
 
 To run it manually for diagnosis, stop the service first, then use the project virtual environment:
 
@@ -99,11 +101,23 @@ The webpage will be located at the local IP address of your Raspberry Pi and at 
 
 ## Setup
 
-The Ping Pong Ball Clock is setup by default for 128 balls/LEDs and an layout of 20 rows and 7 columns. In the settings section you can set up the display for more. You can also change the text origin row and column, as well as how many lines are on screen to adjust the way the text displays. It is recommended that you have at least 10 rows to display two lines of text on the screen because the text fonts are 5 balls tall.
+The live board preview on the control page shows the colors currently commanded by the clock. Its brightness is an approximation and may look different from the physical LEDs. The preview reconnects when the clock becomes available again.
+
+Changing the board type saves the selection and restarts the systemd service. Wait for the clock to reconnect, then refresh the page. If you run the program manually, start it again after changing the board type.
+
+The default layout has 128 LEDs arranged in 7 rows and 20 columns. The settings section offers a larger layout. You can also change the text origin row and column, as well as how many lines are on screen to adjust the way the text displays. It is recommended that you have at least 10 rows to display two lines of text on the screen because the text fonts are 5 balls tall.
 
 ## Weather API Key (Required for weather content)
 
-Weather is collected via the Open Weather API. This means that an API key is required to use this feature. An API key is free and can be aquired [here](https://openweathermap.org/appid). The firmware for Ping Pong Ball Clock was written with the maximum number of API calls to the weather service in mind. This firmware will only make a new call when the weather settings have been changed, or every minute. This should avoid the 60 calls/min maximum for the free version.
+Before updating an existing installation to a version that removes the tracked legacy files, back up `code/settings.txt`, `code/webpagesettings.txt`, and `code/apikeys.txt`. The new service imports those files on its first launch if they are present.
+
+Weather content requires an [OpenWeather API key](https://openweathermap.org/appid). On first launch, the application copies a legacy key from `code/apikeys.txt` into `code/.local/apikeys.json` if present. If no legacy key exists, the new file has an empty key. From the `code` directory, run `sudoedit .local/apikeys.json` and set your key:
+
+```json
+{"openweather": "YOUR_API_KEY"}
+```
+
+The service creates this file as root with owner-only permissions. After editing it, run `sudo systemctl restart pingpongballclock` so the service reads the new key. Keep the file private. The application stores settings in `code/.local/settings.json` and `code/.local/webpage.json`. The clock requests weather updates while weather content is active. Check your OpenWeather plan for its current limits.
 
 ## Usage
 

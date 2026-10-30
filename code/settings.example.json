@@ -1,0 +1,16 @@
+{
+  "animationSpeed": [0, 0],
+  "textColor": ["solid", 0],
+  "fontName": "digits",
+  "textSpacing": 0,
+  "customText": "",
+  "weatherZipLocation": "",
+  "weatherCityLocation": "",
+  "tempUnits": "f",
+  "content": ["time 0"],
+  "bgColor": ["animation", "rainbow"],
+  "brightness": 125,
+  "timeFormat": "24h",
+  "boardType": "normal",
+  "lineCount": 1
+}

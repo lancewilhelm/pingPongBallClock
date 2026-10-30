@@ -1,0 +1,21 @@
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install 'Flask>=3.1,<4' 'requests>=2.32,<3'
+      - run: bash -n code/setup.sh
+      - run: python -m unittest discover -s tests -v
+      - run: node --check code/static/js/script.js
+      - run: node --check code/static/js/preview.js
+      - run: node tests/test_web_ui.js
+      - run: node tests/test_preview.js
