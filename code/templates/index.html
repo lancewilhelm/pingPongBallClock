@@ -22,6 +22,37 @@
         <p class="preview-note">An approximation of the display. Brightness and colors may look different in person.</p>
     </section>
     <div id="requestStatus" role="status" aria-live="polite"></div>
+    <section class="preview-card presets-card" aria-labelledby="presetsHeading">
+        <h2 id="presetsHeading">Presets and schedules</h2>
+        <p>Save the current display, choose a startup default, or schedule a preset.</p>
+        <label for="presetName">Preset name</label>
+        <input id="presetName" maxlength="80" class="form-control" type="text">
+        <button type="button" class="btn btn-purple" id="savePreset">Save current display</button>
+        <label for="presetSelect">Preset</label>
+        <select id="presetSelect" class="form-control"></select>
+        <button type="button" class="btn btn-purple" id="applyPreset">Apply</button>
+        <button type="button" class="btn btn-purple" id="deletePreset">Delete</button>
+        <label for="defaultPreset">Startup default</label>
+        <select id="defaultPreset" class="form-control"></select>
+        <button type="button" class="btn btn-purple" id="setDefaultPreset">Set default</button>
+        <hr class="minor">
+        <h3>Schedules</h3>
+        <label for="schedulePreset">Preset to schedule</label>
+        <select id="schedulePreset" class="form-control"></select>
+        <label for="scheduleTime">Local time</label>
+        <input id="scheduleTime" class="form-control" type="time" value="08:00">
+        <fieldset><legend>Days</legend>
+            <label><input type="checkbox" class="schedule-day" value="0" checked> Mon</label>
+            <label><input type="checkbox" class="schedule-day" value="1" checked> Tue</label>
+            <label><input type="checkbox" class="schedule-day" value="2" checked> Wed</label>
+            <label><input type="checkbox" class="schedule-day" value="3" checked> Thu</label>
+            <label><input type="checkbox" class="schedule-day" value="4" checked> Fri</label>
+            <label><input type="checkbox" class="schedule-day" value="5" checked> Sat</label>
+            <label><input type="checkbox" class="schedule-day" value="6" checked> Sun</label>
+        </fieldset>
+        <button type="button" class="btn btn-purple" id="addSchedule">Add schedule</button>
+        <div id="scheduleList"></div>
+    </section>
     <div class="container-fluid text-center">
         <div class="row bg-header">
             <div class="col-sm text-right">

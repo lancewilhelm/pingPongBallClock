@@ -553,11 +553,44 @@ class PingPongBoard:
 				'bgColor', 'brightness', 'timeFormat', 'boardType', 'lineCount')}
 			if self.pendingBoardConfig is not None:
 				settings.update(self.pendingBoardConfig)
+			settings.update(copy.deepcopy(self._presetMetadata))
 			return settings
 
 	def dumpSettings(self):
 		with self._settingsLock:
 			storage.save_state('settings.json', self.settingsSnapshot(), storage.device_settings)
+
+	def applyPreset(self, display, executions=None):
+		import presets
+		with self._settingsLock:
+			settings = self.settingsSnapshot()
+			if self.pendingBoardConfig is not None:
+				raise ValueError('Wait for the board change to finish before applying a preset')
+			if display['lineCount'] == 2 and (self.boardType == 'normal' or settings['boardType'] == 'normal'):
+				raise ValueError('This preset needs an XL board with two lines')
+			settings.update(copy.deepcopy(display))
+			storage.device_settings(settings)
+			if executions is not None:
+				settings['scheduleExecutions'] = copy.deepcopy(executions)
+				settings['presetApplyPending'] = True
+			storage.save_state('settings.json', settings, storage.device_settings)
+			self._presetMetadata = {key: copy.deepcopy(settings[key]) for key in ('scheduleExecutions', 'presetApplyPending', 'boardRestartPending') if key in settings}
+			for key in presets.DISPLAY_KEYS:
+				setattr(self, key, copy.deepcopy(display[key]))
+			self.font = slanted if self.fontName == 'slanted' else digits
+			self.fontChanged = self.bgDisplayChanged = self.textDisplayChanged = self.updateWeather = True
+			self.textOrigin = [[1, 1], 0] if self.boardType == 'normal' else ([[2, 4], 0] if self.lineCount == 1 else [[4, 1], [1, 7]])
+			self.textOriginMoved = [True, True]
+			self.strip.setBrightness(self.brightness)
+			if executions is not None:
+				self.clearPresetMarker('presetApplyPending')
+
+	def clearPresetMarker(self, marker):
+		with self._settingsLock:
+			settings = self.settingsSnapshot()
+			settings.pop(marker, None)
+			storage.save_state('settings.json', settings, storage.device_settings)
+			self._presetMetadata.pop(marker, None)
 
 	def changeBoardType(self, boardType):
 		if boardType not in ('normal', 'xl'):
@@ -565,9 +598,14 @@ class PingPongBoard:
 		with self._settingsLock:
 			settings = self.settingsSnapshot()
 			settings['boardType'] = boardType
+			if boardType != self.boardType:
+				settings['boardRestartPending'] = True
+			else:
+				settings.pop('boardRestartPending', None)
 			if boardType == 'normal':
 				settings['lineCount'] = 1
 			storage.save_state('settings.json', settings, storage.device_settings)
+			self._presetMetadata = {key: copy.deepcopy(settings[key]) for key in ('scheduleExecutions', 'presetApplyPending', 'boardRestartPending') if key in settings}
 			if boardType == self.boardType:
 				self.pendingBoardConfig = None
 				self.restart_at = None
@@ -581,6 +619,7 @@ class PingPongBoard:
 			apikeys = storage.load_state('apikeys.json', CODE_DIR / 'apikeys.txt', storage.api_keys)
 			storage.device_settings(settings)
 			storage.api_keys(apikeys)
+			self._presetMetadata = {key: copy.deepcopy(settings[key]) for key in ('scheduleExecutions', 'presetApplyPending', 'boardRestartPending') if key in settings}
 			self.openWeatherKey = apikeys['openweather']
 			for key in ('animationSpeed', 'textColor', 'fontName', 'textSpacing', 'customText',
 					'weatherZipLocation', 'weatherCityLocation', 'tempUnits', 'content',

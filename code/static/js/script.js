@@ -13,7 +13,7 @@ async function post(path, values) {
 		},
 		body: new URLSearchParams(values)
 	});
-	if (!response.ok) throw new Error(`${path} returned ${response.status}`);
+	if (!response.ok) throw new Error((response.text && await response.text()) || `${path} returned ${response.status}`);
 }
 
 function enqueue(requests) {
@@ -45,9 +45,21 @@ function pageSettings() {
 }
 
 function update(requests, savePage = false) {
+	const fields = new Set();
+	for (const [path, values] of requests) {
+		const ids = {'/api/brightness':['brightnessSlider'], '/api/textanimation':[`line${Number(values.lineNum) + 1}SpeedInput`],
+			'/api/setcontent':[`line${Number(values.lineNum) + 1}${values.content}`], '/api/setcustomtext':['textInput'],
+			'/api/weather':['zipInput','cityInput','tempUnit'], '/api/timeformat':['timeFormat'],
+			'/api/boardtype':['boardType'], '/api/xlsettings':['lineCount']}[path] || [];
+		for (const id of ids) fields.add(id);
+	}
+	const submitted = [...fields].map(id => { const field = document.getElementById(id); return [id, field.type === 'checkbox' ? field.checked : field.value]; });
 	if (savePage) requests.push(['/api/webpagesettings', {settings: JSON.stringify(pageSettings())}]);
 	requests.push(['/api/settings', {action: 'save'}]);
-	return enqueue(requests);
+	return enqueue(requests).then(ok => {
+		if (ok) for (const [id, value] of submitted) { const field = document.getElementById(id); if ((field.type === 'checkbox' ? field.checked : field.value) === value) editedFields.delete(id); }
+		return ok;
+	});
 }
 
 async function loadWebSettings() {
@@ -65,20 +77,7 @@ async function loadWebSettings() {
 		for (const id of ['line1time', 'line1date', 'line1weather', 'line1text', 'line2time', 'line2date', 'line2weather', 'line2text']) {
 			document.getElementById(id).checked = data[id];
 		}
-		const stateResponse = await fetch('/api/state');
-		if (!stateResponse.ok) throw new Error(`/api/state returned ${stateResponse.status}`);
-		const state = await stateResponse.json();
-		for (const [id, value] of Object.entries({
-			boardType: state.boardType, lineCount: state.lineCount, brightnessSlider: state.brightness,
-			line1SpeedInput: state.animationSpeed[0], line2SpeedInput: state.animationSpeed[1],
-			textInput: state.customText, zipInput: state.weatherZipLocation, cityInput: state.weatherCityLocation,
-			tempUnit: state.tempUnits, timeFormat: state.timeFormat
-		})) document.getElementById(id).value = value;
-		for (let line = 0; line < 2; line++) {
-			for (const type of ['time', 'date', 'weather', 'text']) {
-				document.getElementById(`line${line + 1}${type}`).checked = state.content.includes(`${type} ${line}`);
-			}
-		}
+		await refreshState();
 		openLineSettings();
 		openXLSettings();
 	} catch (error) {
@@ -193,3 +192,81 @@ for (const [modalId, buttonIds, closeId] of [
 		else if (!event.shiftKey && document.activeElement === controls[controls.length - 1]) { event.preventDefault(); controls[0].focus(); }
 	});
 }
+
+
+const editedFields = new Set();
+async function refreshState() {
+    const response = await fetch('/api/state', {cache: 'no-store'});
+    if (!response.ok) throw new Error('Could not read display state');
+    const state = await response.json();
+    for (const [id, value] of Object.entries({boardType: state.boardType, lineCount: state.lineCount,
+        brightnessSlider: state.brightness, line1SpeedInput: state.animationSpeed[0], line2SpeedInput: state.animationSpeed[1],
+        textInput: state.customText, zipInput: state.weatherZipLocation, cityInput: state.weatherCityLocation,
+        tempUnit: state.tempUnits, timeFormat: state.timeFormat})) {
+        const field = document.getElementById(id);
+        if (!editedFields.has(id) && document.activeElement !== field) field.value = value;
+    }
+    for (let line = 0; line < 2; line++) for (const type of ['time', 'date', 'weather', 'text']) {
+        const id = `line${line + 1}${type}`;
+        if (!editedFields.has(id) && document.activeElement !== document.getElementById(id))
+            document.getElementById(id).checked = state.content.includes(`${type} ${line}`);
+    }
+    openLineSettings(); openXLSettings();
+}
+
+async function loadPresets() {
+    const response = await fetch('/api/presets', {cache: 'no-store'});
+    if (!response.ok) throw new Error('Could not load presets');
+    const data = await response.json();
+    for (const id of ['presetSelect', 'schedulePreset', 'defaultPreset']) {
+        const select = document.getElementById(id), previous = select.value;
+        select.replaceChildren();
+        if (id === 'defaultPreset') select.add(new Option('No default', ''));
+        for (const preset of data.presets) select.add(new Option(preset.name, preset.id));
+        if (id === 'defaultPreset') {
+            const pending = editedFields.has(id) && (previous === '' || data.presets.some(p => p.id === previous));
+            select.value = pending ? previous : (data.default || '');
+            if (!pending) editedFields.delete(id);
+        } else select.value = data.presets.some(p => p.id === previous) ? previous : (data.presets[0]?.id || '');
+    }
+    const list = document.getElementById('scheduleList');
+    list.replaceChildren();
+    if (!data.schedules.length) list.textContent = 'No schedules yet.';
+    for (const schedule of data.schedules) {
+        const row = document.createElement('div');
+        const name = data.presets.find(p => p.id === schedule.preset)?.name || 'Unknown preset';
+        const label = document.createElement('span');
+        label.textContent = `${name} at ${schedule.time} (${schedule.days.map(d => ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'][d]).join(', ')}) `;
+        const toggle = document.createElement('button');
+        toggle.type = 'button'; toggle.className = 'btn btn-purple'; toggle.textContent = schedule.enabled ? 'Disable' : 'Enable';
+        toggle.onclick = () => presetAction({action:'schedule', id:schedule.id, preset:schedule.preset, time:schedule.time, days:JSON.stringify(schedule.days), enabled:String(!schedule.enabled)});
+        const remove = document.createElement('button');
+        remove.type = 'button'; remove.className = 'btn btn-purple'; remove.textContent = 'Delete schedule';
+        remove.onclick = () => presetAction({action:'delete_schedule', id:schedule.id});
+        row.append(label, toggle, remove); list.append(row);
+    }
+}
+async function presetAction(values) {
+    const ok = await enqueue([['/api/presets', values]]);
+    if (!ok) return;
+    if (values.action === 'default' && document.getElementById('defaultPreset').value === values.id) editedFields.delete('defaultPreset');
+    try { await loadPresets(); if (values.action === 'apply') await refreshState(); showError('Preset settings updated.'); }
+    catch (error) { showError(error.message); }
+}
+if (typeof window !== 'undefined') window.addEventListener('load', () => {
+    for (const field of document.querySelectorAll('input, select')) field.addEventListener('input', () => editedFields.add(field.id));
+    const value = id => document.getElementById(id).value;
+    document.getElementById('savePreset').onclick = () => presetAction({action:'save', name:value('presetName')});
+    document.getElementById('applyPreset').onclick = () => presetAction({action:'apply', id:value('presetSelect')});
+    document.getElementById('deletePreset').onclick = () => presetAction({action:'delete', id:value('presetSelect')});
+    document.getElementById('setDefaultPreset').onclick = () => presetAction({action:'default', id:value('defaultPreset')});
+    document.getElementById('addSchedule').onclick = () => presetAction({action:'schedule', preset:value('schedulePreset'), time:value('scheduleTime'), days:JSON.stringify([...document.querySelectorAll('.schedule-day:checked')].map(d => Number(d.value))), enabled:'true'});
+    loadPresets().catch(error => showError(error.message));
+    setInterval(async () => {
+        try {
+            await refreshState();
+            const response = await fetch('/api/scheduler-status', {cache:'no-store'});
+            if (response.ok) { const status = await response.json(); if (status.error) showError(`Scheduled preset failed: ${status.error}`); }
+        } catch (error) { showError(error.message); }
+    }, 10000);
+});

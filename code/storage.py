@@ -82,6 +82,14 @@ def device_settings(value):
         raise ValueError("Invalid brightness")
     if value["fontName"] not in ("slanted", "digits") or value["timeFormat"] not in ("12h", "24h") or value["tempUnits"] not in ("f", "c", "k"):
         raise ValueError("Invalid display setting")
+    executions = value.get("scheduleExecutions", {})
+    if not isinstance(executions, dict) or len(executions) > 100 or any(
+        not isinstance(key, str) or len(key) != 32 or not isinstance(date, str)
+        or len(date) != 10 for key, date in executions.items()
+    ):
+        raise ValueError("Invalid schedule execution metadata")
+    if any(key in value and type(value[key]) is not bool for key in ("presetApplyPending", "boardRestartPending")):
+        raise ValueError("Invalid preset recovery metadata")
     import math
     speeds = value["animationSpeed"]
     if not isinstance(speeds, list) or len(speeds) != 2 or any(not isinstance(n, (int, float)) or isinstance(n, bool) or not math.isfinite(n) for n in speeds):
