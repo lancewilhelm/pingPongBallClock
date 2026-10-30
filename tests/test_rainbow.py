@@ -18,7 +18,7 @@ class RainbowTest(unittest.TestCase):
                         settings = self.board.settingsSnapshot()
                         settings.update(boardType=board_type, lineCount=1)
                         led.storage.save_state('settings.json', settings, led.storage.device_settings)
-                        with patch.object(led, 'PIXEL_RATIO', ratio), patch.object(led.time, 'sleep'):
+                        with patch.object(led, 'PIXEL_RATIO', ratio), patch.object(led.time, 'monotonic_ns', side_effect=(i * 30_000_000 for i in range(514))):
                             board = led.PingPongBoard()
                             ball = board.balls[6][0]
                             ball.text = text
@@ -36,7 +36,7 @@ class RainbowTest(unittest.TestCase):
         foreground.text = True
         board.bgColor = ['animation', 'rainbowCycle']
         board.textColor = ['animation', 'rainbowCycle']
-        with patch.object(led.time, 'sleep'):
+        with patch.object(led.time, 'monotonic_ns', side_effect=(i * 30_000_000 for i in range(120) for _ in range(2))):
             for _ in range(120):
                 board.updateBoardColors()
         self.assertEqual(background.color, board.wheel(120))
@@ -50,7 +50,7 @@ class RainbowTest(unittest.TestCase):
                 ball.text = rainbow_on_text
                 board.bgColor = ['animation', 'breathing' if rainbow_on_text else 'rainbowCycle']
                 board.textColor = ['animation', 'rainbowCycle' if rainbow_on_text else 'breathing']
-                with patch.object(led.time, 'sleep'):
+                with patch.object(led.time, 'sleep'), patch.object(led.time, 'monotonic_ns', side_effect=(i * 30_000_000 for i in range(120))):
                     for _ in range(120):
                         board.updateBoardColors()
                 self.assertEqual(ball.color, board.wheel(120))
