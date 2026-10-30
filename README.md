@@ -69,7 +69,7 @@ cd pingPongBallClock/code
 
 Run `setup.sh` as your regular login user, not with `sudo`. It asks for `sudo` only when installing the OS prerequisites and the service. The checkout path must use only ASCII letters, digits, `/`, `.`, `_`, and `-`. The script creates a project-local `.venv`, installs Flask, Requests, and `rpi-ws281x` there, then installs and starts a `systemd` service. This avoids installing Python packages into the system environment.
 
-On the first run, setup prints the browser username and generated password. It stores them in `code/.local/auth.json` with owner-only permissions. Rerunning setup preserves the credentials. If you missed them, read that file on the Pi. Keep it private.
+On the first run, setup prints the browser username and generated password. See [Sign in to the clock](#sign-in-to-the-clock) if you need to find or change them.
 
 The service runs at boot and restarts after a crash. Its logs are available through the journal:
 
@@ -98,6 +98,26 @@ sudo ../.venv/bin/python main.py
 Start the service again afterwards with `sudo systemctl start pingpongballclock`.
 
 The webpage will be located at the local IP address of your Raspberry Pi and at port 5000. For instance, my local address for the clock was `192.168.1.22:5000`. If you need help finding the IP address of your Raspberry Pi, you can reference this [article](https://www.raspberrypi.org/documentation/remote-access/ip-address.md). I imagine that if you got this far, you can find it on your own though ;]
+
+## Sign in to the clock
+
+Open the clock's address in your browser. The initial username is `admin`. On the first run, `setup.sh` prints a unique password for your clock. There is no shared default password.
+
+If you missed the password, run this command from the `pingPongBallClock/code` directory on the Raspberry Pi:
+
+```sh
+cat .local/auth.json
+```
+
+The file contains both your username and password. Keep it private. Rerunning setup does not change them.
+
+To change the username or password, run:
+
+```sh
+python3 credentials.py
+```
+
+Press Enter to keep the current username, then enter the new password twice. The password does not appear as you type. The new credentials take effect immediately; your browser may ask you to sign in again. Run this command as the regular user that owns the checkout.
 
 ## Setup
 
