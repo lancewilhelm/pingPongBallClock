@@ -5,3 +5,9 @@ code/lanceapikeys
 .venv/
 __pycache__/
 *.py[cod]
+
+code/.local/
+
+code/apikeys.txt
+code/settings.txt
+code/webpagesettings.txt

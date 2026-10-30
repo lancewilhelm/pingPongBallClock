@@ -6,17 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href= "{{ url_for('static',filename='css/style.css') }}"/>
-    <link rel="stylesheet" type="text/css" href= "../static/css/style.css"/>
     <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,900" rel="stylesheet">
-    <style>
-    </style>
+
 </head>
 <body onload="loadWebSettings()">
     <div class="jumbotron text-left">
-		<span id="settingsIcon" class="settings">&#9881;</span>
-        <h1 id="pageTitle"></h1>
+		<button id="settingsIcon" class="settings" type="button" aria-label="Page settings">&#9881;</button>
+        <p class="eyebrow">PING PONG BALL CLOCK</p>
+        <h1 id="pageTitle">Clock controls</h1>
     </div>
-    <div class="container-fluid text-center">  
+    <main class="workspace">
+    <section class="preview-card" aria-labelledby="previewHeading">
+        <div class="preview-heading"><div><p class="eyebrow">YOUR DISPLAY</p><h2 id="previewHeading">Live preview</h2></div><span id="previewStatus" role="status" aria-live="polite">Connecting…</span></div>
+        <div class="preview-surface"><svg id="clockPreview" role="img" aria-label="Live clock display preview"></svg></div>
+        <p class="preview-note">An approximation of the display. Brightness and colors may look different in person.</p>
+    </section>
+    <div id="requestStatus" role="status" aria-live="polite"></div>
+    <div class="container-fluid text-center">
         <div class="row bg-header">
             <div class="col-sm text-right">
                 <h4>BG STYLE PICKER</h4>
@@ -24,16 +30,16 @@
         </div>
         <div class="row">
             <div class="col-sm">
-                <button type="button" class="btn btn-block btn-green" onclick="setBGGreen()"></button>
+                <button type="button" class="btn btn-block btn-green" aria-label="Green background" onclick="setBGGreen()"></button>
             </div>
             <div class="col-sm">
-                <button type="button" class="btn btn-block btn-red" onclick="setBGRed()"></button>
+                <button type="button" class="btn btn-block btn-red" aria-label="Red background" onclick="setBGRed()"></button>
             </div>
             <div class="col-sm">
-                <button type="button" class="btn btn-block btn-blue" onclick="setBGBlue()"></button>
+                <button type="button" class="btn btn-block btn-blue" aria-label="Blue background" onclick="setBGBlue()"></button>
 			</div>
 			<div class="col-sm">
-                <button type="button" class="btn btn-block btn-black" onclick="setBGBlack()"></button>
+                <button type="button" class="btn btn-block btn-black" aria-label="Black background" onclick="setBGBlack()"></button>
             </div>
 		</div>
 
@@ -42,10 +48,10 @@
 		<div class="row">
 			<div class="col-sm">
 				<div class="dropdown">
-					<button class="btn dropdown-toggle btn-lg btn-purple" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<button class="btn dropdown-toggle btn-lg btn-purple" type="button" id="backgroundAnimations" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						ANIMATIONS
-					</button>		
-					<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+					</button>
+					<div class="dropdown-menu" aria-labelledby="backgroundAnimations">
 						<button class="dropdown-item text-center" type="button" onclick="setCustomBGColor('rainbow')">RAINBOW</button>
 						<button class="dropdown-item text-center" type="button" onclick="setCustomBGColor('rainbowCycle')">RAINBOW CYCLE</button>
 						<button class="dropdown-item text-center" type="button" onclick="setCustomBGColor('breathing')">BREATHING</button>
@@ -59,25 +65,25 @@
 				<div class="bg-color-picker">
 					<div class="sliders">
 						<div class="slide-container">
-							<input class="bg-red-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setBGRgb()" oninput="setBGRgb()" />
+							<input class="bg-red-slider short-slider" type="range" aria-label="Background red" value="0" max="255" onchange="setBGRgb()" oninput="setBGRgb()" />
 						</div>
 						<div class="slide-container">
-							<input class="bg-green-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setBGRgb()" oninput="setBGRgb()" />
+							<input class="bg-green-slider short-slider" type="range" aria-label="Background green" value="0" max="255" onchange="setBGRgb()" oninput="setBGRgb()" />
 						</div>
 						<div class="slide-container">
-							<input class="bg-blue-slider short-slider" type="range" id="rangeinput" value="0" max="255" oninput="setBGRgb()" onchange="setBGRgb()" />
+							<input class="bg-blue-slider short-slider" type="range" aria-label="Background blue" value="0" max="255" oninput="setBGRgb()" onchange="setBGRgb()" />
 						</div>
 					</div>
 					<div id="bg-color-preview" class="bg-color-preview"></div>
 				</div>
-				<button id="sendColorBtn" type="button" class="btn btn-purple" onclick="setCustomBGColor('solid')">SEND BG COLOR</button>
+				<button type="button" class="btn btn-purple send-color-btn" onclick="setCustomBGColor('solid')">SEND BG COLOR</button>
 			</div>
 		</div>
 	</div>
 
     <hr class="major">
 
-	<div class="container-fluid text-center"> 
+	<div class="container-fluid text-center">
 		<div class="row bg-header">
 			<div class="col-sm text-right">
 				<h4>TEXT STYLE PICKER</h4>
@@ -85,10 +91,10 @@
 		</div>
 		<div class="row">
 			<div class="col-sm">
-				<button type="button" class="btn btn-block btn-white" onclick="setTextWhite()"></button>
+				<button type="button" class="btn btn-block btn-white" aria-label="White text" onclick="setTextWhite()"></button>
 			</div>
 			<div class="col-sm">
-				<button type="button" class="btn btn-block btn-black" onclick="setTextBlack()"></button>
+				<button type="button" class="btn btn-block btn-black" aria-label="Black text" onclick="setTextBlack()"></button>
 			</div>
 		</div>
 
@@ -97,10 +103,10 @@
 		<div class="row">
 			<div class="col-sm">
 				<div class="dropdown">
-					<button class="btn dropdown-toggle btn-lg btn-purple" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<button class="btn dropdown-toggle btn-lg btn-purple" type="button" id="fontMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						FONTS
-					</button>		
-					<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+					</button>
+					<div class="dropdown-menu" aria-labelledby="fontMenu">
 						<button class="dropdown-item text-center" type="button" onclick="setFont('slanted')">SLANTED</button>
 						<button class="dropdown-item text-center" type="button" onclick="setFont('digits')">DIGITS</button>
 					</div>
@@ -109,10 +115,10 @@
 
 			<div class="col-sm">
 				<div class="dropdown">
-					<button class="btn dropdown-toggle btn-lg btn-purple" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<button class="btn dropdown-toggle btn-lg btn-purple" type="button" id="textAnimations" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						COLOR ANIMATIONS
-					</button>		
-					<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+					</button>
+					<div class="dropdown-menu" aria-labelledby="textAnimations">
 						<button class="dropdown-item text-center" type="button" onclick="setCustomTextColor('rainbow')">RAINBOW</button>
 						<button class="dropdown-item text-center" type="button" onclick="setCustomTextColor('rainbowCycle')">RAINBOW CYCLE</button>
 						<button class="dropdown-item text-center" type="button" onclick="setCustomTextColor('breathing')">BREATHING</button>
@@ -125,25 +131,25 @@
 				<div class="text-color-picker">
 					<div class="sliders">
 						<div class="slide-container">
-							<input class="text-red-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setTextRgb()" oninput="setTextRgb()" />
+							<input class="text-red-slider short-slider" type="range" aria-label="Text red" value="0" max="255" onchange="setTextRgb()" oninput="setTextRgb()" />
 						</div>
 						<div class="slide-container">
-							<input class="text-green-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setTextRgb()" oninput="setTextRgb()" />
+							<input class="text-green-slider short-slider" type="range" aria-label="Text green" value="0" max="255" onchange="setTextRgb()" oninput="setTextRgb()" />
 						</div>
 						<div class="slide-container">
-							<input class="text-blue-slider short-slider" type="range" id="rangeinput" value="0" max="255" oninput="setTextRgb()" onchange="setTextRgb()" />
+							<input class="text-blue-slider short-slider" type="range" aria-label="Text blue" value="0" max="255" oninput="setTextRgb()" onchange="setTextRgb()" />
 						</div>
 					</div>
 					<div id="text-color-preview" class="text-color-preview"></div>
 				</div>
-				<button id="sendColorBtn" type="button" class="btn btn-purple" onclick="setCustomTextColor('solid')">SEND TEXT COLOR</button>
+				<button type="button" class="btn btn-purple send-color-btn" onclick="setCustomTextColor('solid')">SEND TEXT COLOR</button>
 			</div>
 		</div>
 	</div>
 
 	<hr class="major">
 
-	<div class="container-fluid text-center"> 
+	<div class="container-fluid text-center">
 		<div class="row bg-header">
 			<div class="col-sm text-right">
 				<h4>CONTENT</h4>
@@ -151,16 +157,16 @@
 		</div>
 		<div class="row">
 			<div class="col-sm">
-				<h4>BOARD TYPE:</h4><h5>(will take effect during next reboot)</h5>
-				<select id="boardType" onchange="openXLSettings()">
+				<h4>BOARD TYPE:</h4><h5>(changing this restarts the clock service)</h5>
+				<select id="boardType" aria-label="Board type" onchange="openXLSettings()">
 					<option value="normal">Normal</option>
 					<option value="xl">XL</option>
 				</select>
 				<button class="btn btn-sm btn-purple" type="button" onclick="sendBoardType()">SET</button>
 				<div class="xl-settings" id="xl-settings">
 					<br><hr class="minor"><br>
-					NUMBER OF LINES: 
-					<select id="lineCount">
+					NUMBER OF LINES:
+					<select id="lineCount" aria-label="Number of lines">
 						<option value="1">1</option>
 						<option value="2">2</option>
 					</select>
@@ -171,31 +177,31 @@
 			<div class="col-sm">
 				<h4>Line 1:</h4>
 				<form>
-					<input type="checkbox" name="time" id="line1time" onclick="setContent('line1time','time','0')" checked>Time
+					<input type="checkbox" name="time" id="line1time" onclick="setContent('line1time','time','0')" checked><label for="line1time">Time</label>
 					<button id="configureTimeBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
-					<input type="checkbox" name="date" id="line1date" onclick="setContent('line1date','date','0')">Date<br>
-					<input type="checkbox" name="weather" id="line1weather" onclick="setContent('line1weather','weather','0')">Weather  
+					<input type="checkbox" name="date" id="line1date" onclick="setContent('line1date','date','0')"><label for="line1date">Date</label><br>
+					<input type="checkbox" name="weather" id="line1weather" onclick="setContent('line1weather','weather','0')"><label for="line1weather">Weather</label>
 					<button id="configureWeatherBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
-					<input type="checkbox" name="text" id="line1text" onclick="setContent('line1text','text','0')">Custom Text
+					<input type="checkbox" name="text" id="line1text" onclick="setContent('line1text','text','0')"><label for="line1text">Custom Text</label>
 					<button id="configureTextBtn" type="button" class="btn btn-sm btn-purple">CONFIGURE</button>
-					<input id="line1SpeedInput" class="form-control form-control-sm" type="text" placeholder="line 1 speed" min="0">
-					<button class="btn btn-sm btn-purple" type="button" onclick="setTextAnimation('scrolling','0')">SCROLLING</button>	
+					<input aria-label="Line 1 scroll speed" id="line1SpeedInput" class="form-control form-control-sm" type="text" placeholder="line 1 speed" min="0">
+					<button class="btn btn-sm btn-purple" type="button" onclick="setTextAnimation('scrolling','0')">SCROLLING</button>
 					<button class="btn btn-sm btn-purple" type="button" onclick="setTextAnimation('static','0')">RESET</button>
 				</form>
 			</div>
-	
+
 			<div class="col-sm" id="line2-settings">
 				<h4>Line 2:</h4>
 				<form>
-					<input type="checkbox" name="time" id="line2time" onclick="setContent('line2time','time','1')" checked>Time
+					<input type="checkbox" name="time" id="line2time" onclick="setContent('line2time','time','1')" checked><label for="line2time">Time</label>
 					<button id="configureTimeBtn2" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
-					<input type="checkbox" name="date" id="line2date" onclick="setContent('line2date','date','1')">Date<br>
-					<input type="checkbox" name="weather" id="line2weather" onclick="setContent('line2weather','weather','1')">Weather  
+					<input type="checkbox" name="date" id="line2date" onclick="setContent('line2date','date','1')"><label for="line2date">Date</label><br>
+					<input type="checkbox" name="weather" id="line2weather" onclick="setContent('line2weather','weather','1')"><label for="line2weather">Weather</label>
 					<button id="configureWeatherBtn2" type="button" class="btn btn-sm btn-purple">CONFIGURE</button><br>
-					<input type="checkbox" name="text" id="line2text" onclick="setContent('line2text','text','1')">Custom Text
+					<input type="checkbox" name="text" id="line2text" onclick="setContent('line2text','text','1')"><label for="line2text">Custom Text</label>
 					<button id="configureTextBtn2" type="button" class="btn btn-sm btn-purple">CONFIGURE</button>
-					<input id="line2SpeedInput" class="form-control form-control-sm" type="text" placeholder="line 2 speed" min="0">
-					<button class="btn btn-sm btn-purple" type="button" onclick="setTextAnimation('scrolling','1')">SCROLLING</button>	
+					<input aria-label="Line 2 scroll speed" id="line2SpeedInput" class="form-control form-control-sm" type="text" placeholder="line 2 speed" min="0">
+					<button class="btn btn-sm btn-purple" type="button" onclick="setTextAnimation('scrolling','1')">SCROLLING</button>
 					<button class="btn btn-sm btn-purple" type="button" onclick="setTextAnimation('static','1')">RESET</button>
 				</form>
 			</div>
@@ -214,7 +220,7 @@
 			<div class="col-sm">
 				<h5>SET DISPLAY BRIGHTNESS:</h5>
 				<div class="sliders">
-					0 <input class="brightness-slider brightness-slider" type="range" id="brightnessSlider" value="125" max="255" onclick="setBrightness()"/> 100
+					0 <input class="brightness-slider brightness-slider" type="range" id="brightnessSlider" value="125" max="255" onchange="setBrightness()" aria-label="Display brightness"/> 100
 				</div>
 				<br>
 				<button class="btn btn-lg btn-black txt-gray" type="button" onclick="setBrightness('10')">NIGHT NIGHT</button>
@@ -222,14 +228,16 @@
 				<button class="btn btn-lg btn-white" type="button" onclick="setBrightness('125')">DAY</button>
 			</div>
 		</div>
-		
+
 	</div>
 
+</main>
+
 <!-- Modals -->
-<div id="timeModal" class="modal">
+<div id="timeModal" class="modal" role="dialog" aria-modal="true" aria-label="Time settings">
 	<div class="modal-content">
 		<div class="modal-header">
-			<span id="timeclose" class="close">&times;</span>
+			<button id="timeclose" class="close" type="button" aria-label="Close">&times;</button>
 			<div class="col-sm text-left">
 				<h4>CONFIGURE TIME</h4>
 			</div>
@@ -237,7 +245,7 @@
 	<div class="modal-body">
 			<form class="txt-white">
 				Time Format:
-				<select id="timeFormat">
+				<select id="timeFormat" aria-label="Time format">
 					<option value="12h">12 Hour</option>
 					<option value="24h">24 Hour</option>
 				</select><br>
@@ -247,10 +255,10 @@
 	</div>
 </div>
 
-<div id="weatherModal" class="modal">
+<div id="weatherModal" class="modal" role="dialog" aria-modal="true" aria-label="Weather settings">
 	<div class="modal-content">
 		<div class="modal-header">
-			<span id="weatherclose" class="close">&times;</span>
+			<button id="weatherclose" class="close" type="button" aria-label="Close">&times;</button>
 			<div class="col-sm text-left">
 				<h4>CONFIGURE WEATHER</h4>
 			</div>
@@ -258,41 +266,41 @@
 		<div class="modal-body">
 			<form class="txt-white">
 				Temp Unit:
-				<select id="tempUnit">
+				<select id="tempUnit" aria-label="Temperature unit">
 					<option value="f">F</option>
 					<option value="c">C</option>
 					<option value="k">K</option>
 				</select><br><br>
 				Please enter only one of the following. If you have both filled, zip code will be used.<br>
-				Zip Code: <input id="zipInput" class="form-control form-control-sm" type="text" placeholder="zip code" min="0"><br>
-				City Name: <input id="cityInput" class="form-control form-control-sm" type="text" placeholder="city name"><br>
+				Zip Code: <input id="zipInput" aria-label="Zip code" class="form-control form-control-sm" type="text" placeholder="zip code" min="0"><br>
+				City Name: <input id="cityInput" aria-label="City name" class="form-control form-control-sm" type="text" placeholder="city name"><br>
 				<button id="upddateWeatherBtn" type="button" class="btn btn-white txt-purple" onclick="setWeather()"><b>SUBMIT</b></button>
 			</form>
 		</div>
 	</div>
 </div>
 
-<div id="customTextModal" class="modal">
+<div id="customTextModal" class="modal" role="dialog" aria-modal="true" aria-label="Custom text settings">
 	<div class="modal-content">
 		<div class="modal-header">
-			<span id="textclose" class="close">&times;</span>
+			<button id="textclose" class="close" type="button" aria-label="Close">&times;</button>
 			<div class="col-sm text-left">
 				<h4>CONFIGURE CUSTOM TEXT</h4>
 			</div>
 		</div>
 		<div class="modal-body">
 			<form>
-				<input id="textInput" class="form-control form-control-lg" type="text" placeholder="custom text" min="0">
+				<input id="textInput" aria-label="Custom text" class="form-control form-control-lg" type="text" placeholder="custom text" min="0">
 				<button id="sendTextBtn" type="button" class="btn btn-white txt-purple" onclick="setCustomText()"><b>SET CUSTOM TEXT</b></button>
-			</form>	
+			</form>
 		</div>
 	</div>
 </div>
 
-<div id="webPageSettingsModal" class="modal">
+<div id="webPageSettingsModal" class="modal" role="dialog" aria-modal="true" aria-label="Page settings">
 	<div class="modal-content">
 		<div class="modal-header">
-			<span id="settingsclose" class="close">&times;</span>
+			<button id="settingsclose" class="close" type="button" aria-label="Close">&times;</button>
 			<div class="col-sm text-left">
 				<h4>CONFIGURE WEB PAGE</h4>
 			</div>
@@ -302,31 +310,31 @@
 			<div class="page-color-picker">
 				<div class="sliders">
 					<div class="slide-container">
-						<input class="page-red-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setPageRgb()" oninput="setPageRgb()" />
+						<input class="page-red-slider short-slider" type="range" aria-label="Page background red" value="0" max="255" onchange="setPageRgb()" oninput="setPageRgb()" />
 					</div>
 					<div class="slide-container">
-						<input class="page-green-slider short-slider" type="range" id="rangeinput" value="0" max="255" onchange="setPageRgb()" oninput="setPageRgb()" />
+						<input class="page-green-slider short-slider" type="range" aria-label="Page background green" value="0" max="255" onchange="setPageRgb()" oninput="setPageRgb()" />
 					</div>
 					<div class="slide-container">
-						<input class="page-blue-slider short-slider" type="range" id="rangeinput" value="0" max="255" oninput="setPageRgb()" onchange="setPageRgb()" />
+						<input class="page-blue-slider short-slider" type="range" aria-label="Page background blue" value="0" max="255" oninput="setPageRgb()" onchange="setPageRgb()" />
 					</div>
 				</div>
 				<div id="page-color-preview" class="page-color-preview"></div>
 			</div>
-			<button id="sendColorBtn" type="button" class="btn btn-purple" onclick="setCustomPageColor()">SET PAGE BG COLOR</button>
+			<button type="button" class="btn btn-purple send-color-btn" onclick="setCustomPageColor()">SET PAGE BG COLOR</button>
 
 			<hr class="minor">
 			<br>
 			<h5>PAGE TITLE:</h5>
-			<input id="titleInput" class="form-control form-control-lg" type="text" placeholder="title">
-			<button id="sendColorBtn" type="button" class="btn btn-purple" onclick="setPageTitle()">SET PAGE TITLE</button>
+			<input id="titleInput" aria-label="Page title" class="form-control form-control-lg" type="text" placeholder="title">
+			<button type="button" class="btn btn-purple send-color-btn" onclick="setPageTitle()">SET PAGE TITLE</button>
 
 		</div>
 	</div>
 </div>
 
 <script src="{{ url_for('static',filename='js/script.js') }}"></script>
-<script src="../static/js/script.js"></script>
+<script src="{{ url_for('static',filename='js/preview.js') }}"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>

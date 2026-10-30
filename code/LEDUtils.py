@@ -1,21 +1,27 @@
 import argparse
+import copy
 import json
 import math
 import random
 import signal
 import sys
+import threading
 import time
 from pathlib import Path
 
 import requests
 from rpi_ws281x import Color, PixelStrip
 from Utils import *
+import storage
 
 CODE_DIR = Path(__file__).resolve().parent
 
 # This is the PingPongBoard class that drives everything. All functions related to lighting and writing are in here. 
 class PingPongBoard:
 	def __init__(self):
+		self._settingsLock = threading.RLock()
+		self.pendingBoardConfig = None
+		self.restart_at = None
 		self.num_balls = NUM_BALLS		# Needed for changing board type
 		self.num_rows = NUM_ROWS		# Needed for changing board type
 		self.num_cols = NUM_COLS		# Needed for changing board type
@@ -28,6 +34,7 @@ class PingPongBoard:
 		self.twinkleStartTime = 0			# Used for timing when to initate a twinkle
 		self.twinkleTimeElapsed = 0			# Used for timing when to initate a twinkle
 		self.twinkleWaitTime = 0
+		self._twinkleFrameTime = None
 
 		self.fontChanged = False				# Store whether or not the font has changed
 		self.textOriginMoved = [False, False]	# Store whether or not the origin of the display string has changed
@@ -35,7 +42,12 @@ class PingPongBoard:
 		self.displayStringPrev = ['', '']		# This is what the display string was during the previous loop
 		self.displayStringLength = [0, 0]		# This is calculated and used to determine when we have cycled through an entire string during animations
 
-		self.weatherResponse = None		# This stores the reponse from the OpenWeather API
+		self.weatherResponse = None
+		self._weatherRequest = None
+		self._weatherResult = None
+		self._weatherConfig = None
+		self._weatherNextAttempt = 0
+		self._weatherLock = threading.Lock()
 
 		self.minsPrev = None			# Used to calculate when a minute has elapsed. This is useful to only update the weather once a minute TODO Change this
 
@@ -60,10 +72,22 @@ class PingPongBoard:
 			for x in range(self.num_cols):
 				self.balls[y][x] = Ball([y,x],self.boardType)    #passes [row,col], and the type of board which is used for the ledAdresses
 
+	def frameSnapshot(self):
+		return {
+			'boardType': self.boardType,
+			'brightness': self.brightness,
+			'rows': [[ball.color if 0 <= ball.ledNum < self.num_balls else None
+			          for ball in row] for row in reversed(self.balls)],
+		}
+
 	# Actually lights a specic ball (LED) with the color provided to the function. This will check to see if the color is different than the one already set for the ball first. If it is the same then it will not rewrite.
 	def writeBallColor(self,col,row,color):
 		# Do not proceed if bad coordinates (could maybe replace with try/catch)
 		if col < 0 or col >= self.num_cols or row < 0 or row >= self.num_rows:
+			return
+
+		# Some grid positions do not correspond to a physical ball.
+		if not 0 <= self.balls[row][col].ledNum < self.num_balls:
 			return
 
 		# If the color is different than what the buffer has stored, write it and show it
@@ -89,11 +113,13 @@ class PingPongBoard:
 		else:
 			font = self.font
 
+		glyph = font.get(ord(char), font.get(ord('?'), font[ord(' ')]))
+
 		# Determine the distance to the next character based on the current character and the spacing setting
 		if char.isspace():
 			distanceToNext = 4
 		else:
-			distanceToNext = len(font[ord(char)][0]) + self.textSpacing
+			distanceToNext = len(glyph[0]) + self.textSpacing
 
 		# Do not write characters outside of the display area
 		if col <= -4 or col > self.num_cols:
@@ -102,9 +128,9 @@ class PingPongBoard:
 			return distanceToNext
 
 		#Step through the rows and columns of the character and write each pixel/ball/LED
-		for y in range(len(font[ord(char)])):
-			for x in range(len(font[ord(char)][-(y+1)])): #Using -y to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
-				if font[ord(char)][-(y+1)][x]:
+		for y in range(len(glyph)):
+			for x in range(len(glyph[-(y+1)])): #Using -y to access the font row the way it was written in the font file. It is easier to write the font file visually. This accommodates that.
+				if glyph[-(y+1)][x]:
 					self.writeBallTextState(col+x,row+y,textBool)
 				else:
 					self.writeBallTextState(col+x,row+y,False)	#write the text to false so that it will be overwritten
@@ -115,23 +141,24 @@ class PingPongBoard:
 
 	# Writes the display string if some conditions are met. 
 	def updateDisplayString(self):
-		# Iterate across the line numbers
-		for i in range(self.lineCount):
-			#Write the string IF the display stirng is different then it last was OR it has moved location OR the font has changed
-			if self.displayString[i] != self.displayStringPrev[i] or self.textOriginMoved[i] or self.fontChanged:
-				x = self.textOrigin[i][0] 
-				y = self.textOrigin[i][1]
-				for j in range(len(self.displayString[i])):
-					distanceToNext = self.writeChar(x,y,self.displayString[i][j])
-					x += distanceToNext
+		if not (self.fontChanged or any(self.textOriginMoved[:self.lineCount]) or
+				self.displayString[:self.lineCount] != self.displayStringPrev[:self.lineCount] or
+				any(self.displayStringPrev[self.lineCount:])):
+			return
 
-				# After we write a new string, reset/set booleans and set the prev variable to the current string
-				self.textOriginMoved[i] = False							# We just addressed this change, so change it back to false
-				self.fontChanged = False								# We just addressed this change, so change it back to false
-				self.textDisplayChanged = True							# We have written a new string, so the display has changed
-				self.bgDisplayChanged = True							# Since we have update the string, the bg needs to be updated to write over the old text balls now as well
-				self.displayStringPrev[i] = self.displayString[i]		# Set the displayStringPrev[i] to the current string
-				self.displayStringLength[i] = x - self.textOrigin[i][0]	# This so happens to show up after we are done here. Useful for the animation scroll
+		self.textStateWipe()
+		for i in range(self.lineCount):
+			x, y = self.textOrigin[i]
+			for char in self.displayString[i]:
+				x += self.writeChar(x, y, char)
+			self.textOriginMoved[i] = False
+			self.displayStringPrev[i] = self.displayString[i]
+			self.displayStringLength[i] = x - self.textOrigin[i][0]
+		for i in range(self.lineCount, len(self.displayStringPrev)):
+			self.displayStringPrev[i] = ''
+		self.fontChanged = False
+		self.textDisplayChanged = True
+		self.bgDisplayChanged = True
 
 	# This steps the animation frame by one. If the animation frame has reached animationEnd, reset the frame to 0
 	def updateFrame(self, animationEnd):
@@ -221,7 +248,7 @@ class PingPongBoard:
 		self.animationTimeElapsed[lineNum]= nowTime - self.animationStartTime[lineNum]
 
 		# If the time elapsed is >= the time one frame should take for our set speed, do the things
-		if self.animationTimeElapsed[lineNum] >= 1/self.animationSpeed[lineNum] and self.animationSpeed[lineNum] != 0:
+		if self.animationSpeed[lineNum] != 0 and self.animationTimeElapsed[lineNum] >= 1/self.animationSpeed[lineNum]:
 			#Indicate the display has changed
 			self.textOriginMoved[lineNum] = True
 
@@ -320,6 +347,11 @@ class PingPongBoard:
 		time.sleep(wait_ms/1000.0)	# wait time
 
 	def twinkle(self):
+		frameTime = time.monotonic()
+		if self._twinkleFrameTime is not None and frameTime - self._twinkleFrameTime < 0.02:
+			return
+		self._twinkleFrameTime = frameTime
+
 		# If start time has not been defined, do so
 		if self.twinkleStartTime == 0:
 			self.twinkleStartTime = time.time()
@@ -337,7 +369,7 @@ class PingPongBoard:
 		for x in range(self.num_cols):
 			for y in range(self.num_rows):
 				# If the ball is a current twinkle ball then update the frame and color
-				if self.balls[y][x].twinkle:
+				if self.balls[y][x].twinkle and not self.balls[y][x].text:
 					colorElement = int(self.balls[y][x].brightnessFactor() * 255)
 
 					# print "color",colorElement,"at",x,y,"brightness factor:",self.balls[y][x].brightnessFactor(),"frame:",self.balls[y][x].twinkleFrame,"length:",self.balls[y][x].twinkleLength
@@ -353,11 +385,9 @@ class PingPongBoard:
 			col = int(random.randint(0,self.num_cols-1))
 
 			# If the ball is text then get out of here. Do one more loop to determine a new ball
-			if self.balls[row][col].text or self.balls[row][col].twinkle:
-				return
-
-			self.balls[row][col].twinkle = True
-			self.balls[row][col].twinkleLength = random.randint(50,100)
+			if not self.balls[row][col].text and not self.balls[row][col].twinkle and self.balls[row][col].ledNum < self.num_balls:
+				self.balls[row][col].twinkle = True
+				self.balls[row][col].twinkleLength = random.randint(50,100)
 
 			# Set a new twinkle wait time and reset the time elapsed
 			self.twinkleStartTime = time.time()
@@ -450,164 +480,139 @@ class PingPongBoard:
 			self.displayString[1] += textStr + ' '
 
 	# This function obtains the weather and concatenates it to the display string
+	def _fetchWeather(self, config):
+		key, zipcode, city = config
+		params = {'appid': key, 'zip': zipcode} if zipcode else {'appid': key, 'q': city}
+		try:
+			response = requests.get('https://api.openweathermap.org/data/2.5/weather', params=params, timeout=10)
+			data = response.json()
+			if not isinstance(data, dict):
+				data = None
+			elif 'cod' not in data and response.status_code in (401, 404):
+				data['cod'] = response.status_code
+		except (requests.RequestException, ValueError, TypeError):
+			data = None
+		with self._weatherLock:
+			self._weatherResult = (config, data)
+
 	def weather(self, lineNum):
-		# In case we are not displaying the time, check the time to see if we need to update the weather
-		# Get the current local time and parse it out to usable variables
-		t = time.localtime()
-		mins = t.tm_min
-
-		# Check to see if the minute has changed this is to update the weather. 
-		if mins != self.minsPrev:
+		config = (self.openWeatherKey, self.weatherZipLocation, self.weatherCityLocation)
+		now = time.monotonic()
+		if config != self._weatherConfig:
+			self._weatherConfig = config
+			self.weatherResponse = None
+			self._weatherNextAttempt = 0
 			self.updateWeather = True
-			self.minsPrev = mins		
 
-		# base_url variable to store url //
-		base_url = "https://api.openweathermap.org/data/2.5/weather?"
+		with self._weatherLock:
+			result = self._weatherResult
+			self._weatherResult = None
+		if result is not None:
+			self._weatherRequest = None
+			if result[0] == config and result[1] is not None:
+				self.weatherResponse = result[1]
 
-		# If the zip code field is not empty then use the zip code. Otherwise use the filled city name
-		if self.weatherZipLocation != '':
-			complete_url = base_url + "appid=" + self.openWeatherKey + "&zip=" + self.weatherZipLocation
-		else:
-			complete_url = base_url + "appid=" + self.openWeatherKey + "&q=" + self.weatherCityLocation
-
-		if self.updateWeather:
-			try:
-				response = requests.get(complete_url, timeout=10)
-			except requests.RequestException:
-				return
-
-			self.weatherResponse = response.json()
+		if self._weatherRequest is None and now >= self._weatherNextAttempt:
+			self._weatherRequest = threading.Thread(target=self._fetchWeather, args=(config,), daemon=True)
+			self._weatherNextAttempt = now + 60
 			self.updateWeather = False
+			self._weatherRequest.start()
 
-			# Stringify the cod element for error checking
-			self.weatherResponse['cod'] = str(self.weatherResponse['cod'])
-
-		if self.weatherResponse['cod'] == '401':
-			weatherStr = 'key error'
-		if self.weatherResponse['cod'] == '404':
-			weatherStr = 'city not found'
-		elif self.weatherResponse['cod'] == '200':
-			y = self.weatherResponse['main']
-
-			current_temperature = float(y['temp'])
-
-			if self.tempUnits == 'k':
-				current_temperature = str(int(round(current_temperature)))
-				unit = ' K '
-			elif self.tempUnits == 'c':
-				current_temperature = str(int(round(current_temperature - 273.15)))
-				unit = '`C '
-			elif self.tempUnits == 'f':
-				current_temperature = str(int(round(current_temperature * (9.0/5) - 459.67)))	
-				unit = '`F '	# Convert to fahrenheit
-
-			weather_description = self.weatherResponse['weather'][0]['description']
-
-			weatherStr = current_temperature + unit + weather_description
-		else:
-			weatherStr = 'error'
-
-		# Concatenate the weather string to the display string
-		weatherStr = weatherStr.upper() 	# Uppercase the string
-
-		if lineNum == 0:
-			self.displayString[0] += weatherStr + ' '
-		elif lineNum == 1:
-			self.displayString[1] += weatherStr + ' '
+		data = self.weatherResponse
+		weatherStr = 'error'
+		if isinstance(data, dict):
+			code = str(data.get('cod', ''))
+			if code == '401':
+				weatherStr = 'key error'
+			elif code == '404':
+				weatherStr = 'city not found'
+			elif code == '200':
+				try:
+					temperature = float(data['main']['temp'])
+					description = data['weather'][0]['description']
+					if not isinstance(description, str) or not math.isfinite(temperature):
+						raise ValueError('Invalid weather data')
+					if self.tempUnits == 'k':
+						unit = ' K '
+					elif self.tempUnits == 'c':
+						temperature -= 273.15
+						unit = '`C '
+					elif self.tempUnits == 'f':
+						temperature = temperature * (9.0 / 5) - 459.67
+						unit = '`F '
+					else:
+						raise ValueError('Invalid temperature unit')
+					weatherStr = str(int(round(temperature))) + unit + description
+				except (KeyError, IndexError, TypeError, ValueError, OverflowError):
+					pass
+		self.displayString[lineNum] += weatherStr.upper() + ' '
 
 # SETTING HANDLING -------------------------------------------------------------------
 
-	# This will dump the current settings to settings.txt
+	def settingsSnapshot(self):
+		with self._settingsLock:
+			settings = {key: copy.deepcopy(getattr(self, key)) for key in (
+				'animationSpeed', 'textColor', 'fontName', 'textSpacing', 'customText',
+				'weatherZipLocation', 'weatherCityLocation', 'tempUnits', 'content',
+				'bgColor', 'brightness', 'timeFormat', 'boardType', 'lineCount')}
+			if self.pendingBoardConfig is not None:
+				settings.update(self.pendingBoardConfig)
+			return settings
+
 	def dumpSettings(self):
-		# Create a settings dictionary
-		settings = {
-			'animationSpeed' : self.animationSpeed,		# Balls/s for animations. Needs to be a float (.0). Static default
-			'textColor' : self.textColor,
-			'fontName' : self.fontName,
-			'textSpacing' : self.textSpacing,
-			'customText' : self.customText,
-			'weatherZipLocation' : self.weatherZipLocation,
-			'weatherCityLocation' : self.weatherCityLocation,
-			'tempUnits' : self.tempUnits,
-			'content' : self.content,
-			'bgColor' : self.bgColor,
-			'brightness' : self.brightness,
-			'timeFormat' : self.timeFormat,
-			'boardType'  : self.boardType,
-			'lineCount'  : self.lineCount
-		}
+		with self._settingsLock:
+			storage.save_state('settings.json', self.settingsSnapshot(), storage.device_settings)
 
-		# Dump the settings to settings.txt
-		with (CODE_DIR / 'settings.txt').open('w') as filehandle:
-			json.dump(settings, filehandle)
+	def changeBoardType(self, boardType):
+		if boardType not in ('normal', 'xl'):
+			raise ValueError('Invalid board type')
+		with self._settingsLock:
+			settings = self.settingsSnapshot()
+			settings['boardType'] = boardType
+			if boardType == 'normal':
+				settings['lineCount'] = 1
+			storage.save_state('settings.json', settings, storage.device_settings)
+			if boardType == self.boardType:
+				self.pendingBoardConfig = None
+				self.restart_at = None
+			else:
+				self.pendingBoardConfig = {'boardType': boardType, 'lineCount': settings['lineCount']}
+				self.restart_at = time.monotonic() + 2
 
-	# This will load the settings from settings.txt
-	def loadSettings(self,bootup=True):
-		# Get the settings dictionary from settings.txt
-		with (CODE_DIR / 'settings.txt').open('r') as filehandle:
-			settings = json.load(filehandle)
-
-		# Get the API keys from apikeys.txt
-		with (CODE_DIR / 'apikeys.txt').open('r') as filehandle:
-			apikeys = json.load(filehandle)
-		
-		# Set the API Key variables
-		self.openWeatherKey = apikeys['openweather']
-
-		# Set variables from the settings 
-		self.animationSpeed = settings['animationSpeed']									 # Balls/s for animations. Needs to be a float (.0). Static default
-		self.textColor = settings['textColor']
-		self.fontName = settings['fontName']
-		self.textSpacing = settings['textSpacing']
-		self.customText = settings['customText']
-		self.weatherZipLocation = settings['weatherZipLocation']
-		self.weatherCityLocation = settings['weatherCityLocation']
-		self.tempUnits = settings['tempUnits']
-		self.content = settings['content']
-		self.bgColor = settings['bgColor']
-		self.brightness = settings['brightness']
-		self.timeFormat = settings['timeFormat']
-		self.boardType = settings['boardType']
-		self.lineCount = settings['lineCount']
-
-		# Since we have loaded new settings, assume the displays have changed
-		self.bgDisplayChanged = True
-		self.textDisplayChanged = True
-		self.updateWeather = True
-
-		# Establish the text origin list with spaces for 2 lines
-		self.textOrigin = [0,0]
-
-		# Address possible different settings based on the board type
-		if self.boardType == 'normal':
-			self.textOrigin[0] = [1,1]		#[line #][x,y]
-		elif self.boardType == 'xl':
-			self.num_balls = 257				# Number of balls on your board #CHANGED FOR XL
-			self.num_rows = 13				# How many rows of balls are on your board #CHANGED FOR XL
-			self.num_cols = 23				# How many effective columns are on your board. This is equal to your widest row. #CHANGED FOR XL
-
-			if self.lineCount == 1:
-				self.textOrigin[0] = [2,4]
-			elif self.lineCount == 2:
-				self.textOrigin[0] = [4,1]
-				self.textOrigin[1] = [1,7]
-
-		# Calculate the LED count
-		self.led_count = self.num_balls * PIXEL_RATIO
-
-		# Address possible font change
-		if self.fontName == 'slanted':
-			self.font = slanted
-		elif self.fontName == 'digits':
-			self.font = digits
-
-		# Fix unicode content list
-		for i in range(len(self.content)):
-			self.content[i] = str(self.content[i])
-
-		# Set brightness if we are not in bootup
-		if bootup == False:
-			self.strip.setBrightness(self.brightness)
+	def loadSettings(self, bootup=True):
+		with self._settingsLock:
+			settings = storage.load_state('settings.json', CODE_DIR / 'settings.txt', storage.device_settings)
+			apikeys = storage.load_state('apikeys.json', CODE_DIR / 'apikeys.txt', storage.api_keys)
+			storage.device_settings(settings)
+			storage.api_keys(apikeys)
+			self.openWeatherKey = apikeys['openweather']
+			for key in ('animationSpeed', 'textColor', 'fontName', 'textSpacing', 'customText',
+					'weatherZipLocation', 'weatherCityLocation', 'tempUnits', 'content',
+					'bgColor', 'brightness', 'timeFormat'):
+				setattr(self, key, copy.deepcopy(settings[key]))
+			if bootup:
+				self.boardType = settings['boardType']
+				self.lineCount = settings['lineCount']
+				self.num_balls, self.num_rows, self.num_cols = (
+					(257, 13, 23) if self.boardType == 'xl' else (NUM_BALLS, NUM_ROWS, NUM_COLS))
+				self.led_count = self.num_balls * PIXEL_RATIO
+			elif settings['boardType'] == self.boardType:
+				self.lineCount = settings['lineCount']
+				self.pendingBoardConfig = None
+				self.restart_at = None
+			else:
+				self.pendingBoardConfig = {key: settings[key] for key in ('boardType', 'lineCount')}
+				self.restart_at = time.monotonic() + 2
+			self.bgDisplayChanged = True
+			self.textDisplayChanged = True
+			self.updateWeather = True
+			self.textOrigin = [[1, 1], 0]
+			if self.boardType == 'xl':
+				self.textOrigin = [[2, 4], 0] if self.lineCount == 1 else [[4, 1], [1, 7]]
+			self.font = slanted if self.fontName == 'slanted' else digits
+			self.fontChanged = True
+			if not bootup:
+				self.strip.setBrightness(self.brightness)
 
 # Initialize an instance of the LEDStrip class
 PPB = PingPongBoard()

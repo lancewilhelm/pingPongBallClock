@@ -1,219 +1,249 @@
-from pathlib import Path
+import json
+import math
+import secrets
+import threading
+from urllib.parse import urlsplit
 
-from flask import Flask, render_template, request
+from flask import Flask, abort, g, jsonify, render_template, request
 from LEDUtils import *
-from Utils import *
+import storage
 
-#Setup the flask object and get it going
 app = Flask(__name__)
-CODE_DIR = Path(__file__).resolve().parent
+app.config['MAX_CONTENT_LENGTH'] = 16384
+board_lock = threading.RLock()
 
-# Flask Index
-@app.route("/", methods=['GET'])
+
+def origin_tuple(value):
+    try:
+        parsed = urlsplit(value)
+        if parsed.scheme not in ('http', 'https') or not parsed.hostname or parsed.username is not None or parsed.password is not None or parsed.path not in ('', '/') or parsed.query or parsed.fragment:
+            return None
+        return parsed.scheme, parsed.hostname.lower(), parsed.port or (443 if parsed.scheme == 'https' else 80)
+    except ValueError:
+        return None
+
+
+@app.before_request
+def protect_request():
+    try:
+        credentials = storage.read_json(storage.STATE_DIR / 'auth.json')
+        username, password = credentials['username'], credentials['password']
+        auth = request.authorization
+        valid = (isinstance(username, str) and bool(username) and isinstance(password, str) and bool(password)
+                 and auth is not None and auth.type.lower() == 'basic'
+                 and secrets.compare_digest(username.encode('utf-8'), (auth.username or '').encode('utf-8'))
+                 and secrets.compare_digest(password.encode('utf-8'), (auth.password or '').encode('utf-8')))
+    except (OSError, ValueError, TypeError, KeyError, AttributeError):
+        valid = False
+    if not valid:
+        return 'Authentication required', 401, {'WWW-Authenticate': 'Basic realm="Ping Pong Ball Clock"'}
+    if request.method == 'POST':
+        if request.headers.get('X-Requested-With') != 'XMLHttpRequest':
+            abort(403)
+        origin = request.headers.get('Origin')
+        if origin is not None and (origin_tuple(origin) is None or origin_tuple(origin) != origin_tuple(request.host_url)):
+            abort(403)
+        request.get_data(cache=True)
+    board_lock.acquire()
+    g.board_lock_acquired = True
+
+
+@app.teardown_request
+def release_board_lock(error):
+    if g.pop('board_lock_acquired', False):
+        board_lock.release()
+
+
+def choice(name, values):
+    value = request.form.get(name)
+    if value not in values:
+        abort(400)
+    return value
+
+
+def integer(name, minimum, maximum):
+    try:
+        value = int(request.form[name])
+    except (KeyError, ValueError, TypeError):
+        abort(400)
+    if not minimum <= value <= maximum:
+        abort(400)
+    return value
+
+
+def text_value(name, maximum=512):
+    value = request.form.get(name)
+    if value is None or len(value) > maximum:
+        abort(400)
+    return value
+
+
+@app.route('/')
 def index():
-	return render_template('index.html')
+    return render_template('index.html')
 
-# Flask BG Color API
-@app.route("/api/bgcolor", methods=['POST'])
+
+@app.route('/api/state')
+def state():
+    return jsonify(PPB.settingsSnapshot())
+
+
+@app.route('/api/frame')
+def frame():
+    response = jsonify(PPB.frameSnapshot())
+    response.headers['Cache-Control'] = 'no-store'
+    return response
+
+
+def set_color(attribute, animations):
+    program = choice('color', ('solid', *animations))
+    rgb = [integer(channel, 0, 255) for channel in ('red', 'green', 'blue')]
+    setattr(PPB, attribute, ['solid', Color(*rgb)] if program == 'solid' else ['animation', program])
+    setattr(PPB, 'bgDisplayChanged' if attribute == 'bgColor' else 'textDisplayChanged', True)
+    return ''
+
+
+@app.post('/api/bgcolor')
 def setBGColor():
-	# Read the values from the POST
-	program = request.form['color']
-	red = int(request.form['red'])
-	green = int(request.form['green'])
-	blue = int(request.form['blue'])
-	
-	PPB.bgDisplayChanged = True
-	# Change the bg color accordingly
-	if program == "solid":
-		PPB.bgColor = ["solid", Color(red,green,blue)]
-	else:
-		PPB.bgColor = ["animation", program]
-	return ""
+    return set_color('bgColor', ('rainbow', 'rainbowCycle', 'breathing', 'twinkle'))
 
-# Flask Text Color API
-@app.route("/api/textcolor", methods=['POST'])
+
+@app.post('/api/textcolor')
 def setTextColor():
-	# Read the values from the POST
-	program = request.form['color']
-	red = int(request.form['red'])
-	green = int(request.form['green'])
-	blue = int(request.form['blue'])
-	
-	PPB.textDisplayChanged = True
-	# Change the bg color accordingly
-	if program == "solid":
-		PPB.textColor = ["solid", Color(red,green,blue)]
-	else:
-		PPB.textColor = ["animation", program]
-	return ""
+    return set_color('textColor', ('rainbow', 'rainbowCycle', 'breathing'))
 
-# Flask Font API
-@app.route("/api/font", methods=['POST'])
+
+@app.post('/api/font')
 def setFont():
-	# Read the values from the POST
-	font = request.form['font']
-	
-	# Assign the font variable in LED class
-	if font == "slanted":
-		PPB.font = slanted
-	elif font == "digits":
-		PPB.font = digits
+    font = choice('font', ('slanted', 'digits'))
+    PPB.font = {'slanted': slanted, 'digits': digits}[font]
+    PPB.fontName = font
+    PPB.fontChanged = True
+    PPB.updateDisplayString()
+    return ''
 
-	PPB.fontName = font
-	PPB.fontChanged = True
-	PPB.updateDisplayString()
 
-	return ""
-
-# Flask Text Animation API
-@app.route("/api/textanimation", methods=['POST'])
+@app.post('/api/textanimation')
 def setTextAnimation():
-	# Read the values from the POST
-	animation = str(request.form['animation'])
-	lineNum = int(request.form['lineNum'])
+    animation = choice('animation', ('static', 'scrolling'))
+    line = integer('lineNum', 0, 1)
+    speed = 0.0
+    if animation == 'scrolling':
+        try:
+            speed = float(request.form['speed'])
+        except (KeyError, ValueError, TypeError):
+            abort(400)
+        if not math.isfinite(speed) or not 0 <= speed <= 100:
+            abort(400)
+    if animation == 'static':
+        if PPB.boardType == 'normal':
+            PPB.textOrigin[0] = [1, 1]
+        elif PPB.lineCount == 1:
+            PPB.textOrigin[0] = [2, 4]
+        else:
+            PPB.textOrigin[line] = [[4, 1], [1, 7]][line]
+    PPB.animationSpeed[line] = speed
+    PPB.textStateWipe()
+    PPB.textOriginMoved = [True, True]
+    PPB.updateDisplayString()
+    return ''
 
-	if animation == "static":
-		if PPB.boardType == 'normal':
-			PPB.textOrigin[0] = [1,1]
-		elif PPB.boardType == 'xl':
-			if PPB.lineCount == 1:
-				PPB.textOrigin[0] = [2,4]
-			elif PPB.lineCount == 2:
-				if lineNum == 0:
-					PPB.textOrigin[lineNum] = [4,1]
-				elif lineNum == 1:
-					PPB.textOrigin[lineNum] = [1,7]
-		PPB.animationSpeed[lineNum] = 0
-	if animation == "scrolling":
-		speed = float(request.form['speed'])
-		PPB.animationSpeed[lineNum] = speed
 
-	# Reset the text on the screen
-	PPB.textStateWipe()
-	PPB.textOriginMoved = [True, True]
-	PPB.updateDisplayString()
-	return ""
-
-# Flask Select Content API
-@app.route("/api/setcontent", methods=['POST'])
+@app.post('/api/setcontent')
 def setContent():
-	# Read the values from the POST
-	content = str(request.form['content'])
-	lineNum = str(request.form['lineNum'])
-	checked = str(request.form['checked'])
+    content = choice('content', ('time', 'date', 'text', 'weather'))
+    line = integer('lineNum', 0, 1)
+    checked = choice('checked', ('true', 'false'))
+    item = f'{content} {line}'
+    if checked == 'true' and item not in PPB.content:
+        PPB.content.append(item)
+    elif checked == 'false' and item in PPB.content:
+        PPB.content.remove(item)
+    return ''
 
-	contentChunk = content + ' ' + lineNum
 
-	if checked == 'true' and (contentChunk in PPB.content) == False:
-		PPB.content.append(contentChunk)
-	elif checked == 'false' and (contentChunk in PPB.content) == True:
-		PPB.content.remove(contentChunk)
-
-	print(PPB.content)
-	PPB.textStateWipe()
-	return ""
-
-# Flask Set Custom Text API
-@app.route("/api/setcustomtext", methods=['POST'])
+@app.post('/api/setcustomtext')
 def setCustomText():
-	# Read the values from the POST
-	text = str(request.form['text'])
+    PPB.customText = text_value('text')
+    return ''
 
-	PPB.customText = text
-	return ""
 
-# Flask Set Custom Text API
-@app.route("/api/weather", methods=['POST'])
+@app.post('/api/weather')
 def setWeather():
-	# Read the values from the POST
-	PPB.tempUnits = str(request.form['unit'])
-	PPB.weatherZipLocation = str(request.form['zip'])
-	PPB.weatherCityLocation = str(request.form['city'])
+    unit = choice('unit', ('f', 'c', 'k'))
+    zipcode, city = text_value('zip'), text_value('city')
+    PPB.tempUnits, PPB.weatherZipLocation, PPB.weatherCityLocation = unit, zipcode, city
+    PPB.updateWeather = True
+    return ''
 
-	PPB.updateWeather = True
-	return ""
 
-# Flask Settings API
-@app.route("/api/settings", methods=['POST'])
+@app.post('/api/settings')
 def updateSettings():
-	# Read the values from the POST
-	action = str(request.form['action'])
+    action = choice('action', ('save', 'load'))
+    if action == 'save':
+        PPB.dumpSettings()
+    else:
+        PPB.loadSettings(False)
+    return ''
 
-	if action == 'save':
-		PPB.dumpSettings()
-	elif action == 'load':
-		PPB.loadSettings(False)
 
-	return ""
-
-# Flask Set Brightness API
-@app.route("/api/brightness", methods=['POST'])
+@app.post('/api/brightness')
 def setBrightness():
-	# Read the values from the POST
-	brightness = int(request.form['brightness'])
+    brightness = integer('brightness', 0, 255)
+    PPB.strip.setBrightness(brightness)
+    PPB.brightness = brightness
+    PPB.strip.show()
+    return ''
 
-	PPB.strip.setBrightness(brightness)
 
-	return ""
-
-# Flask Set Brightness API
-@app.route("/api/timeformat", methods=['POST'])
+@app.post('/api/timeformat')
 def setTimeFormat():
-	# Read the values from the POST
-	timeFormat = str(request.form['timeFormat'])
+    PPB.timeFormat = choice('timeFormat', ('12h', '24h'))
+    return ''
 
-	PPB.timeFormat = timeFormat
 
-	return ""
-
-# Flask Web PageSettings API
-@app.route("/api/webpagesettings", methods=['GET','POST'])
+@app.route('/api/webpagesettings', methods=['GET', 'POST'])
 def updateWebPageSettings():
-	if request.method == 'GET':
-		# Get the web page settings from webpagesettings.txt
-		with (CODE_DIR / 'webpagesettings.txt').open('r') as filehandle:
-			return filehandle.read()
-	
-	elif request.method == 'POST':
-		settings = str(request.form['settings'])
-		# Write the settings to webpagesettings.txt
-		with (CODE_DIR / 'webpagesettings.txt').open('w') as filehandle:
-			filehandle.write(settings)
-		return ""
+    if request.method == 'GET':
+        return jsonify(storage.load_state('webpage.json', 'webpagesettings.txt', storage.page_settings))
+    try:
+        settings = json.loads(text_value('settings', 12000))
+        storage.page_settings(settings)
+        if len(settings['title']) > 200 or len(settings['mainBGColor']) > 100:
+            abort(400)
+    except (ValueError, TypeError):
+        abort(400)
+    storage.save_state('webpage.json', settings, storage.page_settings)
+    return ''
 
-# Board Type API
-@app.route("/api/boardtype", methods=['POST'])
+
+@app.post('/api/boardtype')
 def setBoardType():
-	# Read the values from the POST
-	boardType = str(request.form['boardType'])
+    board_type = choice('boardType', ('normal', 'xl'))
+    try:
+        PPB.changeBoardType(board_type)
+    except Exception:
+        app.logger.exception('Board type change failed')
+        return 'Board type change failed', 500
+    return ''
 
-	if boardType == 'normal':
-		PPB.lineCount = 1
 
-	# Change the board type and save the settings
-	PPB.boardType = boardType
-	PPB.dumpSettings()
-
-	return ""
-
-# XL Settings API
-@app.route("/api/xlsettings", methods=['POST'])
+@app.post('/api/xlsettings')
 def setXLSettings():
-	# Read the values from the POST
-	lineCount = int(request.form['lineCount'])
-
-	PPB.lineCount = lineCount
-
-	if PPB.boardType == 'xl':
-		if PPB.lineCount == 1:
-			PPB.textOrigin[0] = [2,4]
-		elif PPB.lineCount == 2:
-			PPB.textOrigin[0] = [4,1]
-			PPB.textOrigin[1] = [1,7]
-	else: 
-		print("Board is not set to XL")
-
-	# Perform a reset of the board to eliminate the ghost text balls
-	PPB.colorFill(Color(0,0,0), True)
-
-	return ""
+    line_count = integer('lineCount', 1, 2)
+    pending = PPB.pendingBoardConfig
+    target_type = pending['boardType'] if pending is not None else PPB.boardType
+    if target_type == 'normal' and line_count != 1:
+        abort(400)
+    if pending is not None:
+        with PPB._settingsLock:
+            PPB.pendingBoardConfig['lineCount'] = line_count
+    if PPB.boardType == 'normal' and line_count == 2:
+        return ''
+    PPB.lineCount = line_count
+    if PPB.boardType == 'xl':
+        PPB.textOrigin[0] = [2, 4] if line_count == 1 else [4, 1]
+        if line_count == 2:
+            PPB.textOrigin[1] = [1, 7]
+    PPB.textOriginMoved = [True, True]
+    return ''

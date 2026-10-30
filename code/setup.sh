@@ -11,6 +11,14 @@ fi
 
 CODE_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd -- "$CODE_DIR/.." && pwd)"
+# systemd unit values and ExecStart have their own escaping rules. Restrict
+# checkout paths so the generated unit cannot be parsed as multiple arguments
+# or contain specifier expansions.
+if [[ ! "$PROJECT_DIR" =~ ^/[a-zA-Z0-9_./-]+$ ]]; then
+    echo "Checkout path must contain only ASCII letters, digits, /, ., _, and -: $PROJECT_DIR" >&2
+    exit 1
+fi
+
 VENV_DIR="$PROJECT_DIR/.venv"
 SERVICE_NAME="pingpongballclock.service"
 UNIT_FILE="$CODE_DIR/pingpongballclock.service.in"
@@ -34,6 +42,36 @@ python3 -m venv "$VENV_DIR"
 "$VENV_DIR/bin/python" -m pip install --upgrade pip
 "$VENV_DIR/bin/python" -m pip install -r "$CODE_DIR/requirements.txt"
 
+echo "Preparing local credentials..."
+AUTH_CREDENTIALS="$(python3 - "$CODE_DIR/.local/auth.json" <<'PY'
+import json
+import os
+from pathlib import Path
+import secrets
+import sys
+import tempfile
+
+path = Path(sys.argv[1])
+path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+os.chmod(path.parent, 0o700)
+credentials = {"username": "admin", "password": secrets.token_urlsafe(32)}
+fd, temp_name = tempfile.mkstemp(prefix=".auth-", dir=path.parent)
+try:
+    with os.fdopen(fd, "w") as file:
+        json.dump(credentials, file)
+        file.write("\n")
+    try:
+        os.link(temp_name, path)
+    except FileExistsError:
+        os.chmod(path, 0o600)
+    else:
+        print("Username: " + credentials["username"])
+        print("Password: " + credentials["password"])
+finally:
+    os.unlink(temp_name)
+PY
+)"
+
 echo "Installing and starting $SERVICE_NAME..."
 sed \
     -e "s|__WORKING_DIRECTORY__|$(escape_sed "$CODE_DIR")|g" \
@@ -41,9 +79,16 @@ sed \
     "$UNIT_FILE" > "$GENERATED_UNIT"
 sudo install -m 0644 "$GENERATED_UNIT" "/etc/systemd/system/$SERVICE_NAME"
 sudo systemctl daemon-reload
-sudo systemctl enable --now "$SERVICE_NAME"
+sudo systemctl enable "$SERVICE_NAME"
+sudo systemctl restart "$SERVICE_NAME"
 
 echo
-echo "Ping Pong Ball Clock is running. Check it with:"
+if [[ -n "$AUTH_CREDENTIALS" ]]; then
+    echo "Browser login credentials:"
+    printf '%s\n' "$AUTH_CREDENTIALS"
+    echo "Credentials are also stored in $CODE_DIR/.local/auth.json."
+    echo
+fi
+echo "Check the service status and logs with:"
 echo "  sudo systemctl status $SERVICE_NAME"
 echo "  journalctl -u $SERVICE_NAME -f"
