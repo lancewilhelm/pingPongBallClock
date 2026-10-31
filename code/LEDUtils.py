@@ -26,8 +26,7 @@ class PingPongBoard:
 		self.num_rows = NUM_ROWS		# Needed for changing board type
 		self.num_cols = NUM_COLS		# Needed for changing board type
 
-		self.animationFrame = 0				# Used for animations, start at 0
-		self.animationEnd = 1				# Default animation end frame. This is always changed
+		self.animationFrame = [0, 0]			# Separate background and text animation frames
 		self.animationStartTime = [0,0]		# Used for animations and when to move the string
 		self.animationTimeElapsed = [0,0]	# Used for animations and when to move the string
 		self.breathColor = None				# Necessary for the breathing animation
@@ -161,12 +160,9 @@ class PingPongBoard:
 		self.bgDisplayChanged = True
 
 	# This steps the animation frame by one. If the animation frame has reached animationEnd, reset the frame to 0
-	def updateFrame(self, animationEnd):
-		self.animationFrame += 1
-		self.animationEnd = animationEnd
-		if(self.animationFrame>=self.animationEnd):
-			self.animationFrame = 0
-		return self.animationFrame
+	def updateFrame(self, animationEnd, text=False):
+		self.animationFrame[text] = (self.animationFrame[text] + 1) % animationEnd
+		return self.animationFrame[text]
 
 	# This sets every ball's text state to False on the board
 	def textStateWipe(self):
@@ -278,7 +274,7 @@ class PingPongBoard:
 	# Rainbow color animation
 	def rainbow(self,wait_ms=20):
 		# Draw rainbow that fades across all pixels at once.
-		j = self.updateFrame(self.led_count)
+		j = self.updateFrame(256)
 
 		for x in range(self.num_cols):
 			for y in range(self.num_rows):
@@ -291,7 +287,7 @@ class PingPongBoard:
 	# Rainbow text color animation
 	def rainbowText(self,wait_ms=20):
 		# Draw rainbow that fades across all pixels at once.
-		j = self.updateFrame(self.led_count)
+		j = self.updateFrame(256, True)
 
 		for x in range(self.num_cols):
 			for y in range(self.num_rows):
@@ -304,7 +300,7 @@ class PingPongBoard:
 	# Rainbow cycle makes all of the BG balls the same color and changes the color over time
 	def rainbowCycle(self,wait_ms=20):
 		# Draw rainbow that uniformly distributes itself across all pixels.
-		j = self.updateFrame(self.led_count)
+		j = self.updateFrame(256)
 
 		for x in range(self.num_cols):
 			for y in range(self.num_rows):
@@ -317,7 +313,7 @@ class PingPongBoard:
 		# Rainbow cycle makes all of the text the same color and changes the color over time
 	def rainbowCycleText(self,wait_ms=20):
 		# Draw rainbow that uniformly distributes itself across all pixels.
-		j = self.updateFrame(self.led_count)
+		j = self.updateFrame(256, True)
 
 		for x in range(self.num_cols):
 			for y in range(self.num_rows):
@@ -330,7 +326,7 @@ class PingPongBoard:
 	# Breathing color animation. Uses the random color list in Utils
 	def breathing(self,text=False,wait_ms=20):
 		# Cycle in and out of random colors from colorList
-		j = self.updateFrame(100)
+		j = self.updateFrame(100, text)
 
 		# If we are on a new cycle, or a color has not been picked then pick a color
 		if j == 0 or self.breathColor == None:
