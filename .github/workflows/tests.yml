@@ -18,4 +18,6 @@ jobs:
       - run: node --check code/static/js/script.js
       - run: node --check code/static/js/preview.js
       - run: node tests/test_web_ui.js
+      - run: node tests/test_preset_ui.js
+      - run: node tests/test_preset_default_ui.js
       - run: node tests/test_preview.js

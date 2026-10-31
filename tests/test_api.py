@@ -182,3 +182,24 @@ class ApiTest(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+class PresetApiTest(unittest.TestCase):
+    setUp = ApiTest.setUp
+    post = ApiTest.post
+    def test_presets_auth_validation_references_and_schedules(self):
+        self.assertEqual(self.client.get('/api/presets').status_code, 401)
+        self.assertEqual(self.post('/api/presets', {'action':'save', 'name':'X'}, self.auth).status_code, 403)
+        self.assertEqual(self.post('/api/presets', {'action':'save', 'name':' '}).status_code, 400)
+        response = self.post('/api/presets', {'action':'save', 'name':'<img src=x>'})
+        self.assertEqual(response.status_code, 200)
+        preset_id = response.json['presets'][0]['id']
+        self.assertEqual(response.json['presets'][0]['name'], '<img src=x>')
+        self.assertEqual(self.post('/api/presets', {'action':'default', 'id':preset_id}).status_code, 200)
+        self.assertEqual(self.post('/api/presets', {'action':'delete', 'id':preset_id}).status_code, 400)
+        self.assertEqual(self.post('/api/presets', {'action':'default', 'id':''}).status_code, 200)
+        self.assertEqual(self.post('/api/presets', {'action':'schedule', 'preset':preset_id, 'time':'25:00', 'days':'[0]', 'enabled':'true'}).status_code, 400)
+        response = self.post('/api/presets', {'action':'schedule', 'preset':preset_id, 'time':'12:30', 'days':'[0,1]', 'enabled':'false'})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.post('/api/presets', {'action':'delete', 'id':preset_id}).status_code, 400)
+        self.assertEqual(self.post('/api/presets', {'action':'delete_schedule', 'id':response.json['schedules'][0]['id']}).status_code, 200)
+        self.assertEqual(self.post('/api/presets', {'action':'delete', 'id':preset_id}).status_code, 200)

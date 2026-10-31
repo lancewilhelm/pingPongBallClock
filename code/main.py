@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 import logging
+from datetime import datetime
 import socket
 import sys
 import threading
 import time
 
-from flaskUtils import app, board_lock
+from flaskUtils import app, board_lock, initialize_presets, run_schedules
 from LEDUtils import PPB
 from werkzeug.serving import ThreadedWSGIServer, make_server
 
@@ -45,9 +46,17 @@ def update_board():
 
 
 if __name__ == '__main__':
+    with board_lock:
+        initialize_presets()
     start_servers()
+    last_minute = datetime.now().replace(second=0, microsecond=0)
     while True:
         with board_lock:
+            now = datetime.now()
+            minute = now.replace(second=0, microsecond=0)
+            if minute != last_minute:
+                last_minute = minute
+                run_schedules(now)
             if getattr(PPB, 'restart_at', None) and time.monotonic() >= PPB.restart_at:
                 sys.exit(1)
             update_board()

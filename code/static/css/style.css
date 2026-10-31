@@ -88,3 +88,14 @@ input[type="checkbox"] { accent-color: var(--main-bg-color); }
  .row:has(.btn-block) > .col-sm { flex: 1 1 20%; }
  .bg-header { padding: 15px; }
 }
+
+.presets-card label, .presets-card fieldset { display: block; margin: 0.8rem 0 0.25rem; }
+.presets-card .form-control { max-width: 32rem; margin-bottom: 0.5rem; }
+.presets-card .btn { margin: 0.25rem 0.4rem 0.25rem 0; }
+.presets-card fieldset label { display: inline-block; margin: 0.25rem 0.65rem 0.25rem 0; }
+.presets-card legend { font-size: 1rem; }
+#scheduleList > div { padding: 0.65rem 0; border-bottom: 1px solid rgba(127, 127, 127, 0.3); }
+@media (max-width: 575px) {
+    .presets-card .form-control { max-width: 100%; }
+    #scheduleList > div span { display: block; overflow-wrap: anywhere; }
+}

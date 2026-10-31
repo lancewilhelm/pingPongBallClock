@@ -2,6 +2,7 @@ import json
 import math
 import secrets
 import threading
+from datetime import datetime
 from urllib.parse import urlsplit
 
 from flask import Flask, abort, g, jsonify, render_template, request
@@ -247,3 +248,115 @@ def setXLSettings():
             PPB.textOrigin[1] = [1, 7]
     PPB.textOriginMoved = [True, True]
     return ''
+
+
+@app.route('/api/presets', methods=['GET', 'POST'])
+def manage_presets():
+    import presets
+    try:
+        definitions = presets.load()
+        if request.method == 'GET':
+            return jsonify(definitions)
+        action = choice('action', ('save', 'apply', 'delete', 'default', 'schedule', 'delete_schedule'))
+        if action == 'save':
+            name = text_value('name', 80).strip()
+            if not name:
+                raise ValueError('Enter a preset name')
+            definitions['presets'].append({'id': presets.new_id(), 'name': name,
+                                           'display': presets.snapshot(PPB.settingsSnapshot())})
+        elif action in ('apply', 'delete', 'default'):
+            preset_id = text_value('id', 32)
+            preset = presets.get_preset(definitions, preset_id)
+            if action == 'default' and not preset_id:
+                definitions['default'] = None
+            elif preset is None:
+                raise ValueError('Preset not found')
+            elif action == 'apply':
+                PPB.applyPreset(preset['display'])
+                return jsonify(PPB.settingsSnapshot())
+            elif action == 'default':
+                definitions['default'] = preset_id
+            else:
+                if definitions['default'] == preset_id or any(s['preset'] == preset_id for s in definitions['schedules']):
+                    raise ValueError('Remove the default and schedules using this preset first')
+                definitions['presets'].remove(preset)
+        elif action == 'schedule':
+            schedule_id = request.form.get('id', '')
+            existing = next((s for s in definitions['schedules'] if s['id'] == schedule_id), None)
+            if schedule_id and existing is None:
+                raise ValueError('Schedule not found')
+            days = json.loads(text_value('days', 32))
+            schedule = {'id': schedule_id or presets.new_id(), 'preset': text_value('preset', 32),
+                        'time': text_value('time', 5), 'days': days,
+                        'enabled': choice('enabled', ('true', 'false')) == 'true'}
+            if existing is not None:
+                definitions['schedules'].remove(existing)
+            definitions['schedules'].append(schedule)
+        else:
+            schedule_id = text_value('id', 32)
+            existing = next((s for s in definitions['schedules'] if s['id'] == schedule_id), None)
+            if existing is None:
+                raise ValueError('Schedule not found')
+            definitions['schedules'].remove(existing)
+        presets.save(definitions)
+        if action == 'schedule':
+            run_schedules(datetime.now())
+        return jsonify(definitions)
+    except (ValueError, TypeError, KeyError) as error:
+        return str(error), 400
+    except OSError:
+        app.logger.exception('Preset storage failed')
+        return 'Could not save or load presets', 500
+
+scheduler_error = None
+
+
+def initialize_presets():
+    import presets
+    global scheduler_error
+    original = PPB.settingsSnapshot()
+    try:
+        metadata = original
+        if metadata.get('presetApplyPending') or metadata.get('boardRestartPending'):
+            for marker in ('presetApplyPending', 'boardRestartPending'):
+                if metadata.get(marker):
+                    PPB.clearPresetMarker(marker)
+            return
+        definitions = presets.load()
+        preset = presets.get_preset(definitions, definitions['default'])
+        if preset is not None:
+            PPB.applyPreset(preset['display'])
+    except Exception as error:
+        scheduler_error = str(error)
+        app.logger.exception('Startup preset failed')
+        try:
+            storage.save_state('settings.json', original, storage.device_settings)
+            PPB.loadSettings(False)
+        except Exception:
+            app.logger.exception('Could not restore display settings after startup preset failure')
+
+
+def run_schedules(now):
+    import presets
+    global scheduler_error
+    try:
+        definitions = presets.load()
+        settings = PPB.settingsSnapshot()
+        executions = settings.get('scheduleExecutions', {})
+        candidates = presets.due(definitions, now, executions)
+        if not candidates:
+            return
+        # All simultaneous events are consumed; the lowest stable ID wins.
+        executions = {s['id']: executions[s['id']] for s in definitions['schedules'] if s['id'] in executions}
+        for schedule in candidates:
+            executions[schedule['id']] = now.date().isoformat()
+        PPB.applyPreset(presets.get_preset(definitions, candidates[0]['preset'])['display'], executions)
+        scheduler_error = None
+    except Exception as error:
+        scheduler_error = str(error)
+        app.logger.exception('Scheduled preset failed')
+
+
+@app.get('/api/scheduler-status')
+def scheduler_status():
+    return jsonify({'error': scheduler_error})

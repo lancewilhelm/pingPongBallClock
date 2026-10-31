@@ -146,3 +146,12 @@ Please fork/clone this repo and make it your own. I would love to see some pull 
 ## The Future
 
 I plan on making more clocks, and adding more features as I go. I will even make a jumbo clock soon so the code should be designed to be able to fit to any clock size with some tweaking. 
+
+
+### Presets and schedules
+
+Save the current display under a name, apply or delete a preset, and optionally choose a startup default. Presets include display settings such as colors, content, brightness, weather location and line count. Board type, credentials and web page appearance are not included. A two-line preset requires an XL board. Finish any pending board change before applying a preset. Remove a preset's schedules and default selection before deleting it.
+
+Schedules use the clock's local time and selected weekdays. The scheduler acts only when it observes the scheduled minute; it does not catch up after downtime or a forward clock jump. A nonexistent spring daylight-saving minute is skipped. A repeated fall minute runs at most once per schedule and local date, including after a restart or a backward clock adjustment. If several schedules are due at the same minute, the schedule with the lowest stable ID wins and all are recorded as run. A newly saved schedule matching the current minute is evaluated immediately. Failures are logged and shown on the controls page; a schedule blocked by a board restart is skipped rather than caught up later.
+
+The startup default is applied on ordinary starts. A board configuration restart restores the saved active display instead. If a scheduled display was saved but not fully applied before an interruption, startup restores that saved display before returning to normal startup-default behavior on future starts. Presets and schedules are stored separately from active settings in the local state directory. The scheduler assumes a single clock service process.

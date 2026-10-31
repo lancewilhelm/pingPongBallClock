@@ -27,6 +27,7 @@ class PingPongBoard:
 		self.num_cols = NUM_COLS		# Needed for changing board type
 
 		self.animationFrame = [0, 0]			# Separate background and text animation frames
+		self._rainbowTiming = [None, None]
 		self.animationStartTime = [0,0]		# Used for animations and when to move the string
 		self.animationTimeElapsed = [0,0]	# Used for animations and when to move the string
 		self.breathColor = None				# Necessary for the breathing animation
@@ -133,7 +134,6 @@ class PingPongBoard:
 					self.writeBallTextState(col+x,row+y,textBool)
 				else:
 					self.writeBallTextState(col+x,row+y,False)	#write the text to false so that it will be overwritten
-		self.strip.show()
 
 		# Returns the distance to the next character. Used for display string length calcs and to find the location of the next character.
 		return distanceToNext
@@ -194,12 +194,17 @@ class PingPongBoard:
 
 	# The core function that updates both the background color and text colors
 	def updateBoardColors(self):
+		# Reset the timer when a layer stops using a rainbow animation.
+		for layer, color in enumerate((self.bgColor, self.textColor)):
+			if color[0] != "animation" or color[1] not in ("rainbow", "rainbowCycle"):
+				self._rainbowTiming[layer] = None
+
 		# Write the BG. Will not overwrite text per the function
 		if self.bgColor[0] == "animation":
 			if self.bgColor[1] == "rainbow":
-				self.rainbow()
+				self.rainbow(self.bgDisplayChanged)
 			elif self.bgColor[1] == "rainbowCycle":
-				self.rainbowCycle()
+				self.rainbowCycle(self.bgDisplayChanged)
 			elif self.bgColor[1] == "breathing":
 				self.breathing(False)
 			elif self.bgColor[1] == "twinkle":
@@ -213,9 +218,9 @@ class PingPongBoard:
 		# Check to see if we have a text color animation
 		if self.textColor[0] == "animation":
 			if self.textColor[1] == "rainbow":
-				self.rainbowText()
+				self.rainbowText(self.textDisplayChanged)
 			elif self.textColor[1] == "rainbowCycle":
-				self.rainbowCycleText()
+				self.rainbowCycleText(self.textDisplayChanged)
 			elif self.textColor[1] == "breathing":
 				self.breathing(True)
 		# Else, check for solid notification
@@ -271,10 +276,33 @@ class PingPongBoard:
 			pos -= 170
 			return Color(0, pos * 3, 255 - pos * 3)     #blue to green
 
+	def _rainbowFrame(self, animation, text, dirty):
+		# Integer deadlines retain fractional intervals without floating-point drift.
+		period = 30_000_000
+		now = time.monotonic_ns()
+		state = self._rainbowTiming[text]
+		if state is None or state[0] != animation:
+			steps = 1
+			deadline = now + period
+		elif now >= state[1]:
+			steps = 1 + (now - state[1]) // period
+			deadline = state[1] + steps * period
+		else:
+			steps = 0
+			deadline = state[1]
+		self._rainbowTiming[text] = (animation, deadline)
+		if steps:
+			self.animationFrame[text] = (self.animationFrame[text] + steps) % 256
+		if steps or dirty:
+			return self.animationFrame[text]
+		return None
+
 	# Rainbow color animation
-	def rainbow(self,wait_ms=20):
+	def rainbow(self,dirty=False):
 		# Draw rainbow that fades across all pixels at once.
-		j = self.updateFrame(256)
+		j = self._rainbowFrame("rainbow", False, dirty)
+		if j is None:
+			return
 
 		for x in range(self.num_cols):
 			for y in range(self.num_rows):
@@ -282,12 +310,13 @@ class PingPongBoard:
 				if self.balls[y][x].text == False:
 					self.writeBallColor(x,y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
 		self.strip.show()
-		time.sleep(wait_ms/1000.0)
 
 	# Rainbow text color animation
-	def rainbowText(self,wait_ms=20):
+	def rainbowText(self,dirty=False):
 		# Draw rainbow that fades across all pixels at once.
-		j = self.updateFrame(256, True)
+		j = self._rainbowFrame("rainbowText", True, dirty)
+		if j is None:
+			return
 
 		for x in range(self.num_cols):
 			for y in range(self.num_rows):
@@ -295,12 +324,13 @@ class PingPongBoard:
 				if self.balls[y][x].text == True:
 					self.writeBallColor(x,y,self.wheel(((i*PIXEL_RATIO)+j) & 255))
 		self.strip.show()
-		time.sleep(wait_ms/1000.0)
 
 	# Rainbow cycle makes all of the BG balls the same color and changes the color over time
-	def rainbowCycle(self,wait_ms=20):
+	def rainbowCycle(self,dirty=False):
 		# Draw rainbow that uniformly distributes itself across all pixels.
-		j = self.updateFrame(256)
+		j = self._rainbowFrame("rainbowCycle", False, dirty)
+		if j is None:
+			return
 
 		for x in range(self.num_cols):
 			for y in range(self.num_rows):
@@ -308,12 +338,13 @@ class PingPongBoard:
 				if self.balls[y][x].text == False:
 					self.writeBallColor(x,y,self.wheel((((i*PIXEL_RATIO)//(self.num_balls*PIXEL_RATIO))+j) & 255))
 		self.strip.show()
-		time.sleep(wait_ms/1000.0)
 
 		# Rainbow cycle makes all of the text the same color and changes the color over time
-	def rainbowCycleText(self,wait_ms=20):
+	def rainbowCycleText(self,dirty=False):
 		# Draw rainbow that uniformly distributes itself across all pixels.
-		j = self.updateFrame(256, True)
+		j = self._rainbowFrame("rainbowCycleText", True, dirty)
+		if j is None:
+			return
 
 		for x in range(self.num_cols):
 			for y in range(self.num_rows):
@@ -321,7 +352,6 @@ class PingPongBoard:
 				if self.balls[y][x].text == True:
 					self.writeBallColor(x,y,self.wheel((((i*PIXEL_RATIO)//(self.num_balls*PIXEL_RATIO))+j) & 255))
 		self.strip.show()
-		time.sleep(wait_ms/1000.0)
 
 	# Breathing color animation. Uses the random color list in Utils
 	def breathing(self,text=False,wait_ms=20):
@@ -553,11 +583,44 @@ class PingPongBoard:
 				'bgColor', 'brightness', 'timeFormat', 'boardType', 'lineCount')}
 			if self.pendingBoardConfig is not None:
 				settings.update(self.pendingBoardConfig)
+			settings.update(copy.deepcopy(self._presetMetadata))
 			return settings
 
 	def dumpSettings(self):
 		with self._settingsLock:
 			storage.save_state('settings.json', self.settingsSnapshot(), storage.device_settings)
+
+	def applyPreset(self, display, executions=None):
+		import presets
+		with self._settingsLock:
+			settings = self.settingsSnapshot()
+			if self.pendingBoardConfig is not None:
+				raise ValueError('Wait for the board change to finish before applying a preset')
+			if display['lineCount'] == 2 and (self.boardType == 'normal' or settings['boardType'] == 'normal'):
+				raise ValueError('This preset needs an XL board with two lines')
+			settings.update(copy.deepcopy(display))
+			storage.device_settings(settings)
+			if executions is not None:
+				settings['scheduleExecutions'] = copy.deepcopy(executions)
+				settings['presetApplyPending'] = True
+			storage.save_state('settings.json', settings, storage.device_settings)
+			self._presetMetadata = {key: copy.deepcopy(settings[key]) for key in ('scheduleExecutions', 'presetApplyPending', 'boardRestartPending') if key in settings}
+			for key in presets.DISPLAY_KEYS:
+				setattr(self, key, copy.deepcopy(display[key]))
+			self.font = slanted if self.fontName == 'slanted' else digits
+			self.fontChanged = self.bgDisplayChanged = self.textDisplayChanged = self.updateWeather = True
+			self.textOrigin = [[1, 1], 0] if self.boardType == 'normal' else ([[2, 4], 0] if self.lineCount == 1 else [[4, 1], [1, 7]])
+			self.textOriginMoved = [True, True]
+			self.strip.setBrightness(self.brightness)
+			if executions is not None:
+				self.clearPresetMarker('presetApplyPending')
+
+	def clearPresetMarker(self, marker):
+		with self._settingsLock:
+			settings = self.settingsSnapshot()
+			settings.pop(marker, None)
+			storage.save_state('settings.json', settings, storage.device_settings)
+			self._presetMetadata.pop(marker, None)
 
 	def changeBoardType(self, boardType):
 		if boardType not in ('normal', 'xl'):
@@ -565,9 +628,14 @@ class PingPongBoard:
 		with self._settingsLock:
 			settings = self.settingsSnapshot()
 			settings['boardType'] = boardType
+			if boardType != self.boardType:
+				settings['boardRestartPending'] = True
+			else:
+				settings.pop('boardRestartPending', None)
 			if boardType == 'normal':
 				settings['lineCount'] = 1
 			storage.save_state('settings.json', settings, storage.device_settings)
+			self._presetMetadata = {key: copy.deepcopy(settings[key]) for key in ('scheduleExecutions', 'presetApplyPending', 'boardRestartPending') if key in settings}
 			if boardType == self.boardType:
 				self.pendingBoardConfig = None
 				self.restart_at = None
@@ -581,6 +649,7 @@ class PingPongBoard:
 			apikeys = storage.load_state('apikeys.json', CODE_DIR / 'apikeys.txt', storage.api_keys)
 			storage.device_settings(settings)
 			storage.api_keys(apikeys)
+			self._presetMetadata = {key: copy.deepcopy(settings[key]) for key in ('scheduleExecutions', 'presetApplyPending', 'boardRestartPending') if key in settings}
 			self.openWeatherKey = apikeys['openweather']
 			for key in ('animationSpeed', 'textColor', 'fontName', 'textSpacing', 'customText',
 					'weatherZipLocation', 'weatherCityLocation', 'tempUnits', 'content',
