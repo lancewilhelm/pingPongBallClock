@@ -139,6 +139,22 @@ Weather content requires an [OpenWeather API key](https://openweathermap.org/app
 
 The service creates this file as root with owner-only permissions. After editing it, run `sudo systemctl restart pingpongballclock` so the service reads the new key. Keep the file private. The application stores settings in `code/.local/settings.json` and `code/.local/webpage.json`. The clock requests weather updates while weather content is active. Check your OpenWeather plan for its current limits.
 
+Settings loads use the previous validated `.bak` snapshot if the primary JSON file is missing or invalid. Legacy files or example defaults are imported only when neither file exists. Recovery leaves the files unchanged; if the backup is also invalid, loading fails instead of resetting settings.
+
+## Development checks
+
+Use Python 3.9 or later and Node.js. These checks use simulated LEDs and temporary state directories; they do not certify physical Raspberry Pi output. From the repository root:
+
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install 'Flask>=3.1,<4' 'requests>=2.32,<3'
+bash -n code/setup.sh
+.venv/bin/python -m unittest discover -s tests -v
+node --check code/static/js/script.js
+node --check code/static/js/preview.js
+for test in tests/test_*.js; do node "$test" || exit; done
+```
+
 ## Usage
 
 Please fork/clone this repo and make it your own. I would love to see some pull requests. This is a just a side hobby of mine so it may take me some time to get around to reviewing and merging. Also, FYI, not a developer IRL. This is just what I do for fun. Learning as I go. Feel free to contact me! 
