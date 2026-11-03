@@ -81,6 +81,43 @@ class StorageTest(unittest.TestCase):
         self.assertEqual(restored.customText, 'Saved text')
         self.assertEqual(restored.brightness, 67)
 
+    def test_missing_primary_recovers_backup_before_legacy_settings(self):
+        self.board.customText = 'Second'
+        self.board.dumpSettings()
+        self.board.customText = 'Third'
+        self.board.dumpSettings()
+        primary = self.state / 'settings.json'
+        primary.unlink()
+        restored = led.PingPongBoard()
+        self.assertEqual(restored.customText, 'Second')
+        self.assertFalse(primary.exists(), 'recovery must not overwrite the missing primary')
+        self.assertEqual(json.loads((self.legacy / 'settings.txt').read_text()), self.settings)
+
+    def test_missing_primary_does_not_replace_an_invalid_backup_with_defaults(self):
+        primary = self.state / 'settings.json'
+        primary.unlink()
+        backup = self.state / 'settings.json.bak'
+        backup.write_text('{broken')
+        with self.assertRaises(ValueError):
+            led.PingPongBoard()
+        self.assertFalse(primary.exists())
+        self.assertEqual(backup.read_text(), '{broken')
+
+    def test_noninteger_line_counts_are_rejected(self):
+        for line_count in (1.0, 2.0, True, False, '1'):
+            with self.subTest(line_count=line_count):
+                with self.assertRaises(ValueError):
+                    storage.device_settings(dict(self.settings, boardType='xl', lineCount=line_count))
+
+    def test_fractional_line_count_recovers_backup_and_can_render(self):
+        self.board.dumpSettings()
+        invalid = dict(self.settings, customText='Invalid settings', lineCount=1.0)
+        (self.state / 'settings.json').write_text(json.dumps(invalid))
+        restored = led.PingPongBoard()
+        restored.updateDisplayString()
+        self.assertEqual(restored.customText, 'Saved text')
+        self.assertIs(type(restored.lineCount), int)
+
     def test_invalid_loaded_settings_do_not_mutate_live_board(self):
         before = self.board.settingsSnapshot()
         bad = dict(before, brightness=999)

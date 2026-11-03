@@ -33,7 +33,7 @@ def atomic_json(path, value):
 def load_state(name, legacy, validate):
     path = STATE_DIR / name
     backup = path.with_suffix(path.suffix + ".bak")
-    if not path.exists():
+    if not path.exists() and not backup.exists():
         legacy_path = CODE_DIR / legacy
         example_path = CODE_DIR / (legacy_path.stem + '.example.json')
         value = read_json(legacy_path if legacy_path.exists() else example_path)
@@ -74,7 +74,7 @@ def device_settings(value):
                 "bgColor", "brightness", "timeFormat", "boardType", "lineCount")
     if any(key not in value for key in required):
         raise ValueError("Missing device setting")
-    if value["boardType"] not in ("normal", "xl") or value["lineCount"] not in (1, 2):
+    if value["boardType"] not in ("normal", "xl") or type(value["lineCount"]) is not int or value["lineCount"] not in (1, 2):
         raise ValueError("Invalid board configuration")
     if value["boardType"] == "normal" and value["lineCount"] != 1:
         raise ValueError("Normal board supports one line")
